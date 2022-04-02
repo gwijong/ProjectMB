@@ -1,2 +1,2 @@
-# Mabinogi
- 마비노기
+# MB
+ MB
