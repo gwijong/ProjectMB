@@ -15,11 +15,11 @@ D:/Unity/Github/Mabinogi/Mabinogi
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-57984
+57801
 Successfully changed project path to: D:/Unity/Github/Mabinogi/Mabinogi
 D:/Unity/Github/Mabinogi/Mabinogi
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 45.09 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 43.72 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.24f1 (79c78de19888)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/Resources/UnitySubsystems
@@ -35,76 +35,76 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56544
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56344
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.002589 seconds.
+Registered in 0.002584 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 43.18 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 43.71 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.629 seconds
+- Completed reload, in  0.645 seconds
 Domain Reload Profiling:
-	ReloadAssembly (629ms)
-		BeginReloadAssembly (59ms)
+	ReloadAssembly (645ms)
+		BeginReloadAssembly (60ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (492ms)
-			LoadAssemblies (57ms)
+		EndReloadAssembly (506ms)
+			LoadAssemblies (58ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (164ms)
+			SetupTypeCache (167ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (36ms)
-			SetupLoadedEditorAssemblies (182ms)
+			RebuildScriptCaches (41ms)
+			SetupLoadedEditorAssemblies (183ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (43ms)
+				InitializePlatformSupportModulesInManaged (6ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (44ms)
 				BeforeProcessingInitializeOnLoad (18ms)
-				ProcessInitializeOnLoadAttributes (85ms)
-				ProcessInitializeOnLoadMethodAttributes (29ms)
+				ProcessInitializeOnLoadAttributes (86ms)
+				ProcessInitializeOnLoadMethodAttributes (30ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.003518 seconds.
+Registered in 0.003616 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 0.45 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.088 seconds
+- Completed reload, in  1.190 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1088ms)
-		BeginReloadAssembly (154ms)
+	ReloadAssembly (1190ms)
+		BeginReloadAssembly (157ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (5ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (19ms)
-		EndReloadAssembly (870ms)
-			LoadAssemblies (88ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (959ms)
+			LoadAssemblies (112ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (300ms)
+			SetupTypeCache (361ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (51ms)
-			SetupLoadedEditorAssemblies (332ms)
+			RebuildScriptCaches (50ms)
+			SetupLoadedEditorAssemblies (337ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (6ms)
 				SetLoadedEditorAssemblies (1ms)
 				RefreshPlugins (1ms)
 				BeforeProcessingInitializeOnLoad (88ms)
-				ProcessInitializeOnLoadAttributes (221ms)
-				ProcessInitializeOnLoadMethodAttributes (9ms)
+				ProcessInitializeOnLoadAttributes (225ms)
+				ProcessInitializeOnLoadMethodAttributes (10ms)
 				AfterProcessingInitializeOnLoad (7ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
@@ -112,15 +112,15 @@ Domain Reload Profiling:
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Refreshing native plugins compatible for Editor in 0.42 ms, found 2 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
+Refreshing native plugins compatible for Editor in 0.44 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1534 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 88.3 MB.
 System memory in use after: 88.4 MB.
 
 Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 2004.
-Total: 2.605300 ms (FindLiveObjects: 0.156000 ms CreateObjectMapping: 0.062800 ms MarkObjects: 2.365800 ms  DeleteObjects: 0.019700 ms)
+Total: 3.364000 ms (FindLiveObjects: 0.207900 ms CreateObjectMapping: 0.070800 ms MarkObjects: 3.059300 ms  DeleteObjects: 0.024600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -134,188 +134,209 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/Resources/Art/Dog/Textures/mon_dog.png
-  artifactKey: Guid(679cbc7df88d2a2498879f9f9875c1dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/Art/Dog/Textures/mon_dog.png using Guid(679cbc7df88d2a2498879f9f9875c1dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f3c2d028258b93837746183e51f7b57') in 0.083028 seconds 
-  Import took 0.085715 seconds .
+  path: Assets/Wooden_Canopy/Prefab/Stair.prefab
+  artifactKey: Guid(5adc4c9e94b1d9c46b2350bfdfda86c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/Prefab/Stair.prefab using Guid(5adc4c9e94b1d9c46b2350bfdfda86c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8e66470cbcf6067cf42d88b4c2c8496') in 0.164095 seconds 
+  Import took 0.167835 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 136.664814 seconds.
-  path: Assets/Resources/Prefabs/Dog.prefab
-  artifactKey: Guid(46c69577bb4cab741b7c597d700157a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/Prefabs/Dog.prefab using Guid(46c69577bb4cab741b7c597d700157a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ac18e27b6f6e931c1564ae42d0ebf906') in 0.112231 seconds 
-  Import took 0.116999 seconds .
+  Time since last request: 0.000276 seconds.
+  path: Assets/Wooden_Canopy/Prefab/Canopy.prefab
+  artifactKey: Guid(4c4896384163f7c428f38c4741487cdb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/Prefab/Canopy.prefab using Guid(4c4896384163f7c428f38c4741487cdb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86ac26126269d9f6d8a94820fbf810b9') in 0.555771 seconds 
+  Import took 0.560711 seconds .
 
 ========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.003453 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.45 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.016 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1017ms)
-		BeginReloadAssembly (121ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (36ms)
-		EndReloadAssembly (831ms)
-			LoadAssemblies (86ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (284ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (46ms)
-			SetupLoadedEditorAssemblies (312ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (6ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (81ms)
-				ProcessInitializeOnLoadAttributes (208ms)
-				ProcessInitializeOnLoadMethodAttributes (9ms)
-				AfterProcessingInitializeOnLoad (7ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (7ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.44 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1528 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 104.8 MB.
-System memory in use after: 105.0 MB.
+Received Import Request.
+  Time since last request: 0.000176 seconds.
+  path: Assets/Wooden_Canopy/Prefab
+  artifactKey: Guid(bc7c372adaee5334e8b28150ba9e823c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/Prefab using Guid(bc7c372adaee5334e8b28150ba9e823c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '40e0aba25e0491343dd544d43e66c37c') in 0.005207 seconds 
+  Import took 0.007877 seconds .
 
-Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 2015.
-Total: 2.645100 ms (FindLiveObjects: 0.202100 ms CreateObjectMapping: 0.070500 ms MarkObjects: 2.350000 ms  DeleteObjects: 0.021400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.003884 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.46 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.017 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1017ms)
-		BeginReloadAssembly (115ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (35ms)
-		EndReloadAssembly (836ms)
-			LoadAssemblies (86ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (285ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (46ms)
-			SetupLoadedEditorAssemblies (314ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (6ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (84ms)
-				ProcessInitializeOnLoadAttributes (207ms)
-				ProcessInitializeOnLoadMethodAttributes (9ms)
-				AfterProcessingInitializeOnLoad (7ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (7ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.44 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1528 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 104.9 MB.
-System memory in use after: 105.0 MB.
+Received Import Request.
+  Time since last request: 0.000174 seconds.
+  path: Assets/Wooden_Canopy/Prefab/FireWood.prefab
+  artifactKey: Guid(7bcb58554a8c3844daff1cb4024489dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/Prefab/FireWood.prefab using Guid(7bcb58554a8c3844daff1cb4024489dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c4c0ec486b65e078c2a9232bc8e8ff3') in 0.021961 seconds 
+  Import took 0.025245 seconds .
 
-Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2017.
-Total: 2.646500 ms (FindLiveObjects: 0.176200 ms CreateObjectMapping: 0.054800 ms MarkObjects: 2.387400 ms  DeleteObjects: 0.027100 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.004275 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 0.87 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.397 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1398ms)
-		BeginReloadAssembly (156ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (6ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (45ms)
-		EndReloadAssembly (1154ms)
-			LoadAssemblies (120ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (403ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (432ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (107ms)
-				ProcessInitializeOnLoadAttributes (295ms)
-				ProcessInitializeOnLoadMethodAttributes (12ms)
-				AfterProcessingInitializeOnLoad (9ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (10ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.62 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1528 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 104.9 MB.
-System memory in use after: 105.0 MB.
+Received Import Request.
+  Time since last request: 19.881107 seconds.
+  path: Assets/Wooden_Canopy/meshes/Canopy.fbx
+  artifactKey: Guid(08f014feecd3e074f90b55e0e14d8bab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/meshes/Canopy.fbx using Guid(08f014feecd3e074f90b55e0e14d8bab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b9f3f5b924772efe3cabf1cdac300e38') in 0.055815 seconds 
+  Import took 0.060364 seconds .
 
-Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2019.
-Total: 3.473300 ms (FindLiveObjects: 0.231300 ms CreateObjectMapping: 0.077200 ms MarkObjects: 3.138500 ms  DeleteObjects: 0.023900 ms)
+========================================================================
+Received Import Request.
+  Time since last request: 0.000168 seconds.
+  path: Assets/Wooden_Canopy/meshes/FireWood.fbx
+  artifactKey: Guid(e5253d67af4541c4397a014060b5c53e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/meshes/FireWood.fbx using Guid(e5253d67af4541c4397a014060b5c53e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c7a9698e69d6cc68bb23abc6807f0e22') in 0.017964 seconds 
+  Import took 0.020814 seconds .
 
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000210 seconds.
+  path: Assets/Wooden_Canopy/meshes/Stair.fbx
+  artifactKey: Guid(738c9274394db5b4e9fa840534ed259b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/meshes/Stair.fbx using Guid(738c9274394db5b4e9fa840534ed259b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '912ce20b60084bd6aafbf73e3ff9839c') in 0.017176 seconds 
+  Import took 0.019876 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.769908 seconds.
+  path: Assets/Wooden_Canopy/maps/Cap_01.tga
+  artifactKey: Guid(53b1fc1b443535d4ca426bd4c869a899) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Cap_01.tga using Guid(53b1fc1b443535d4ca426bd4c869a899) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f416f3f8c84ea5ad35b3501a4893538a') in 0.020780 seconds 
+  Import took 0.023393 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000176 seconds.
+  path: Assets/Wooden_Canopy/maps/ConstrWood_ambientOcclusion.tga
+  artifactKey: Guid(5d01ce90d011bd8428753e7a4783afd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/ConstrWood_ambientOcclusion.tga using Guid(5d01ce90d011bd8428753e7a4783afd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f21d83f5b7dc8a9a365c16c4d14c3923') in 0.010676 seconds 
+  Import took 0.013876 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000347 seconds.
+  path: Assets/Wooden_Canopy/maps/ConstrWood_normal.tga
+  artifactKey: Guid(6850a2b7acb62aa4b98c0990da784d40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/ConstrWood_normal.tga using Guid(6850a2b7acb62aa4b98c0990da784d40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c91455edf870a1466cbea2e526caaa72') in 0.016882 seconds 
+  Import took 0.020696 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000197 seconds.
+  path: Assets/Wooden_Canopy/maps/ConstrWood_metallic.tga
+  artifactKey: Guid(106116d70793c4a479ccddbcfa85fb1d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/ConstrWood_metallic.tga using Guid(106116d70793c4a479ccddbcfa85fb1d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9647ef01cb55e62744ddf67e322af908') in 0.012160 seconds 
+  Import took 0.015050 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000183 seconds.
+  path: Assets/Wooden_Canopy/maps/Wood_planks_AO.tga
+  artifactKey: Guid(042fea79dfb01244dba37e29284bb271) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Wood_planks_AO.tga using Guid(042fea79dfb01244dba37e29284bb271) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bf84f6358a50b739e7c77bc429c0496d') in 0.014400 seconds 
+  Import took 0.017673 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000176 seconds.
+  path: Assets/Wooden_Canopy/maps/Log_height.tga
+  artifactKey: Guid(12c8352eb9cfe6c4facd74fc891c8b7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Log_height.tga using Guid(12c8352eb9cfe6c4facd74fc891c8b7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02550ca5ea288cf4c721a3ca71bc9ed2') in 0.014491 seconds 
+  Import took 0.017143 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000179 seconds.
+  path: Assets/Wooden_Canopy/maps/Log_normal.tga
+  artifactKey: Guid(a144889064f243e4a95a7ed6076de945) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Log_normal.tga using Guid(a144889064f243e4a95a7ed6076de945) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e39bbe9cb17efda82121f863249fef55') in 0.013772 seconds 
+  Import took 0.016552 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000199 seconds.
+  path: Assets/Wooden_Canopy/maps/Wood_planks_albedo.tga
+  artifactKey: Guid(9603fbb0c9c531846a0dea28e12d11f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Wood_planks_albedo.tga using Guid(9603fbb0c9c531846a0dea28e12d11f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63039d54c193b106e29d517431330bc6') in 0.012156 seconds 
+  Import took 0.015471 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000197 seconds.
+  path: Assets/Wooden_Canopy/maps/Drova_aocclusion.tga
+  artifactKey: Guid(843cc3b6d60d9234a98ae18c28f0459c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Drova_aocclusion.tga using Guid(843cc3b6d60d9234a98ae18c28f0459c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7aeab9379b6f7566978d280addb38bd7') in 0.012857 seconds 
+  Import took 0.015971 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000212 seconds.
+  path: Assets/Wooden_Canopy/maps/Log_albedo.tga
+  artifactKey: Guid(a89466f7997122144a02ec189f34486e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Log_albedo.tga using Guid(a89466f7997122144a02ec189f34486e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f84d0db573a766e66e0bad39c8407401') in 0.012475 seconds 
+  Import took 0.015589 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000191 seconds.
+  path: Assets/Wooden_Canopy/maps/Log_metallic.tga
+  artifactKey: Guid(6f4c0263a2bad65449209259416f1130) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Log_metallic.tga using Guid(6f4c0263a2bad65449209259416f1130) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '675c9e0a0e4219bd9e4e15e680238b85') in 0.013393 seconds 
+  Import took 0.016421 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000198 seconds.
+  path: Assets/Wooden_Canopy/maps/Drova_normal.tga
+  artifactKey: Guid(f9cf1184d22652d48a00b613acd96d30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Drova_normal.tga using Guid(f9cf1184d22652d48a00b613acd96d30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6436c0b7715876d610a90a1638ed9c1a') in 0.017114 seconds 
+  Import took 0.019810 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000198 seconds.
+  path: Assets/Wooden_Canopy/maps/Drova_Albedo.tga
+  artifactKey: Guid(8db69daeeed40dc44ba42402defaad95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Drova_Albedo.tga using Guid(8db69daeeed40dc44ba42402defaad95) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '81d725fdf51afb5d61b6d6525e1ade0b') in 0.013146 seconds 
+  Import took 0.015987 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000199 seconds.
+  path: Assets/Wooden_Canopy/maps/Drova_Metallic.tga
+  artifactKey: Guid(e0948aef49d29574d9cede63001af800) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Drova_Metallic.tga using Guid(e0948aef49d29574d9cede63001af800) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '33b2980906865bdb8953371ee051ff7d') in 0.013328 seconds 
+  Import took 0.016811 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000229 seconds.
+  path: Assets/Wooden_Canopy/maps/ConstrWood_albedo.tga
+  artifactKey: Guid(039fa32ee32ec5342bb370c50ed08d08) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/ConstrWood_albedo.tga using Guid(039fa32ee32ec5342bb370c50ed08d08) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79138bd276f89012c0c44b0961a968af') in 0.011289 seconds 
+  Import took 0.014651 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000207 seconds.
+  path: Assets/Wooden_Canopy/maps/Log_ambientOcclusion.tga
+  artifactKey: Guid(5ad677ab56087264bb50647df5c9a704) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Log_ambientOcclusion.tga using Guid(5ad677ab56087264bb50647df5c9a704) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a7b470677378f72f38ea3a0d74cb51ab') in 0.014604 seconds 
+  Import took 0.017669 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.737497 seconds.
+  path: Assets/Wooden_Canopy/maps/Wood_planks_height.tga
+  artifactKey: Guid(0bf32ec9989c1d44c9fa04d9d9d0b5cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Wood_planks_height.tga using Guid(0bf32ec9989c1d44c9fa04d9d9d0b5cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c041d792d8d80c65398a3c1092fc2949') in 0.010130 seconds 
+  Import took 0.012866 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000196 seconds.
+  path: Assets/Wooden_Canopy/maps/Wood_planks_normal.tga
+  artifactKey: Guid(42c881931d0a26f4eb316f325ea15226) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Wood_planks_normal.tga using Guid(42c881931d0a26f4eb316f325ea15226) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0eeb150001789ee4ecaa932ee1d3cf17') in 0.016986 seconds 
+  Import took 0.019813 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000196 seconds.
+  path: Assets/Wooden_Canopy/maps/Wood_planks_metallic.tga
+  artifactKey: Guid(915566543fdf16c47ae1f65c16745111) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Wooden_Canopy/maps/Wood_planks_metallic.tga using Guid(915566543fdf16c47ae1f65c16745111) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '49d28d1c1cbf5a9d470191e10b0a42a6') in 0.012862 seconds 
+  Import took 0.015996 seconds .
+
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file
