@@ -5,7 +5,7 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
     public static Manager manager;
-
+    public bool isGameover;
     void Start()
     {
         if (manager == null)

@@ -20,12 +20,16 @@ MonoBehaviour:
   dexterity: 10
   will: 10
   luck: 10
-  physicalStrikingPower: 10
-  magicStrikingPower: 10
+  maxPhysicalStrikingPower: 10
+  maxMagicStrikingPower: 10
+  minPhysicalStrikingPower: 1
+  minMagicStrikingPower: 1
   wound: 0
+  woundAttack: 1
   critical: 0.2
   balance: 0.2
   physicalDefensivePower: 3
   magicDefensivePower: 3
   physicalProtective: 1
   magicProtective: 1
+  deadly: 1
