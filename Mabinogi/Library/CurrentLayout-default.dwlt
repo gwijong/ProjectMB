@@ -19,9 +19,9 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Inspector
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 875, y: 300}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &2
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 708, y: 492}
+  m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 13704
+  controlID: 119
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 442}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 13646
+  controlID: 18
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 13705
+  controlID: 39
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -302,10 +302,10 @@ MonoBehaviour:
     y: 0
     width: 523
     height: 947
-  m_MinSize: {x: 275, y: 171}
-  m_MaxSize: {x: 4001, y: 8021}
+  m_MinSize: {x: 276, y: 192}
+  m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 13679
+  controlID: 120
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -484,9 +484,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 8.058863, y: 1.7213886, z: 11.061276}
+    m_Target: {x: -0.15757805, y: 2.0427513, z: -1.1833535}
     speed: 2
-    m_Value: {x: 8.058863, y: 1.7213886, z: 11.061276}
+    m_Value: {x: -0.15757805, y: 2.0427513, z: -1.1833535}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -533,13 +533,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.14358367, y: 0.7932462, z: -0.20567025, w: 0.55512446}
+    m_Target: {x: -0.30382982, y: 0.18742849, z: -0.060858924, w: -0.9322985}
     speed: 2
-    m_Value: {x: 0.14356075, y: 0.7931196, z: -0.20563743, w: 0.5550359}
+    m_Value: {x: -0.3037803, y: 0.18739793, z: -0.060849, w: -0.9321465}
   m_Size:
-    m_Target: 3.5056171
+    m_Target: 2.7880766
     speed: 2
-    m_Value: 3.5056171
+    m_Value: 2.7880766
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -737,14 +737,14 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    - e00: 0.5040816
+    - e00: 0.5924441
       e01: 0
       e02: 0
-      e03: -10.204071
+      e03: 138.34978
       e10: 0
-      e11: 0.5040816
+      e11: 0.5924441
       e12: 0
-      e13: 26.823471
+      e13: 212.0989
       e20: 0
       e21: 0
       e22: 1
@@ -754,9 +754,9 @@ MonoBehaviour:
       e32: 0
       e33: 1
   m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: 1b67212bdd8490e4cb30f9e46dd10bb7, type: 2}
+  m_AnimatorController: {fileID: 9100000, guid: 2baecbcdd6785c94a8dd0efe40b1a2f8, type: 2}
   m_BreadCrumbs:
-  - m_Target: {fileID: -3947737003324990095, guid: 1b67212bdd8490e4cb30f9e46dd10bb7, type: 2}
+  - m_Target: {fileID: -5124165762315992394, guid: 2baecbcdd6785c94a8dd0efe40b1a2f8, type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
   stateMachineGraphGUI: {fileID: 0}
@@ -796,7 +796,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -16248
+  m_LastSelectedObjectID: 16572
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -825,9 +825,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 88c0ffff
-      m_LastClickedID: -16248
-      m_ExpandedIDs: 80c0ffff88c0ffff52fbffff
+      m_SelectedIDs: bc400000
+      m_LastClickedID: 16572
+      m_ExpandedIDs: 2682ffff54ddffff2cdeffff52deffff52fbffff703e0000b63e00002a3f0000583f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -889,36 +889,36 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Art/Player/Animators
+    - Assets/Scripts/Character/Monster/Livestock
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Resources/Art/Player/Animators
+  - Assets/Scripts/Character/Monster/Livestock
   m_LastFoldersGridSize: 96
   m_LastProjectPath: D:\Unity\Github\Mabinogi\Mabinogi
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 27}
-    m_SelectedIDs: 048d0000
-    m_LastClickedID: 36100
-    m_ExpandedIDs: 000000002e56000030560000325600003456000036560000385600003a5600003e56000040560000425600004456000046560000485600004a5600004c5600004e560000505600005256000056560000b65600007473000000ca9a3b
+    scrollPos: {x: 0, y: 63}
+    m_SelectedIDs: 2a530000
+    m_LastClickedID: 21290
+    m_ExpandedIDs: 000000001453000016530000185300001a5300001c5300001e530000205300002253000024530000285300002e53000030530000325300003453000036530000385300006253000086530000a85e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Livestock
+      m_OriginalName: Livestock
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 21290
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_SearchString: 
@@ -932,7 +932,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000002e56000030560000325600003456000036560000385600003a5600003e56000040560000425600004456000046560000485600004a5600004e560000505600005256000056560000b65600007473000000ca9a3b
+    m_ExpandedIDs: 000000001453000016530000185300001a5300001c5300001e53000020530000225300002453000026530000285300002a5300002c5300002e5300003053000032530000345300003653000038530000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -959,8 +959,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: 763d00002e8a00002a8a0000923d0000943d00004a6d000078410000744100001647000056d9ffff20180200c6690000063e000038da01001ec10100fa8a0000103e0000fcc7010000000000
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: 763d00002e8a00002a8a0000923d0000943d00004a6d000078410000744100001647000056d9ffff20180200c6690000063e000038da01001ec10100fa8a0000103e0000fcc7010000000000644b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1020,7 +1020,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 774
   m_GlobalObjectId: 
   m_LockTracker:
     m_IsLocked: 0

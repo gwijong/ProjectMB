@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Defense : MonoBehaviour
+public class Defense : Skill
 {
-    // Start is called before the first frame update
-    void Start()
+    /*
+    public SkillData skillData;
+    protected Character character;
+    protected Animator ani;
+    */
+    public override void SkillUse(Character enemyTarget)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (enemyTarget.currentSkillId == (int)Character.SkillId.combat)  //방어에 성공한 경우
+        {
+            character.AniOff();
+            ani.SetBool("Defense", true);
+            enemyTarget.Freeze(skillData.StiffnessTime);
+        }
     }
 }

@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CounterAttack : MonoBehaviour
+public class CounterAttack : Skill
 {
-    // Start is called before the first frame update
-    void Start()
+    /*
+    public SkillData skillData;
+    protected Character character;
+    protected Animator ani;
+    */
+    public override void SkillUse(Character enemyTarget)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        character.AniOff();
+        ani.SetBool("Counter", true);
+        enemyTarget.Groggy(skillData.StiffnessTime);
+        enemyTarget.Hit(character.maxPhysicalStrikingPower, character.minPhysicalStrikingPower,
+        skillData.Coefficient, character.balance);
     }
 }

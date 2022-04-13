@@ -4,7 +4,5 @@ using UnityEngine;
 
 public interface I_Item
 {
-    void Peek();
     void Use();
-
 }
