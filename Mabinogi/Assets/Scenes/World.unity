@@ -1998,8 +1998,8 @@ GameObject:
   - component: {fileID: 408771735}
   - component: {fileID: 408771734}
   - component: {fileID: 408771731}
-  - component: {fileID: 408771729}
   - component: {fileID: 408771730}
+  - component: {fileID: 408771729}
   - component: {fileID: 408771728}
   - component: {fileID: 408771727}
   - component: {fileID: 408771726}
@@ -2077,17 +2077,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offensive: 0
   characterData: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
-  hitPoint: 0
-  maxHitPoint: 0
-  manaPoint: 0
-  maxManaPoint: 0
-  staminaPoint: 0
-  maxStaminaPoint: 0
-  strength: 0
-  intelligence: 0
-  dexterity: 0
-  will: 0
-  luck: 0
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
   minPhysicalStrikingPower: 0
@@ -2103,9 +2092,9 @@ MonoBehaviour:
   deadly: 0
   speed: 0
   downGauge: 0
-  downTime: 2
+  downTime: 4
   stiffnessCount: 0
-  currentSkillId: 2
+  currentSkillId: 0
   target: {fileID: 0}
 --- !u!65 &408771730
 BoxCollider:
@@ -6534,7 +6523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1500985673
 Transform:
   m_ObjectHideFlags: 0
@@ -12599,17 +12588,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offensive: 0
   characterData: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
-  hitPoint: 0
-  maxHitPoint: 0
-  manaPoint: 0
-  maxManaPoint: 0
-  staminaPoint: 0
-  maxStaminaPoint: 0
-  strength: 0
-  intelligence: 0
-  dexterity: 0
-  will: 0
-  luck: 0
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
   minPhysicalStrikingPower: 0

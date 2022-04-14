@@ -11,10 +11,7 @@ public class SkillData : ScriptableObject
     /// <summary> ½ºÅ³ ID </summary>
     public Define.SkillState SkillId { get { return skillId; } }
 
-    [Tooltip("½ºÅ³ ·©Å©")]
-    [SerializeField]
-    [Range(1, 15)]
-    private int rank = 1;
+    [SerializeField, Tooltip("½ºÅ³ ·©Å©"), Range(1, 15)] int rank = 1;
     /// <summary> ½ºÅ³ ·©Å© </summary>
     public int Rank { get { return rank; } }
 

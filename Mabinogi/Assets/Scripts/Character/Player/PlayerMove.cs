@@ -24,15 +24,14 @@ public class PlayerMove : MonoBehaviour
     //FixedUpdate는 물리 갱신 주기에 맞춰 실행됨
     void FixedUpdate()
     {//물리 갱신 주기마다 움직임 실행
-        if (character.stiffnessCount != 0 || character.State == Define.State.Die)
-        {
+		if (character.stiffnessCount != 0 || character.State == Define.State.Die)
+		{
 			movePos = Vector3.zero;
 			return;
-        }
-        KeyMove();
+		}
+		KeyMove();
         PlayerAni();
         MouseMove();
-
     }
 
     //입력값에 따라 캐릭터를 앞뒤로 움직임

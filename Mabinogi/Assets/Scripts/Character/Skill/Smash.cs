@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Smash : Skill
 {
-    /*
-    public SkillData skillData;
-    protected Character character;
-    protected Animator ani;
-    */
     public override void SkillUse(Character enemyTarget)
     {
         if (enemyTarget.currentSkillId ==Define.SkillState.Counter)

@@ -18,6 +18,7 @@ public class Dog : Character
     }
     protected override void Update()
     {
+        base.Update();
         if (playerInput.Defense)
         {
             SkillCast(GetComponent<Defense>());

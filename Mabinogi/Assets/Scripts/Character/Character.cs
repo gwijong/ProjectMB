@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : CharacterState
+public class CharacterGauge
 {
-
-
-    public CharacterData characterData;
-
     /// <summary> 생명력. 피격시 감소 </summary>
     public int hitPoint;
     /// <summary> 최대 생명력 </summary>
@@ -20,6 +16,9 @@ public class Character : CharacterState
     public int staminaPoint;
     /// <summary> 최대 스태미나 </summary>
     public int maxStaminaPoint;
+}
+public class CharacterStatus
+{
     /// <summary> 체력. 물리 공격력에 영향을 줌 </summary>
     public int strength;
     /// <summary> 지력. 마법공격력에 영향을 줌 </summary>
@@ -30,6 +29,22 @@ public class Character : CharacterState
     public int will;
     /// <summary> 행운. 치명타 확률에 영향을 줌 </summary>
     public int luck;
+}
+
+public class CharacterSkill
+{
+    public Skill type;
+    public int rank;
+}
+
+public class Character : CharacterState
+{
+    public CharacterData characterData;
+
+
+
+    public CharacterGauge gauge = new CharacterGauge();
+    public CharacterStatus stat = new CharacterStatus();
     /// <summary> 최대물리공격력 </summary>
     public int maxPhysicalStrikingPower;
     /// <summary> 최대마법공격력 </summary>
@@ -85,17 +100,12 @@ public class Character : CharacterState
     }
     void OnEnable()
     {
-        hitPoint = characterData.HitPoint;
-        maxHitPoint = characterData.HitPoint;
-        manaPoint = characterData.ManaPoint;
-        maxManaPoint = characterData.ManaPoint;
-        staminaPoint = characterData.StaminaPoint;
-        maxStaminaPoint = characterData.StaminaPoint;
-        strength = characterData.Strength;
-        intelligence = characterData.Intelligence;
-        dexterity = characterData.Dexterity;
-        will = characterData.Will;
-        luck = characterData.Luck;
+        gauge.hitPoint = characterData.HitPoint;
+        gauge.maxHitPoint = characterData.HitPoint;
+        gauge.manaPoint = characterData.ManaPoint;
+        gauge.maxManaPoint = characterData.ManaPoint;
+        gauge.staminaPoint = characterData.StaminaPoint;
+        gauge.maxStaminaPoint = characterData.StaminaPoint;
         maxPhysicalStrikingPower = characterData.MaxPhysicalStrikingPower;
         maxMagicStrikingPower = characterData.MaxMagicStrikingPower;
         minPhysicalStrikingPower = characterData.MinPhysicalStrikingPower;
@@ -123,13 +133,13 @@ public class Character : CharacterState
             return;
         }
 
-        if (staminaPoint>= skill.skillData.CastCost && stiffnessCount == 0)  //스태미나가 스킬 준비 스태미나보다 많거나 같은 경우
+        if (gauge.staminaPoint>= skill.skillData.CastCost && stiffnessCount == 0)  //스태미나가 스킬 준비 스태미나보다 많거나 같은 경우
         {
             if (cast != null)
             {
                 StopCoroutine(cast);
             }
-            staminaPoint -= skill.skillData.CastCost; //스태미나 감소
+            gauge.staminaPoint -= skill.skillData.CastCost; //스태미나 감소
             cast = Casting(skill.skillData.CastTime, skill.skillData.SkillId);
             StartCoroutine(cast); // 스킬 시전 코루틴 실행
         }
@@ -152,7 +162,7 @@ public class Character : CharacterState
         offensive = true;
         ani.SetBool("BlowawayA", true);
         StartCoroutine("BlowawayTimer");
-        if (hitPoint <= 0)
+        if (gauge.hitPoint <= 0)
         {
             Die();
             return;
@@ -168,7 +178,7 @@ public class Character : CharacterState
 
     public void DownCheck()
     {
-        if (downGauge >= 100 || hitPoint <= 0) //다운게이지가 100이 넘으면 다운
+        if (downGauge >= 100 || gauge.hitPoint <= 0) //다운게이지가 100이 넘으면 다운
         {
             Down();
             downGauge = 0;
@@ -190,24 +200,15 @@ public class Character : CharacterState
         }
         AniOff();
         offensive = true;
-        if (hitCount == 0)
-        {
 
-            ani.SetBool("HitA", true);
-            hitCount++;
-        }
-        else if (hitCount == 1)
-        {
-            ani.SetBool("HitB", true);
-            hitCount--;
-        }
+        ani.SetBool("Hit" + ('A' + (hitCount++ % 2)), true);
 
-            SkillCancel();
+        SkillCancel();
         float hitDamage = Random.Range(enemyMinDamage, enemyMaxDamage) * enemyBalance * enemyCoefficient;
-        hitPoint = hitPoint - (int)hitDamage;
+        gauge.hitPoint -= (int)hitDamage;
         stiffness = Stiffness(enemyStiffnessTime);
         StartCoroutine(stiffness);
-        downGauge = downGauge + enemyAttackDownGauge;
+        downGauge += enemyAttackDownGauge;
         DownCheck();
     }
 
@@ -219,7 +220,7 @@ public class Character : CharacterState
         }
         SkillCancel();
         float hitDamage = Random.Range(enemyMinDamage, enemyMaxDamage) * enemyBalance * enemyCoefficient;
-        hitPoint = hitPoint - (int)hitDamage;
+        gauge.hitPoint -= (int)hitDamage;
     }
 
     public void Groggy(float time)//적에게 스매시나 카운터 맞을 경우 그로기 상태
@@ -301,6 +302,5 @@ public class Character : CharacterState
         stiffnessCount++;
         yield return new WaitForSeconds(time);
         stiffnessCount--;
-
     }
 }
