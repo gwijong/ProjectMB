@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Dog : Character
 {
+    PlayerInput playerInput;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        playerInput = GetComponent<PlayerInput>();
+    }
     void Bark()
     {
         AniOff();
@@ -11,22 +18,17 @@ public class Dog : Character
     }
     protected override void Update()
     {
-        base.Update();
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (playerInput.Defense)
         {
-            Down();
+            SkillCast(GetComponent<Defense>());
         }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (playerInput.Smash)
         {
-            Hit(5, 2, 2, 2, 2, 30);
+            SkillCast(GetComponent<Smash>());
         }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (playerInput.Counter)
         {
-            Groggy(0.2f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            Die();
+            SkillCast(GetComponent<CounterAttack>());
         }
     }
 }

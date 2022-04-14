@@ -92,7 +92,12 @@ public class PlayerMove : MonoBehaviour
             {
                 // 이동 지점
                 movePos = raycastHit.point;
-            }
+                if (raycastHit.collider.gameObject.layer == 6)
+                {
+					character.target = raycastHit.collider.GetComponent<Character>();
+				}			
+
+			}
             Debug.DrawRay(ray.origin, ray.direction * 100.0f, Color.green);
         }
         if (movePos != Vector3.zero)
@@ -114,11 +119,18 @@ public class PlayerMove : MonoBehaviour
 
         // 목표지점 도달시 이동지점을 초기화해 추가적인 움직임을 제한한다. 
         if (dis <= 2f)
-        {
-            gameObject.GetComponent<Animator>().SetBool("Move", false);
+        {			
+            if (character.target != null&& character.target.State!=Define.State.Die&&Input.GetMouseButtonDown(0))
+			{
+				character.Attack();
+            }
+			gameObject.GetComponent<Animator>().SetBool("Move", false);
             movePos = Vector3.zero;
         }
-    }
+
+		
+
+	}
 }
 /*
   int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);

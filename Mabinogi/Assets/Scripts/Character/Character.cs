@@ -125,7 +125,10 @@ public class Character : CharacterState
 
         if (staminaPoint>= skill.skillData.CastCost && stiffnessCount == 0)  //스태미나가 스킬 준비 스태미나보다 많거나 같은 경우
         {
-            StopCoroutine(cast);
+            if (cast != null)
+            {
+                StopCoroutine(cast);
+            }
             staminaPoint -= skill.skillData.CastCost; //스태미나 감소
             cast = Casting(skill.skillData.CastTime, skill.skillData.SkillId);
             StartCoroutine(cast); // 스킬 시전 코루틴 실행
@@ -148,6 +151,7 @@ public class Character : CharacterState
         AniOff();
         offensive = true;
         ani.SetBool("BlowawayA", true);
+        StartCoroutine("BlowawayTimer");
         if (hitPoint <= 0)
         {
             Die();
@@ -156,6 +160,12 @@ public class Character : CharacterState
         stiffness = Stiffness(downTime);
         StartCoroutine(stiffness); //downTime만큼 경직
     }
+    IEnumerator BlowawayTimer()
+    {
+        yield return new WaitForSeconds(0.05f);
+        ani.SetBool("BlowawayA", false);
+    }
+
     public void DownCheck()
     {
         if (downGauge >= 100 || hitPoint <= 0) //다운게이지가 100이 넘으면 다운
@@ -269,5 +279,28 @@ public class Character : CharacterState
         {
             offensive = true;
         }
+    }
+
+    public void Attack()
+    {
+        switch (currentSkillId)
+        {
+            case Define.SkillState.Combat:
+                offensive = true;
+                GetComponent<Combat>().SkillUse(target);
+                break;
+            case Define.SkillState.Smash:
+                offensive = true;
+                GetComponent<Smash>().SkillUse(target);
+                break;
+        }
+        AttackWait(1f);
+    }
+    IEnumerator AttackWait(float time)
+    {
+        stiffnessCount++;
+        yield return new WaitForSeconds(time);
+        stiffnessCount--;
+
     }
 }

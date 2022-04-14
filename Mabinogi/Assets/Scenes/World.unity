@@ -2004,8 +2004,8 @@ GameObject:
   - component: {fileID: 408771727}
   - component: {fileID: 408771726}
   - component: {fileID: 408771725}
-  m_Layer: 0
-  m_Name: Dog (1)
+  m_Layer: 6
+  m_Name: EnemyDog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2105,7 +2105,7 @@ MonoBehaviour:
   downGauge: 0
   downTime: 2
   stiffnessCount: 0
-  currentSkillId: 0
+  currentSkillId: 2
   target: {fileID: 0}
 --- !u!65 &408771730
 BoxCollider:
@@ -2162,7 +2162,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 408771724}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 6.05}
   m_LocalScale: {x: 2.4999998, y: 2.5, z: 2.4999998}
   m_Children:
@@ -2175,7 +2175,7 @@ Transform:
   - {fileID: 1500995357}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &447141110
 GameObject:
   m_ObjectHideFlags: 0
@@ -12464,7 +12464,7 @@ GameObject:
   - component: {fileID: 919132148341105324}
   - component: {fileID: 919132148341105323}
   - component: {fileID: 919132148341105322}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Dog
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -24,6 +24,7 @@ public class Combat : Skill
         else
         {
             character.AniOff();
+            ani.SetBool("Offensive", true);
             ani.SetBool("Combat", true);
             enemyTarget.Hit(character.maxPhysicalStrikingPower, character.minPhysicalStrikingPower, 
             skillData.Coefficient, character.balance, skillData.StiffnessTime, skillData.DownGauge);
