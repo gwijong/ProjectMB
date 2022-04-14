@@ -67,7 +67,7 @@ public class Character : MonoBehaviour
     /// <summary> 다운 게이지 </summary>
     public int downGauge = 0;
     /// <summary> 다운된 시간 </summary>
-    public float downTime = 2.0f;
+    public float downTime = 4.0f;
     /// <summary> 경직 체크 </summary>
     public int stiffnessCount = 0;
     /// <summary> 시전된 스킬 </summary>
@@ -78,9 +78,13 @@ public class Character : MonoBehaviour
     protected IEnumerator cast;
     /// <summary> 경직 시간 코루틴 </summary>
     protected IEnumerator stiffness;
-    protected bool die = false;
+    /// <summary> 사망 체크 </summary>
+    public bool die = false;
     protected Animator ani;
     protected Rigidbody rigid;
+    /// <summary> 피격 애니메이션용 변수 </summary>
+    protected int hitCount = 0;
+
     private void Awake()
     {
         ani = GetComponent<Animator>();
@@ -112,9 +116,19 @@ public class Character : MonoBehaviour
         speed = characterData.Speed;
     }
 
+    protected void FixedUpdate()
+    {
+        OffensiveCheck();
+    }
+
     protected void SkillCast(Skill skill) //스킬 준비 시도
     {
-        if(staminaPoint>= skill.skillData.CastCost && stiffnessCount == 0)  //스태미나가 스킬 준비 스태미나보다 많거나 같은 경우
+        if (die)
+        {
+            return;
+        }
+
+        if (staminaPoint>= skill.skillData.CastCost && stiffnessCount == 0)  //스태미나가 스킬 준비 스태미나보다 많거나 같은 경우
         {
             StopCoroutine(cast);
             staminaPoint -= skill.skillData.CastCost; //스태미나 감소
@@ -134,20 +148,27 @@ public class Character : MonoBehaviour
 
     public void Down()//캐릭터 다운 처리
     {
-        if (die) //사망한 경우이므로 리턴
+        rigid.AddForce(gameObject.transform.forward *-600);
+        rigid.AddForce(gameObject.transform.up * 200);
+        AniOff();
+        ani.SetBool("Offensive", true);
+        ani.SetBool("BlowawayA", true);
+        if (hitPoint <= 0)
         {
+            Die();
             return;
         }
-        else
-        {
-            AniOff();
-            ani.SetBool("Down", true);
-            Stiffness(downTime);  //downTime만큼 경직
-        }
+        Stiffness(downTime);  //downTime만큼 경직
+
     }
     public void DownCheck()
     {
         if (downGauge >= 100) //다운게이지가 100이 넘으면 다운
+        {
+            Down();
+            downGauge = 0;
+        }
+        if (hitPoint <= 0)
         {
             Down();
             downGauge = 0;
@@ -163,16 +184,28 @@ public class Character : MonoBehaviour
     public void Hit(int enemyMaxDamage, int enemyMinDamage, float enemyCoefficient, 
         float enemyBalance, float enemyStiffnessTime, int enemyAttackDownGauge)//평타 피격 처리
     {
-        AniOff();
-        ani.SetBool("Hit", true);
-        SkillCancel();
-        float hitDamage = Random.Range(enemyMinDamage, enemyMaxDamage) * enemyBalance * enemyCoefficient;
-        hitPoint = hitPoint - (int)hitDamage;
-        if (hitPoint <= 0)
+        if (die)
         {
-            Die();
             return;
         }
+        AniOff();
+
+        if (hitCount == 0)
+        {
+            ani.SetBool("Offensive", true);
+            ani.SetBool("HitA", true);
+            hitCount++;
+        }
+        else if (hitCount == 1)
+        {
+            ani.SetBool("Offensive", true);
+            ani.SetBool("HitB", true);
+            hitCount--;
+        }
+
+            SkillCancel();
+        float hitDamage = Random.Range(enemyMinDamage, enemyMaxDamage) * enemyBalance * enemyCoefficient;
+        hitPoint = hitPoint - (int)hitDamage;
         stiffness = Stiffness(enemyStiffnessTime);
         StartCoroutine(stiffness);
         downGauge = downGauge + enemyAttackDownGauge;
@@ -181,19 +214,19 @@ public class Character : MonoBehaviour
 
     public void Hit(int enemyMaxDamage, int enemyMinDamage, float enemyCoefficient, float enemyBalance)//다운되는 스킬 피격 처리
     {
+        if (die)
+        {
+            return;
+        }
         SkillCancel();
         float hitDamage = Random.Range(enemyMinDamage, enemyMaxDamage) * enemyBalance * enemyCoefficient;
         hitPoint = hitPoint - (int)hitDamage;
-        if (hitPoint <= 0)
-        {
-            Die();
-            return;
-        }
     }
 
     public void Groggy(float time)//적에게 스매시나 카운터 맞을 경우 그로기 상태
     {
         AniOff();
+        ani.SetBool("Offensive", true);
         ani.SetBool("Groggy", true);
         stiffness = Stiffness(time);
         StartCoroutine(stiffness);
@@ -201,17 +234,23 @@ public class Character : MonoBehaviour
     }
     protected void Die()//생명력이 0 이하일 경우 사망 처리
     {
-        AniOff();
+        die = true;
         ani.SetBool("Die", true);
-        downGauge = 100;
-        Down();
     }
 
     public IEnumerator Stiffness(float time)//경직 시간 코루틴
     {
+        ani.SetBool("Offensive", true);
         stiffnessCount++;
         yield return new WaitForSeconds(time);
         stiffnessCount--;
+        if (stiffnessCount == 0)
+        {
+            ani.SetBool("Groggy", false);
+            ani.SetBool("HitA", false);
+            ani.SetBool("HitB", false);
+            ani.SetBool("BlowawayA", false);
+        }
     }
 
     IEnumerator Casting(float time, int skillId)//스킬 시전 시간 코루틴
@@ -227,5 +266,16 @@ public class Character : MonoBehaviour
             ani.SetBool(parameter.name, false);
         }
     }
-    
+
+    public void OffensiveCheck()
+    {
+        if (target != null && target.die != true)
+        {
+            ani.SetBool("Offensive", true);
+        }
+        else
+        {
+            ani.SetBool("Offensive", false);
+        }
+    }
 }

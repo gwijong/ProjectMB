@@ -9,22 +9,29 @@ public class PlayerMove : MonoBehaviour
     public float rotateSpeed = 180f;  //좌우 회전 속도
 
     private PlayerInput playerInput;  //플레이어 입력을 알려주는 컴포넌트
-    private Rigidbody playerRigidbody;  //플레이어 캐릭터의 리지드바디
-    private Animator playerAnimator;   //플레이어 캐릭터의 애니메이터
+    private Rigidbody rigid;  //플레이어 캐릭터의 리지드바디
+    private Animator ani;   //플레이어 캐릭터의 애니메이터
+    private Character character;
 
     void Start()
     {//사용할 컴포넌트들의 참조 가져오기
         playerInput = GetComponent<PlayerInput>();
-        playerRigidbody = GetComponent<Rigidbody>();
-        playerAnimator = GetComponentInChildren<Animator>();
+        rigid = GetComponent<Rigidbody>();
+        ani = GetComponentInChildren<Animator>();
+        character = GetComponent<Character>();
     }
 
     //FixedUpdate는 물리 갱신 주기에 맞춰 실행됨
     void FixedUpdate()
     {//물리 갱신 주기마다 움직임 실행
+        if (character.stiffnessCount != 0 || character.die)
+        {
+            return;
+        }
         KeyMove();
         PlayerAni();
-        
+        MouseMove();
+
     }
 
     //입력값에 따라 캐릭터를 앞뒤로 움직임
@@ -55,32 +62,27 @@ public class PlayerMove : MonoBehaviour
 
         //상대적으로 이동할 거리 계산
         Vector3 MoveDistance = dir * moveSpeed * Time.deltaTime;
-        playerRigidbody.MovePosition(playerRigidbody.position + MoveDistance);     
+        rigid.MovePosition(rigid.position + MoveDistance);     
 
     }
     void PlayerAni()
     {
         if (playerInput.Front == true || playerInput.Back == true || playerInput.Left == true || playerInput.Right == true)
         {
-            foreach (AnimatorControllerParameter parameter in playerAnimator.parameters)
-            {
-                playerAnimator.SetBool(parameter.name, false);
-            }
-            playerAnimator.SetBool("Move", true);
+            character.AniOff();
+            ani.SetBool("Move", true);
         }
         else
         {
-            playerAnimator.SetBool("Move", false);
+            ani.SetBool("Move", false);
         }
     }
-
 
     private Vector3 movePos = Vector3.zero;
     private Vector3 moveDir = Vector3.zero;
 
-    void Update()
+    void MouseMove()
     {
-        moveSpeed = 10.0f;
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -91,9 +93,10 @@ public class PlayerMove : MonoBehaviour
                 movePos = raycastHit.point;
             }
             Debug.DrawRay(ray.origin, ray.direction * 100.0f, Color.green);
-        }        
+        }
         if (movePos != Vector3.zero)
         {
+            character.AniOff();
             gameObject.GetComponent<Animator>().SetBool("Move", true);
             // 방향을 구한다. 
             Vector3 dir = movePos - transform.position;
@@ -102,7 +105,7 @@ public class PlayerMove : MonoBehaviour
             float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
 
             // 회전 및 이동 
-            transform.rotation = Quaternion.Euler(transform.rotation.x, angle,transform.rotation.z );
+            transform.rotation = Quaternion.Euler(transform.rotation.x, angle, transform.rotation.z);
             transform.position = Vector3.MoveTowards(transform.position, movePos, moveSpeed * Time.deltaTime);
         }
         // 현재위치와 목표위치 사이의 거리를 구한다.
@@ -115,5 +118,4 @@ public class PlayerMove : MonoBehaviour
             movePos = Vector3.zero;
         }
     }
-
 }
