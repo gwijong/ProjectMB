@@ -7,9 +7,9 @@ public class SkillData : ScriptableObject
     [Tooltip("스킬 ID")]
     [SerializeField]
     [Range(0, 100)]
-    private int skillId = 0;
+    private Define.SkillState skillId = 0;
     /// <summary> 스킬 ID </summary>
-    public int SkillId { get { return skillId; } }
+    public Define.SkillState SkillId { get { return skillId; } }
 
     [Tooltip("스킬 랭크")]
     [SerializeField]

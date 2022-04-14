@@ -11,12 +11,12 @@ public class Combat : Skill
      */
     public override void SkillUse(Character enemyTarget)
     {
-        if (enemyTarget.currentSkillId == (int)Character.SkillId.defense)  //방어자가 디펜스를 사용한 경우
+        if (enemyTarget.currentSkillId == Define.SkillState.Defense)  //방어자가 디펜스를 사용한 경우
         {
             enemyTarget.GetComponent<Defense>().SkillUse(character);
             return;//아무일도 하지 않고 상대방의 디펜스에서 처리한다.
         }
-        else if(enemyTarget.currentSkillId == (int)Character.SkillId.counter)
+        else if(enemyTarget.currentSkillId == Define.SkillState.Counter)
         {
             enemyTarget.GetComponent<CounterAttack>().SkillUse(character);
             return;//아무일도 하지 않고 상대방의 카운터에서 처리한다.

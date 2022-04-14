@@ -11,7 +11,7 @@ public class Defense : Skill
     */
     public override void SkillUse(Character enemyTarget)
     {
-        if (enemyTarget.currentSkillId == (int)Character.SkillId.combat)  //방어에 성공한 경우
+        if (enemyTarget.currentSkillId == Define.SkillState.Combat)  //방어에 성공한 경우
         {
             character.AniOff();
             ani.SetBool("Defense", true);

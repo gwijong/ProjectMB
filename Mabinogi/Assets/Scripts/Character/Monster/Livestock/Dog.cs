@@ -9,8 +9,9 @@ public class Dog : Character
         AniOff();
         ani.SetBool("Bark", true);
     }
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Down();

@@ -12,20 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d45db48a1ed14a4c93f931b6bef471b, type: 3}
   m_Name: DogData
   m_EditorClassIdentifier: 
-  hitPoint: 100
+  hitPoint: 10
   manaPoint: 100
   staminaPoint: 100
-  strength: 10
+  strength: 50
   intelligence: 10
-  dexterity: 10
+  dexterity: 50
   will: 10
   luck: 10
-  physicalStrikingPower: 10
-  magicStrikingPower: 10
+  maxPhysicalStrikingPower: 10
+  maxMagicStrikingPower: 10
+  minPhysicalStrikingPower: 1
+  minMagicStrikingPower: 1
   wound: 0
+  woundAttack: 1
   critical: 0.2
   balance: 0.2
   physicalDefensivePower: 3
   magicDefensivePower: 3
   physicalProtective: 1
   magicProtective: 1
+  deadly: 1
+  speed: 1

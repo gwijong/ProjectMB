@@ -11,7 +11,7 @@ public class Smash : Skill
     */
     public override void SkillUse(Character enemyTarget)
     {
-        if (enemyTarget.currentSkillId == (int)Character.SkillId.counter)
+        if (enemyTarget.currentSkillId ==Define.SkillState.Counter)
         {
             enemyTarget.GetComponent<CounterAttack>().SkillUse(character);
             return;//아무일도 하지 않고 상대방의 카운터에서 처리한다.

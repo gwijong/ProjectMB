@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : CharacterState
 {
-    public enum SkillId
-    {
-        combat = 0,
-        defense = 1,
-        smash = 2,
-        counter = 3
-    }
+
 
     public CharacterData characterData;
 
@@ -71,24 +65,26 @@ public class Character : MonoBehaviour
     /// <summary> 경직 체크 </summary>
     public int stiffnessCount = 0;
     /// <summary> 시전된 스킬 </summary>
-    public int currentSkillId;
+    public Define.SkillState currentSkillId;
     /// <summary> 상대 타겟 캐릭터 </summary>
     public Character target;
     /// <summary> 스킬 시전 코루틴 </summary>
     protected IEnumerator cast;
     /// <summary> 경직 시간 코루틴 </summary>
     protected IEnumerator stiffness;
-    /// <summary> 사망 체크 </summary>
-    public bool die = false;
-    protected Animator ani;
-    protected Rigidbody rigid;
     /// <summary> 피격 애니메이션용 변수 </summary>
     protected int hitCount = 0;
 
-    private void Awake()
+    protected Rigidbody rigid;
+
+    protected override void Awake()
     {
-        ani = GetComponent<Animator>();
+        base.Awake();
         rigid = GetComponent<Rigidbody>();
+        
+    }
+    void OnEnable()
+    {
         hitPoint = characterData.HitPoint;
         maxHitPoint = characterData.HitPoint;
         manaPoint = characterData.ManaPoint;
@@ -115,15 +111,14 @@ public class Character : MonoBehaviour
         deadly = characterData.Deadly;
         speed = characterData.Speed;
     }
-
-    protected void FixedUpdate()
+    protected virtual void Update()
     {
         OffensiveCheck();
     }
 
     protected void SkillCast(Skill skill) //스킬 준비 시도
     {
-        if (die)
+        if (State == Define.State.Die)
         {
             return;
         }
@@ -143,7 +138,7 @@ public class Character : MonoBehaviour
         {
             StopCoroutine(cast);
         }
-        currentSkillId = 0;
+        currentSkillId = Define.SkillState.Combat;
     }
 
     public void Down()//캐릭터 다운 처리
@@ -151,24 +146,19 @@ public class Character : MonoBehaviour
         rigid.AddForce(gameObject.transform.forward *-600);
         rigid.AddForce(gameObject.transform.up * 200);
         AniOff();
-        ani.SetBool("Offensive", true);
+        offensive = true;
         ani.SetBool("BlowawayA", true);
         if (hitPoint <= 0)
         {
             Die();
             return;
         }
-        Stiffness(downTime);  //downTime만큼 경직
-
+        stiffness = Stiffness(downTime);
+        StartCoroutine(stiffness); //downTime만큼 경직
     }
     public void DownCheck()
     {
-        if (downGauge >= 100) //다운게이지가 100이 넘으면 다운
-        {
-            Down();
-            downGauge = 0;
-        }
-        if (hitPoint <= 0)
+        if (downGauge >= 100 || hitPoint <= 0) //다운게이지가 100이 넘으면 다운
         {
             Down();
             downGauge = 0;
@@ -184,21 +174,20 @@ public class Character : MonoBehaviour
     public void Hit(int enemyMaxDamage, int enemyMinDamage, float enemyCoefficient, 
         float enemyBalance, float enemyStiffnessTime, int enemyAttackDownGauge)//평타 피격 처리
     {
-        if (die)
+        if (State == Define.State.Die)
         {
             return;
         }
         AniOff();
-
+        offensive = true;
         if (hitCount == 0)
         {
-            ani.SetBool("Offensive", true);
+
             ani.SetBool("HitA", true);
             hitCount++;
         }
         else if (hitCount == 1)
         {
-            ani.SetBool("Offensive", true);
             ani.SetBool("HitB", true);
             hitCount--;
         }
@@ -214,7 +203,7 @@ public class Character : MonoBehaviour
 
     public void Hit(int enemyMaxDamage, int enemyMinDamage, float enemyCoefficient, float enemyBalance)//다운되는 스킬 피격 처리
     {
-        if (die)
+        if (State == Define.State.Die)
         {
             return;
         }
@@ -226,7 +215,7 @@ public class Character : MonoBehaviour
     public void Groggy(float time)//적에게 스매시나 카운터 맞을 경우 그로기 상태
     {
         AniOff();
-        ani.SetBool("Offensive", true);
+        offensive = true;
         ani.SetBool("Groggy", true);
         stiffness = Stiffness(time);
         StartCoroutine(stiffness);
@@ -234,48 +223,51 @@ public class Character : MonoBehaviour
     }
     protected void Die()//생명력이 0 이하일 경우 사망 처리
     {
-        die = true;
-        ani.SetBool("Die", true);
+        State = Define.State.Die;       
     }
 
     public IEnumerator Stiffness(float time)//경직 시간 코루틴
     {
-        ani.SetBool("Offensive", true);
+        offensive = true;
         stiffnessCount++;
         yield return new WaitForSeconds(time);
         stiffnessCount--;
-        if (stiffnessCount == 0)
+        if (stiffnessCount == 0&& State != Define.State.Die)
         {
-            ani.SetBool("Groggy", false);
-            ani.SetBool("HitA", false);
-            ani.SetBool("HitB", false);
-            ani.SetBool("BlowawayA", false);
+            AniOff();
+            offensive = true;
         }
     }
 
-    IEnumerator Casting(float time, int skillId)//스킬 시전 시간 코루틴
+    IEnumerator Casting(float time, Define.SkillState skillId)//스킬 시전 시간 코루틴
     {
         yield return new WaitForSeconds(time);
         currentSkillId = skillId;
     }
 
-    public void AniOff()
+    public override void AniOff()
     {
-        foreach (AnimatorControllerParameter parameter in ani.parameters)
-        {
-            ani.SetBool(parameter.name, false);
-        }
+        base.AniOff();
     }
 
     public void OffensiveCheck()
     {
-        if (target != null && target.die != true)
+        ani.SetBool("Offensive", offensive);
+
+        if (target != null && target.State != Define.State.Die)
         {
-            ani.SetBool("Offensive", true);
+            offensive = true;
         }
-        else
+
+        if (Input.GetKeyDown(KeyCode.Space) && offensive == true)
         {
-            ani.SetBool("Offensive", false);
+            offensive = false;
+            target = null;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && offensive == false)
+        {
+            offensive = true;
         }
     }
 }
