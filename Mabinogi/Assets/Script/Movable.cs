@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary> 이동 가능한 오브젝트</summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public class Movable : Hitable  //이동 가능한 오브젝트
+public class Movable : Hitable
 {
-    NavMeshAgent _agent;
+    protected NavMeshAgent _agent;
     [SerializeField] float _speed;
 
     bool _movable = true;
 
-    void Start()
+    protected virtual void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
     }
