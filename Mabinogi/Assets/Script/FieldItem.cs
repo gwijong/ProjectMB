@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FieldItem : Interactable
 {
-    public override InteractType Interact()
+    public override Define.InteractType Interact()
     {
         Debug.Log("ItemGether");
-        return InteractType.Get;
+        return Define.InteractType.Get;
     }
 }

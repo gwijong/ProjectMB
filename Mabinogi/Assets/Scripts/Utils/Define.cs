@@ -1,7 +1,19 @@
 
 public class Define
 {
-
+    public enum mouseKey
+    {
+        LeftClick,
+        rightClick,
+        middleClick
+    }
+    public enum InteractType
+    {
+        None,
+        Talk,
+        Attack,
+        Get,
+    }
     public enum State
     {
         Die,
