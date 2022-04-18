@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class Movable : Hitable
 {
     public NavMeshAgent agent;
-    [SerializeField] float speed;
+    [SerializeField] float speed;  //Start메서드에 내비메시 스피드 할당
 
 
     protected virtual void Start()
@@ -18,8 +18,6 @@ public class Movable : Hitable
 
     public void MoveTo(Vector3 goalPosition)  //입력에서 불러옴
     {
-
         agent.SetDestination(goalPosition);
-        
     }
 }

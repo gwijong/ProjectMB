@@ -5,23 +5,27 @@ using UnityEngine;
 public class Character : Movable
 {
     /// <summary> 생명력 게이지 summary>
-    Gauge hitPoint;
+    protected Gauge hitPoint = new Gauge();
     /// <summary> 마나 게이지 summary>
-    Gauge manaPoint;
+    protected Gauge manaPoint = new Gauge();
     /// <summary> 스태미나 게이지 summary>
-    Gauge staminaPoint;
+    protected Gauge staminaPoint = new Gauge();
     /// <summary> 다운 게이지 summary>
-    Gauge downGauge;
+    protected Gauge downGauge = new Gauge();
     public CharacterData data;
 
-    /// <summary> 준비 완료된 현재 스킬</summary>
-    Skill skill;
-    /// <summary> 스킬 장전까지 남은 시간</summary>
-    float skillCastingTimeLeft = 0.0f;
-    /// <summary> 지정한 공격 타겟</summary>
-    public Hitable attackTarget;
+    /// <summary> 지정한 타겟</summary>
+    protected Hitable focusTarget;
 
-    bool controllable = true;
+    /// <summary> 준비 완료된 현재 스킬</summary>
+    protected Skill skill;
+    /// <summary> 스킬 장전까지 남은 시간</summary>
+    protected float skillCastingTimeLeft = 0.0f;
+
+    [SerializeField] Animator anim;
+
+    protected bool controllable = true;
+    protected bool offensive = false;
 
     protected override void Start()
     {
@@ -44,6 +48,21 @@ public class Character : Movable
         downGauge.Max = 100; //다운 게이지
         downGauge.Current = 0;  //현재 누적된 다운게이지
     }
+    
+    protected virtual void Update()
+    {
+        PlayAnim("Move", agent.velocity.magnitude);
+
+        //일단은 무조건 가는데 상황에 따라서 (스킬을 쓰면 스킬 사거리 까지만)
+        //                                (무기 사거리일 수도 있고)
+        //                                (대화 거리일 수도 있고)
+        if(focusTarget != null)
+        {
+            float distance = (focusTarget.transform.position - transform.position).magnitude;
+
+            MoveTo(focusTarget.transform.position);
+        };
+    }
 
     /// <summary> 공격 함수</summary>
     public virtual void Attack(Hitable enemyTarget)
@@ -62,26 +81,72 @@ public class Character : Movable
     }
 
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
-    public override bool TakeDamage(Character enmeyAttacker)
+    public override bool TakeDamage(Character enemyAttacker)
     {
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
 
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
-        if(enmeyAttacker.skill!=null && this.attackTarget == enmeyAttacker || this.skill.mustCheck()==true)
+        if(enemyAttacker.skill != null && this.focusTarget == enemyAttacker || (this.skill != null && this.skill.mustCheck()) )
         {
-            
-            result = enmeyAttacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
+            result = enemyAttacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
         DownCheck();
         DieCheck();
         return result;
     }
+
+    public bool SetTarget(Character target)
+    {
+        if (target == null)
+        {
+            focusTarget = null;
+            return false;
+        };
+
+        if (target.gameObject.layer == (int)Define.Layer.Enemy)
+        {
+            focusTarget = target;
+            return true;
+        };
+
+        return false;
+
+    }
+
+    public void SetOffensive()
+    {
+        offensive = !offensive;
+        PlayAnim("Offensive", offensive);
+    }
+    public void SetOffensive(bool value)
+    {
+        offensive = value;
+        PlayAnim("Offensive", offensive);
+    }
+
     public void DownCheck()
     {
-
+        //PlayAnim("BlowAwayA");
     }
     public void DieCheck()
     {
+        //PlayAnim("Die");
+    }
 
+    protected void PlayAnim(string wantName)
+    {
+        if (anim != null) anim.SetTrigger(wantName);
+    }
+    protected void PlayAnim(string wantName, bool value)
+    {
+        if (anim != null) anim.SetBool(wantName, value);
+    }
+    protected void PlayAnim(string wantName, float value)
+    {
+        if (anim != null) anim.SetFloat(wantName, value);
+    }
+    protected void PlayAnim(string wantName, int value)
+    {
+        if (anim != null) anim.SetInteger(wantName, value);
     }
 }
