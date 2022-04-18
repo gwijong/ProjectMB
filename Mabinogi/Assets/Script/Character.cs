@@ -15,7 +15,7 @@ public class Character : Movable
     /// <summary> 스킬 장전까지 남은 시간</summary>
     float skillCastingTimeLeft = 0.0f;
     /// <summary> 지정한 공격 타겟</summary>
-    Hitable attackTarget;
+    public Hitable attackTarget;
 
     bool controllable = true;
 
