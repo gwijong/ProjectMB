@@ -12,20 +12,21 @@ public class PlayerController : MonoBehaviour
     float distance;
     Vector3 dest;
     Rigidbody rigid;
-
+    float angle;
     private void Start()
     {
-        dest = transform.position;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();
+        dest = player.transform.position;
         ani = player.GetComponent<Animator>();
         rigid = player.GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        MouseMove();        
-        KeyMove();           
+        MouseInput();        
+        KeyMove();
         SpaceOffensive();
+        MouseTargetMove();
     }
 
     void SpaceOffensive()
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("Offensive", true);
         }
     }
-    void MouseMove()
+    void MouseInput()
     {
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick))
         {
@@ -55,9 +56,17 @@ public class PlayerController : MonoBehaviour
             {
                 player.attackTarget = null;
 
-            }
+            }         
         };
+        
+    }
 
+    void MouseTargetMove()
+    {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            return;
+        }
         if (player.attackTarget != null)
         {
             distance = Vector3.Distance(player.transform.position, player.attackTarget.transform.position);
@@ -94,55 +103,64 @@ public class PlayerController : MonoBehaviour
     void KeyMove()
     {
 
-        
         if (Input.GetKeyDown(KeyCode.W))
         {
-            player.transform.rotation = 
-            Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(Vector3.forward), 1f);
+            KeyAdd();
+            player.transform.rotation =
+            Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(Vector3.forward), 1f);       
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
+            KeyAdd();
             player.transform.rotation =
             Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(Vector3.back), 1f);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
+            KeyAdd();
             player.transform.rotation =
             Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(Vector3.left), 1f);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
+            KeyAdd();
             player.transform.rotation =
             Quaternion.Slerp(player.transform.rotation, Quaternion.LookRotation(Vector3.right), 1f);
         }
 
-
         if (Input.GetKey(KeyCode.W))
         {
-            ani.SetBool("Move", true);
             player.transform.position += Vector3.forward * 10 * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            ani.SetBool("Move", true);
             player.transform.position += Vector3.back * 10 * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            ani.SetBool("Move", true);
             player.transform.position += Vector3.left * 10 * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
-        {
-            ani.SetBool("Move", true);
+        {            
             player.transform.position += Vector3.right * 10 * Time.deltaTime;
         }
-
-        if (Input.GetKeyUp(KeyCode.None))
+        else if(Input.GetKeyUp(KeyCode.W)|| Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
+            KeyAdd();
             ani.SetBool("Move", false);
+            player.agent.isStopped = false;
         }
     }
+
+    void KeyAdd()
+    {
+        dest = player.transform.position;
+        player.attackTarget = null;
+        player.agent.isStopped = true;
+        ani.SetBool("Move", true);
+    }
 }
+
+
 
 

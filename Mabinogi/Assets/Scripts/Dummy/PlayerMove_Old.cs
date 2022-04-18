@@ -132,6 +132,27 @@ public class PlayerMove_Old : MonoBehaviour
 	}
 }
 /*
+	if (Input.GetKeyDown(KeyCode.A))
+	{
+		angle = angle - 90;
+		player.transform.rotation
+		= Quaternion.Euler(player.transform.rotation.x, player.transform.rotation.y + angle, player.transform.rotation.z);
+	}
+	else if (Input.GetKeyDown(KeyCode.D))
+	{
+		angle = angle + 90;
+		player.transform.rotation
+		= Quaternion.Euler(player.transform.rotation.x, player.transform.rotation.y + angle, player.transform.rotation.z);
+	}
+	else if (Input.GetKeyDown(KeyCode.S))
+	{
+		angle = angle + 180;
+		player.transform.rotation
+		= Quaternion.Euler(player.transform.rotation.x, player.transform.rotation.y + angle, player.transform.rotation.z);
+	}    
+ */
+
+/*
   int _mask = (1 << (int)Define.Layer.Ground) | (1 << (int)Define.Layer.Monster);
 
 	PlayerStat _stat;

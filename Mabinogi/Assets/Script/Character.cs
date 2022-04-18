@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Character : Movable
 {
+    /// <summary> 생명력 게이지 summary>
     Gauge hitPoint;
+    /// <summary> 마나 게이지 summary>
     Gauge manaPoint;
+    /// <summary> 스태미나 게이지 summary>
     Gauge staminaPoint;
+    /// <summary> 다운 게이지 summary>
     Gauge downGauge;
     public CharacterData data;
 
@@ -21,10 +25,24 @@ public class Character : Movable
 
     protected override void Start()
     {
-        base.Start();
-        _agent.speed = data.Speed;
-        _agent.angularSpeed = 1000;
-        _agent.acceleration = 100;
+        base.Start();       
+        agent.angularSpeed = 1000;  //내비게이션 회전값
+        agent.acceleration = 100; //내비게이션 가속도
+        agent.speed = data.Speed; //내비게이션 이동속도
+
+        hitPoint.Max = data.HitPoint; //최대 생명력
+        hitPoint.Current = data.HitPoint;  //현재 생명력
+        hitPoint.FillableRate = 1.0f;  //부상률
+
+        manaPoint.Max = data.ManaPoint; //최대 마나
+        manaPoint.Current = data.ManaPoint;  //현재 마나
+
+        staminaPoint.Max = data.StaminaPoint; //최대 스태미나
+        staminaPoint.Current = data.StaminaPoint;  //현재 스태미나
+        staminaPoint.FillableRate = 1.0f;  //허기
+
+        downGauge.Max = 100; //다운 게이지
+        downGauge.Current = 0;  //현재 누적된 다운게이지
     }
 
     /// <summary> 공격 함수</summary>

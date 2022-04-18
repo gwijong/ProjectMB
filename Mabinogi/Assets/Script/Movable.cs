@@ -7,18 +7,19 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Movable : Hitable
 {
-    protected NavMeshAgent _agent;
-    [SerializeField] float _speed;
+    public NavMeshAgent agent;
+    [SerializeField] float speed;
 
-    bool _movable = true;
 
     protected virtual void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     public void MoveTo(Vector3 goalPosition)  //입력에서 불러옴
     {
-        _agent.SetDestination(goalPosition);
+
+        agent.SetDestination(goalPosition);
+        
     }
 }

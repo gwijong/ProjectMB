@@ -13,7 +13,7 @@ public class Skill
     public virtual bool WinnerCheck(Skill other) { return true; }//경합에서 이기면 트루 지면 펄스
 }
 
-public class CombatSkill : Skill
+public class BattleSkill : Skill
 {
     public override bool WinnerCheck(Skill other) 
     {
@@ -32,14 +32,14 @@ public class CombatSkill : Skill
     }
 }
 
-public class CombatMastery : CombatSkill 
+public class CombatMastery : BattleSkill 
 {
     public override bool WinnerCheck(Skill other)
     {
         return true;
     }
 }
-public class Smash : CombatSkill 
+public class Smash : BattleSkill 
 {
     public override bool WinnerCheck(Skill other)
     {
@@ -57,11 +57,11 @@ public class Smash : CombatSkill
         return true;
     }
 }
-public class Defense : CombatSkill //추가 구현하세요
+public class Defense : BattleSkill //추가 구현하세요
 {
     public override bool mustCheck() { return true; }
 }
-public class Counter : CombatSkill
+public class Counter : BattleSkill
 {
     public override bool mustCheck() { return true; }
 }
