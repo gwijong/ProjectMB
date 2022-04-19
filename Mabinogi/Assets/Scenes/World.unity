@@ -4884,7 +4884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  speed: 0
+  moveSpeed: 0
 --- !u!114 &1178535244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4898,9 +4898,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  speed: 0
+  moveSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
-  anim: {fileID: 0}
+  anim: {fileID: 1178535248}
+  maxPhysicalStrikingPower: 0
+  maxMagicStrikingPower: 0
+  minPhysicalStrikingPower: 0
+  minMagicStrikingPower: 0
+  wound: 0
+  woundAttack: 0
+  critical: 0
+  balance: 0
+  physicalDefensivePower: 0
+  magicDefensivePower: 0
+  physicalProtective: 0
+  magicProtective: 0
+  deadly: 0
+  speed: 0
+  downTime: 4
+  waitCount: 0
 --- !u!195 &1178535245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -12745,6 +12761,7 @@ GameObject:
   - component: {fileID: 919132148341105320}
   - component: {fileID: 919132148341105322}
   - component: {fileID: 919132148341105319}
+  - component: {fileID: 919132148341105318}
   m_Layer: 13
   m_Name: Dog
   m_TagString: Player
@@ -12752,6 +12769,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &919132148341105318
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148341105317}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 0
 --- !u!114 &919132148341105319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12765,9 +12798,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  speed: 0
+  moveSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
   anim: {fileID: 1245206985}
+  maxPhysicalStrikingPower: 0
+  maxMagicStrikingPower: 0
+  minPhysicalStrikingPower: 0
+  minMagicStrikingPower: 0
+  wound: 0
+  woundAttack: 0
+  critical: 0
+  balance: 0
+  physicalDefensivePower: 0
+  magicDefensivePower: 0
+  physicalProtective: 0
+  magicProtective: 0
+  deadly: 0
+  speed: 0
+  downTime: 4
+  waitCount: 0
 --- !u!65 &919132148341105320
 BoxCollider:
   m_ObjectHideFlags: 0

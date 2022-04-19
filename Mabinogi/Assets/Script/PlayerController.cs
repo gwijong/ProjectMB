@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-//이건 딱 하나만 만들어
-//캐릭터에 제발 넣지 말고
 public class PlayerController : MonoBehaviour
 {
     Character player;  //Player 캐릭터 딱 하나
@@ -46,6 +43,11 @@ public class PlayerController : MonoBehaviour
                 {
                     player.MoveTo(hit.point);
                 };
+
+                if(target != null)
+                {
+                    player.Attack(target);
+                }
             };
         };
     }

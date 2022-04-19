@@ -71,8 +71,6 @@ public class Character_Old : CharacterState_Old
     public int magicProtective;
     /// <summary> 사망할 공격을 당했을 때 이겨내고 데들리 상태가 될 확률 </summary>
     public int deadly;
-    /// <summary> 이동 속도 </summary>
-    public int speed;
     /// <summary> 다운 게이지 </summary>
     public int downGauge = 0;
     /// <summary> 다운된 시간 </summary>
@@ -119,7 +117,7 @@ public class Character_Old : CharacterState_Old
         physicalProtective = characterData.PhysicalProtective;
         magicProtective = characterData.MagicProtective;
         deadly = characterData.Deadly;
-        speed = characterData.Speed;
+        
     }
     protected virtual void Update()
     {
