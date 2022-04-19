@@ -13,9 +13,9 @@ public class Skill
     public virtual bool WinnerCheck(Skill other) { return true; }//경합에서 이기면 트루 지면 펄스
 }
 
-public class BattleSkill : Skill
+public class CombatMastery : Skill
 {
-    public override bool WinnerCheck(Skill other) 
+    public override bool WinnerCheck(Skill other)
     {
         System.Type otherType = other.GetType();
 
@@ -23,23 +23,26 @@ public class BattleSkill : Skill
         {
             return false;
         }
-        else if(otherType == typeof(Counter))
+        else if (otherType == typeof(Counter))
         {
             return false;
+        }
+        else if (otherType == typeof(CombatMastery))
+        {
+            int random = Random.Range(0, 2);
+            if (random == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         };
-
         return true;
     }
 }
-
-public class CombatMastery : BattleSkill 
-{
-    public override bool WinnerCheck(Skill other)
-    {
-        return true;
-    }
-}
-public class Smash : BattleSkill 
+public class Smash : Skill
 {
     public override bool WinnerCheck(Skill other)
     {
@@ -52,18 +55,35 @@ public class Smash : BattleSkill
         else if (otherType == typeof(Counter))
         {
             return false;
+        }
+        else if (otherType == typeof(Smash))
+        {
+            int random = Random.Range(0, 2);
+            if (random == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         };
-
         return true;
     }
 }
-public class Defense : BattleSkill //추가 구현하세요
+public class Defense : Skill //추가 구현하세요
 {
-    public override bool mustCheck() { return true; }
+    public override bool mustCheck() 
+    {
+        return true;
+    }
 }
-public class Counter : BattleSkill
+public class Counter : Skill
 {
-    public override bool mustCheck() { return true; }
+    public override bool mustCheck()
+    {
+        return true;
+    }
 }
 
 //이거는 스킬 하나야!

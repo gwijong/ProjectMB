@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : Movable
 {
+    
     /// <summary> 생명력 게이지 summary>
     protected Gauge hitPoint = new Gauge();
     /// <summary> 마나 게이지 summary>
@@ -79,16 +80,19 @@ public class Character : Movable
         agent.acceleration = 100; //내비게이션 가속도
         agent.speed = data.Speed; //내비게이션 이동속도
 
-        hitPoint.Max = data.HitPoint; //최대 생명력
-        hitPoint.Current = data.HitPoint;  //현재 생명력
+        hitPoint.Max = data.HitPoint; //최대 생명력      
         hitPoint.FillableRate = 1.0f;  //부상률
+        hitPoint.Current = data.HitPoint;  //현재 생명력
+        
 
         manaPoint.Max = data.ManaPoint; //최대 마나
+        manaPoint.FillableRate = 1.0f;  //마나 최대 비율
         manaPoint.Current = data.ManaPoint;  //현재 마나
 
         staminaPoint.Max = data.StaminaPoint; //최대 스태미나
-        staminaPoint.Current = data.StaminaPoint;  //현재 스태미나
         staminaPoint.FillableRate = 1.0f;  //허기
+        staminaPoint.Current = data.StaminaPoint;  //현재 스태미나
+        
 
         downGauge.Max = 100; //다운 게이지
         downGauge.Current = 0;  //현재 누적된 다운게이지
@@ -107,11 +111,11 @@ public class Character : Movable
         physicalProtective = data.PhysicalProtective;
         magicProtective = data.MagicProtective;
         deadly = data.Deadly;
-
+        speed = data.Speed;
     }
     
     protected virtual void Update()
-    {
+    {      
         PlayAnim("Move", agent.velocity.magnitude);
 
         //일단은 무조건 가는데 상황에 따라서 (스킬을 쓰면 스킬 사거리 까지만)
@@ -165,12 +169,28 @@ public class Character : Movable
         {
             result = enemyAttacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
-        DownCheck();
-        DieCheck();
+
         if(result == true)
         {
-            PlayAnim("HitA");
+            hitPoint.Current = -enemyAttacker.maxPhysicalStrikingPower;
             downGauge.Current += 40;
+            Debug.Log("공격자 생명력" + enemyAttacker.hitPoint.Current);
+            Debug.Log("공격자 공격력" + enemyAttacker.maxPhysicalStrikingPower);
+            Debug.Log("방어자 생명력" + hitPoint.Current);
+
+            if (hitPoint.Current <= 0)
+            {
+                DieCheck();
+                DownCheck();
+            }
+            else if (downGauge.Current < 100)
+            {
+                PlayAnim("HitA");
+            }
+            else if (downGauge.Current >= 100)
+            {
+                DownCheck();
+            }
         }
         return result;
     }
@@ -210,8 +230,8 @@ public class Character : Movable
     /// <summary> 다운 </summary>
     public void DownCheck()
     {
-        rigid.AddForce(gameObject.transform.forward * -600);
-        rigid.AddForce(gameObject.transform.up * 200);
+        rigid.AddForce(gameObject.transform.forward * -60000);
+        rigid.AddForce(gameObject.transform.up * 20000);
         wait = Wait(downTime);
         StartCoroutine(wait);
         PlayAnim("BlowawayA");
@@ -221,6 +241,7 @@ public class Character : Movable
     /// <summary> 사망 체크 </summary>
     public void DieCheck()
     {
+
         PlayAnim("Die");
     }
 
