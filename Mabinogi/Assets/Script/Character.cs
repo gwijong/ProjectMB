@@ -16,11 +16,14 @@ public class Character : Movable
 
     public CharacterData data;
 
+    [SerializeField]
     /// <summary> 지정한 타겟</summary>
     protected Hitable focusTarget;
 
+    [SerializeField]
     /// <summary> 준비 완료된 현재 스킬</summary>
     protected Skill skill = new Skill();
+
     /// <summary> 스킬 장전까지 남은 시간</summary>
     protected float skillCastingTimeLeft = 0.0f;
 
@@ -63,6 +66,8 @@ public class Character : Movable
 
     /// <summary> 다운 지속 시간 </summary>
     public float downTime = 4.0f;
+    /// <summary> 공격 지속 시간 </summary>
+    public float attackTime = 1.0f;
     /// <summary> 동작 불가 체크 </summary>
     public int waitCount = 0;
     /// <summary> 동작 불가 코루틴 </summary>
@@ -116,13 +121,21 @@ public class Character : Movable
     }
     
     protected virtual void Update()
-    {      
-        PlayAnim("Move", agent.velocity.magnitude);
-
+    {             
+        if (waitCount == 0)
+        {
+            PlayAnim("Move", agent.velocity.magnitude);
+            MoveStop(false);
+        }
+        else
+        {
+            focusTarget = null;
+            MoveStop(true);
+        }
         //일단은 무조건 가는데 상황에 따라서 (스킬을 쓰면 스킬 사거리 까지만)
         //                                (무기 사거리일 수도 있고)
         //                                (대화 거리일 수도 있고)
-        if(focusTarget != null)
+        if (focusTarget != null)
         {
             float distance = (focusTarget.transform.position - transform.position).magnitude;
             if (distance > 2)
@@ -133,7 +146,7 @@ public class Character : Movable
             {
                 if(focusTarget.gameObject.layer == (int)Define.Layer.Enemy)
                 {
-                    MoveStop();                                      
+                    MoveStop(true);                                      
                 }
             }        
         };
@@ -142,7 +155,11 @@ public class Character : Movable
     /// <summary> 공격 함수</summary>
     public virtual void Attack(Hitable enemyTarget)
     {
-        wait = Wait(0.5f);
+        if(waitCount != 0)
+        {
+            return;
+        }
+        wait = Wait(attackTime);
         StartCoroutine(wait);
 
         if (enemyTarget.TakeDamage(this) == true)//공격에 성공한 경우
@@ -161,33 +178,34 @@ public class Character : Movable
     }
 
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
-    public override bool TakeDamage(Character enemyAttacker)
+    public override bool TakeDamage(Character Attacker)
     {
-        
+        SetOffensive(true);
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
 
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
-        if(enemyAttacker.skill != null && this.focusTarget == enemyAttacker || (this.skill != null && this.skill.mustCheck()) )
+        if(Attacker.skill != null && this.focusTarget == Attacker || (this.skill != null && this.skill.mustCheck()) )
         {
-            
-            result = enemyAttacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
+            result = Attacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
 
         if(result == true)
         {           
-            hitPoint.Current = hitPoint.Current - enemyAttacker.maxPhysicalStrikingPower;
-            downGauge.Current = downGauge.Current + 40;
-            Debug.Log(downGauge.Current);
-            if (hitPoint.Current <= 0)
+            this.hitPoint.Current = this.hitPoint.Current - Attacker.maxPhysicalStrikingPower;
+            this.downGauge.Current = this.downGauge.Current + 40;
+
+            Debug.Log(Attacker.hitPoint.Current);
+            
+            if (this.hitPoint.Current <= 0)
             {
                 DieCheck();
                 DownCheck();
             }
-            else if (downGauge.Current < 100)
+            else if (this.downGauge.Current < 100)
             {
                 PlayAnim("HitA");
             }
-            else if (downGauge.Current >= 100)
+            else if (this.downGauge.Current >= 100)
             {
                 DownCheck();
             }
@@ -230,8 +248,8 @@ public class Character : Movable
     /// <summary> 다운 </summary>
     public void DownCheck()
     {
-        rigid.AddForce(gameObject.transform.forward * -60000);
-        rigid.AddForce(gameObject.transform.up * 20000);
+        rigid.AddForce(gameObject.transform.forward * -600);
+        rigid.AddForce(gameObject.transform.up * 200);
         wait = Wait(downTime);
         StartCoroutine(wait);
         PlayAnim("BlowawayA");

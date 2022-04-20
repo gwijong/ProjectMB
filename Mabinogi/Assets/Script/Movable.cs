@@ -26,8 +26,8 @@ public class Movable : Hitable
     }
 
     /// <summary> 내비게이션 이동 정지 메서드 </summary>
-    public void MoveStop() //이동 정지
+    public void MoveStop(bool value) //이동 정지
     {
-        agent.isStopped = true;
+        agent.isStopped = value;
     }
 }

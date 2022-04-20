@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     Character player;  //Player 캐릭터 딱 하나
     float distance;
     Vector3 dest;
+    Character target;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
+    bool distanceCheckAttack;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();
@@ -14,6 +17,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (target != null)
+        {
+            distance = (target.transform.position - player.transform.position).magnitude;
+        }
+        else
+        {
+            distance = 10;
+        }
+        
+
+        if (distanceCheckAttack)
+        {
+            DistanceCheckAttack();
+        }
         MouseInput();        
         KeyMove();
         SpaceOffensive();
@@ -34,22 +51,49 @@ public class PlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100f, ~LayerMask.NameToLayer("Tree")))
+            if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
-                Character target = hit.collider.GetComponent<Character>();
+                target = hit.collider.GetComponent<Character>();
 
                 //캐릭터 대상을 삼을 수가 없어!          근데 땅 찍음
                 if(!player.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)
                 {
                     player.MoveTo(hit.point);
                 };
+          
+                if (target != null)
+                {                   
+                    if (distance > 2)
+                    {
+                        player.MoveTo(target.transform.position);
+                        distanceCheckAttack = true;
+                    }
+                    else if(distance <= 2)
+                    {                      
+                        player.Attack(target);
+                        distanceCheckAttack = false;
+                    }
 
-                if(target != null)
-                {
-                    player.Attack(target);
                 }
             };
         };
+    }
+
+    void DistanceCheckAttack()
+    {
+        if(target == null)
+        {
+            distanceCheckAttack = false;
+            return;
+        }
+        if(target != null)
+        {
+            if (distance <= 2)
+            {
+                player.Attack(target);
+                distanceCheckAttack = false;
+            }
+        }
     }
 
     void KeyMove()
@@ -82,7 +126,5 @@ public class PlayerController : MonoBehaviour
         };
     }
 }
-
-
 
 

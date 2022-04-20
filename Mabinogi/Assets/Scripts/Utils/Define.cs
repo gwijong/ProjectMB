@@ -38,6 +38,7 @@ public class Define
         Tree = 10,
         Item = 11,
         NPC = 12,
+        Player = 13,
     }
     public enum Scene
     {

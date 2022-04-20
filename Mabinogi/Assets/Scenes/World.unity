@@ -4900,6 +4900,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   moveSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
+  focusTarget: {fileID: 0}
   anim: {fileID: 1178535248}
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
@@ -4916,6 +4917,7 @@ MonoBehaviour:
   deadly: 0
   speed: 0
   downTime: 4
+  attackTime: 1
   waitCount: 0
 --- !u!195 &1178535245
 NavMeshAgent:
@@ -4961,12 +4963,12 @@ Rigidbody:
   m_GameObject: {fileID: 1178535242}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 0.1
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 90
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!95 &1178535248
 Animator:
@@ -12800,6 +12802,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   moveSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
+  focusTarget: {fileID: 0}
   anim: {fileID: 1245206985}
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
@@ -12816,6 +12819,7 @@ MonoBehaviour:
   deadly: 0
   speed: 0
   downTime: 4
+  attackTime: 1
   waitCount: 0
 --- !u!65 &919132148341105320
 BoxCollider:
@@ -12828,8 +12832,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.48346025, y: 0.6577346, z: 0.628889}
-  m_Center: {x: -0.024994448, y: 0.37918183, z: 0.18555577}
+  m_Size: {x: 0.48346022, y: 0.6577346, z: 1.0334008}
+  m_Center: {x: -0.024994448, y: 0.37918183, z: -0.016700126}
 --- !u!195 &919132148341105322
 NavMeshAgent:
   m_ObjectHideFlags: 0
