@@ -4,8 +4,16 @@ public class Gauge
 {
     private float _current;
     private float _max;
-    private float _fillableRate;
+    private float _fillableRate = 1.0f;
+
+    public Gauge(float value = 0.0f, float fillable = 1.0f)
+    {
+        _max = value;
+        _current = fillable * _max;
+    }
+
     public bool IsEmpty { get { return _current <= 0; } }
+
     public float Rate
     {
         get
@@ -58,7 +66,8 @@ public class Gauge
 
         set
         {
-            _fillableRate = value;
+            if (_fillableRate > 1.0f) _fillableRate = 1.0f;
+            else _fillableRate = value;
 
             float calculateFillable = _max * _fillableRate;
             if (_current > calculateFillable) _current = calculateFillable;

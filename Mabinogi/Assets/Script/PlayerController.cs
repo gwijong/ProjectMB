@@ -5,11 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Character player;  //Player 캐릭터 딱 하나
-    float distance;
-    Vector3 dest;
     Character target;
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
-    bool distanceCheckAttack;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();
@@ -17,20 +15,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (target != null)
-        {
-            distance = (target.transform.position - player.transform.position).magnitude;
-        }
-        else
-        {
-            distance = 10;
-        }
-        
-
-        if (distanceCheckAttack)
-        {
-            DistanceCheckAttack();
-        }
         MouseInput();        
         KeyMove();
         SpaceOffensive();
@@ -60,40 +44,8 @@ public class PlayerController : MonoBehaviour
                 {
                     player.MoveTo(hit.point);
                 };
-          
-                if (target != null)
-                {                   
-                    if (distance > 2)
-                    {
-                        player.MoveTo(target.transform.position);
-                        distanceCheckAttack = true;
-                    }
-                    else if(distance <= 2)
-                    {                      
-                        player.Attack(target);
-                        distanceCheckAttack = false;
-                    }
-
-                }
             };
         };
-    }
-
-    void DistanceCheckAttack()
-    {
-        if(target == null)
-        {
-            distanceCheckAttack = false;
-            return;
-        }
-        if(target != null)
-        {
-            if (distance <= 2)
-            {
-                player.Attack(target);
-                distanceCheckAttack = false;
-            }
-        }
     }
 
     void KeyMove()

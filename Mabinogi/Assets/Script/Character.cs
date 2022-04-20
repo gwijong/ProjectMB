@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+//공격하거나 맞는 대상을 쳐다보게 해야함
+
+
+
 public class Character : Movable
 {
     
@@ -18,12 +24,13 @@ public class Character : Movable
 
     [SerializeField]
     /// <summary> 지정한 타겟</summary>
-    protected Hitable focusTarget;
+    protected Interactable focusTarget;
+    protected Define.InteractType focusType;
 
     [SerializeField]
     /// <summary> 준비 완료된 현재 스킬</summary>
-    protected Skill skill = new Skill();
-
+    protected Skill skill;
+    protected SkillList skillList;
     /// <summary> 스킬 장전까지 남은 시간</summary>
     protected float skillCastingTimeLeft = 0.0f;
 
@@ -121,10 +128,11 @@ public class Character : Movable
     }
     
     protected virtual void Update()
-    {             
+    {
+        PlayAnim("Move", agent.velocity.magnitude);
+
         if (waitCount == 0)
         {
-            PlayAnim("Move", agent.velocity.magnitude);
             MoveStop(false);
         }
         else
@@ -132,23 +140,49 @@ public class Character : Movable
             focusTarget = null;
             MoveStop(true);
         }
+
         //일단은 무조건 가는데 상황에 따라서 (스킬을 쓰면 스킬 사거리 까지만)
         //                                (무기 사거리일 수도 있고)
         //                                (대화 거리일 수도 있고)
         if (focusTarget != null)
         {
             float distance = (focusTarget.transform.position - transform.position).magnitude;
-            if (distance > 2)
+
+            if (distance > InteractableDistance(focusType))
             {
                 MoveTo(focusTarget.transform.position);
             }
             else
             {
-                if(focusTarget.gameObject.layer == (int)Define.Layer.Enemy)
+                MoveStop(true);
+                
+                switch(focusTarget.Interact(this))
                 {
-                    MoveStop(true);                                      
-                }
+                    case Define.InteractType.Attack:
+                        Attack((Hitable)focusTarget);
+                        break;
+                    case Define.InteractType.Talk:
+                        //여기선 대화로 풀어나가기
+                        break;
+                };
+                //일 다 봤으니까 풀어주기!
+                focusTarget = null;
             }        
+        };
+    }
+
+    public virtual float InteractableDistance(Define.InteractType wantType)
+    {
+        switch(wantType)
+        {
+            case Define.InteractType.Attack:
+                {
+                    //나중에 무기 사거리나 스킬 사거리 들어가면 여기에서 조정해줘!
+                    return 2;
+                }
+            case Define.InteractType.Get: return 1;
+            case Define.InteractType.Talk: return 3;
+            default: return 2;
         };
     }
 
@@ -177,6 +211,25 @@ public class Character : Movable
         };
     }
 
+    public override Define.InteractType Interact(Interactable other)
+    {
+
+
+        if(IsEnemy(this, other))
+        {
+            return Define.InteractType.Attack;
+        }
+        else
+        {
+            return Define.InteractType.Talk;
+        };
+    }
+
+    public override void MoveTo(Vector3 goalPosition)
+    {
+        base.MoveTo(goalPosition);
+    }
+
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
     public override bool TakeDamage(Character Attacker)
     {
@@ -184,7 +237,7 @@ public class Character : Movable
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
 
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
-        if(Attacker.skill != null && this.focusTarget == Attacker || (this.skill != null && this.skill.mustCheck()) )
+        if(Attacker.skill != null && this.focusTarget == Attacker || (this.skill != null && this.skill.mustCheck) )
         {
             result = Attacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
@@ -289,6 +342,15 @@ public class Character : Movable
         offensive = true;
         waitCount++;
         yield return new WaitForSeconds(time);
-        waitCount--;
+        waitCount--;       
+    }
+
+    public void Casting(Define.SkillState value)
+    {
+        SkillInfo currentSkill = skillList[value];
+        if (currentSkill == null) return;
+
+        skill = currentSkill.skill;
+        skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
 }
