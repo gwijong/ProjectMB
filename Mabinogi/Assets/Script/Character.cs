@@ -95,6 +95,7 @@ public class Character : Movable
         
 
         downGauge.Max = 100; //다운 게이지
+        downGauge.FillableRate = 1.0f;
         downGauge.Current = 0;  //현재 누적된 다운게이지
 
 
@@ -162,22 +163,21 @@ public class Character : Movable
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
     public override bool TakeDamage(Character enemyAttacker)
     {
+        
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
 
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
         if(enemyAttacker.skill != null && this.focusTarget == enemyAttacker || (this.skill != null && this.skill.mustCheck()) )
         {
+            
             result = enemyAttacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
 
         if(result == true)
-        {
-            hitPoint.Current = -enemyAttacker.maxPhysicalStrikingPower;
-            downGauge.Current += 40;
-            Debug.Log("공격자 생명력" + enemyAttacker.hitPoint.Current);
-            Debug.Log("공격자 공격력" + enemyAttacker.maxPhysicalStrikingPower);
-            Debug.Log("방어자 생명력" + hitPoint.Current);
-
+        {           
+            hitPoint.Current = hitPoint.Current - enemyAttacker.maxPhysicalStrikingPower;
+            downGauge.Current = downGauge.Current + 40;
+            Debug.Log(downGauge.Current);
             if (hitPoint.Current <= 0)
             {
                 DieCheck();
