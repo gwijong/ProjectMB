@@ -20,8 +20,8 @@ public class Movable : Hitable
     public MoveState state = MoveState.Runnable;
 
     /// <summary> 이동 속도 </summary>
-    [SerializeField] float runSpeed;  //Start메서드에 내비메시 스피드 할당
-    [SerializeField] float walkSpeed;  //Start메서드에 내비메시 스피드 할당
+    [SerializeField] protected float runSpeed;  //Start메서드에 내비메시 스피드 할당
+    [SerializeField] protected float walkSpeed;  //Start메서드에 내비메시 스피드 할당
 
 
     protected virtual void Start()

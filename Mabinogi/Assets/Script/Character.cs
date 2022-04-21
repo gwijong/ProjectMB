@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-//공격하거나 맞는 대상을 쳐다보게 해야함
-
-
-
 public class Character : Movable
 {
     
@@ -29,19 +24,17 @@ public class Character : Movable
 
     [SerializeField]
     /// <summary> 준비 완료된 현재 스킬</summary>
-    protected Skill skill;
+    protected Skill loadedSkill;
+    /// <summary> 준비중인 현재 스킬</summary>
+    protected Skill reservedSkill;
+    /// <summary> 내가 배운 스킬 리스트</summary>
     protected SkillList skillList;
     /// <summary> 스킬 장전까지 남은 시간</summary>
     protected float skillCastingTimeLeft = 0.0f;
-
-    [SerializeField] Animator anim;
-
     /// <summary> 조작 가능 여부</summary>
     protected bool controllable = true;
     /// <summary> 일상, 전투모드 값</summary>
     protected bool offensive = false;
-
-
     /// <summary> 최대물리공격력 </summary>
     public int maxPhysicalStrikingPower;
     /// <summary> 최대마법공격력 </summary>
@@ -83,11 +76,18 @@ public class Character : Movable
     protected int hitCount = 0;
 
     Rigidbody rigid;
+    Animator anim;
+
+    public SkillData combatData;
+    public SkillData defenseData;
+    public SkillData smashData;
+    public SkillData counterData;
 
     protected override void Start()
     {
         base.Start();
         rigid = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         agent.angularSpeed = 1000;  //내비게이션 회전값
         agent.acceleration = 100; //내비게이션 가속도
         agent.speed = data.Speed; //내비게이션 이동속도
@@ -129,6 +129,16 @@ public class Character : Movable
     
     protected virtual void Update()
     {
+        if(skillCastingTimeLeft>0 && reservedSkill != null)
+        {
+            skillCastingTimeLeft -= Time.deltaTime;
+            agent.speed = walkSpeed;
+        }else if(skillCastingTimeLeft <= 0 && reservedSkill != null)
+        {
+            loadedSkill = reservedSkill;
+            reservedSkill = null;
+        }
+             
         PlayAnim("Move", agent.velocity.magnitude);
 
         if (waitCount == 0)
@@ -189,7 +199,9 @@ public class Character : Movable
     /// <summary> 공격 함수</summary>
     public virtual void Attack(Hitable enemyTarget)
     {
-        if(waitCount != 0)
+        this.transform.LookAt(enemyTarget.transform);
+        enemyTarget.transform.LookAt(this.transform);
+        if (waitCount != 0)
         {
             return;
         }
@@ -212,9 +224,7 @@ public class Character : Movable
     }
 
     public override Define.InteractType Interact(Interactable other)
-    {
-
-
+    {       
         if(IsEnemy(this, other))
         {
             return Define.InteractType.Attack;
@@ -233,21 +243,35 @@ public class Character : Movable
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
     public override bool TakeDamage(Character Attacker)
     {
+        reservedSkill = null;
+        skillCastingTimeLeft = 0;
+
         SetOffensive(true);
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
 
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
-        if(Attacker.skill != null && this.focusTarget == Attacker || (this.skill != null && this.skill.mustCheck) )
+        if(Attacker.loadedSkill != null && this.focusTarget == Attacker || (this.loadedSkill != null && this.loadedSkill.mustCheck) )
         {
-            result = Attacker.skill.WinnerCheck(this.skill); //상대방 스킬과 내 스킬의 우선순위 비교
+            result = Attacker.loadedSkill.WinnerCheck(this.loadedSkill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
 
         if(result == true)
-        {           
-            this.hitPoint.Current = this.hitPoint.Current - Attacker.maxPhysicalStrikingPower;
-            this.downGauge.Current = this.downGauge.Current + 40;
+        {
 
-            Debug.Log(Attacker.hitPoint.Current);
+            switch (Attacker.loadedSkill.type)
+            {
+                case Define.SkillState.Combat:
+                    break;
+                case Define.SkillState.Defense:
+                    break;
+                case Define.SkillState.Smash:
+                    this.downGauge.Current += smashData.DownGauge;
+                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank;
+                    Debug.Log("스매시 공격력: " + Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank);
+                    break;
+                case Define.SkillState.Counter:
+                    break;
+            }
             
             if (this.hitPoint.Current <= 0)
             {
@@ -349,8 +373,7 @@ public class Character : Movable
     {
         SkillInfo currentSkill = skillList[value];
         if (currentSkill == null) return;
-
-        skill = currentSkill.skill;
+        reservedSkill = currentSkill.skill;
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
 }

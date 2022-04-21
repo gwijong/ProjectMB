@@ -4896,7 +4896,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1178535242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254343de90dd8264b81f58140e3c4654, type: 3}
+  m_Script: {fileID: 11500000, guid: f06ba526be214564893736d0a99654cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
@@ -4905,7 +4905,6 @@ MonoBehaviour:
   walkSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
   focusTarget: {fileID: 0}
-  anim: {fileID: 1178535248}
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
   minPhysicalStrikingPower: 0
@@ -4923,6 +4922,10 @@ MonoBehaviour:
   downTime: 4
   attackTime: 1
   waitCount: 0
+  combatData: {fileID: 0}
+  defenseData: {fileID: 0}
+  smashData: {fileID: 0}
+  counterData: {fileID: 0}
 --- !u!195 &1178535245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -12800,7 +12803,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132148341105317}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254343de90dd8264b81f58140e3c4654, type: 3}
+  m_Script: {fileID: 11500000, guid: f06ba526be214564893736d0a99654cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
@@ -12809,7 +12812,6 @@ MonoBehaviour:
   walkSpeed: 0
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
   focusTarget: {fileID: 0}
-  anim: {fileID: 1245206985}
   maxPhysicalStrikingPower: 0
   maxMagicStrikingPower: 0
   minPhysicalStrikingPower: 0
@@ -12827,6 +12829,10 @@ MonoBehaviour:
   downTime: 4
   attackTime: 1
   waitCount: 0
+  combatData: {fileID: 11400000, guid: 1b80b91ddfee0a64697c8c5f8db85d39, type: 2}
+  defenseData: {fileID: 11400000, guid: 04b3f309c5360a448a42d24414dd4e77, type: 2}
+  smashData: {fileID: 11400000, guid: e67f3a14c8cac804ebf7475fe706b18d, type: 2}
+  counterData: {fileID: 11400000, guid: a66f1b5943300cf42989ba902c1b7a63, type: 2}
 --- !u!65 &919132148341105320
 BoxCollider:
   m_ObjectHideFlags: 0

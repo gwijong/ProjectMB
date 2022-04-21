@@ -83,8 +83,9 @@ public class SkillInfo
 /// <summary> 내가 배운 스킬</summary>
 public class SkillList
 {
-    SkillInfo[] skills;
 
+    SkillInfo[] skills;
+    static CharacterSkill dogSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/DogSkill");
     public SkillInfo this[int index]
     {
         get 
@@ -110,12 +111,12 @@ public class SkillList
 
     public SkillList(SkillInfo[] value) { skills = value; }
 
-    public static SkillList dog = new SkillList( new SkillInfo[] 
-    {
-        new SkillInfo(Define.SkillState.Combat, 4),
-        new SkillInfo(Define.SkillState.Smash, 1),
-        new SkillInfo(Define.SkillState.Defense, 1),
-        new SkillInfo(Define.SkillState.Counter, 1),
+    public static SkillList dog = new SkillList(new SkillInfo[]
+    {       
+        new SkillInfo(Define.SkillState.Combat, dogSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Smash, dogSkill.SmashRank),
+        new SkillInfo(Define.SkillState.Defense, dogSkill.DefenseRank),
+        new SkillInfo(Define.SkillState.Counter, dogSkill.CounterRank),
     });
     public static SkillList chicken;
 
