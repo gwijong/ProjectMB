@@ -44,4 +44,12 @@ public class Define
     {
         World,
     }
+
+    public enum MoveState
+    {  //º”µµ∏∏ ¥Ÿ∏£∞‘ «ÿ¡‹
+       //∞»∞Ì ∂Ÿ¥¬∞« Character ø°º≠ «ÿ¡‹
+        Rooted,
+        Walkable,
+        Runnable,
+    }
 }

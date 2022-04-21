@@ -3,21 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum MoveState
-{  //속도만 다르게 해줌
-   //걷고 뛰는건 Character 에서 해줌
-    Rooted,
-    Walkable,
-    Runnable,
-}
-
 /// <summary> 이동 가능한 오브젝트</summary>
 [RequireComponent(typeof(NavMeshAgent))]
 public class Movable : Hitable
 {
     public NavMeshAgent agent;
 
-    public MoveState state = MoveState.Runnable;
+    public Define.MoveState state = Define.MoveState.Runnable;
 
     /// <summary> 이동 속도 </summary>
     [SerializeField] protected float runSpeed;  //Start메서드에 내비메시 스피드 할당

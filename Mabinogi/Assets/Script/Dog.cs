@@ -9,6 +9,7 @@ public class Dog : Character
     {
         base.Start();
         skillList = SkillList.dog;
+        loadedSkill = skillList[Define.SkillState.Combat].skill;
     }
 
     // Update is called once per frame

@@ -4864,6 +4864,7 @@ GameObject:
   - component: {fileID: 1178535245}
   - component: {fileID: 1178535244}
   - component: {fileID: 1178535243}
+  - component: {fileID: 1178535250}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -4922,10 +4923,10 @@ MonoBehaviour:
   downTime: 4
   attackTime: 1
   waitCount: 0
-  combatData: {fileID: 0}
-  defenseData: {fileID: 0}
-  smashData: {fileID: 0}
-  counterData: {fileID: 0}
+  combatData: {fileID: 11400000, guid: 1b80b91ddfee0a64697c8c5f8db85d39, type: 2}
+  defenseData: {fileID: 11400000, guid: 04b3f309c5360a448a42d24414dd4e77, type: 2}
+  smashData: {fileID: 11400000, guid: e67f3a14c8cac804ebf7475fe706b18d, type: 2}
+  counterData: {fileID: 11400000, guid: a66f1b5943300cf42989ba902c1b7a63, type: 2}
 --- !u!195 &1178535245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5017,6 +5018,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1178535250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178535242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959e7b288d7cd8b4dba04ef2e6862608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1188209362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12792,7 +12805,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &919132148341105319
 MonoBehaviour:
@@ -12808,8 +12821,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
   state: 2
-  runSpeed: 0
-  walkSpeed: 0
+  runSpeed: 10
+  walkSpeed: 5
   data: {fileID: 11400000, guid: a1dba931f0a1994438ddfeeaace0e182, type: 2}
   focusTarget: {fileID: 0}
   maxPhysicalStrikingPower: 0

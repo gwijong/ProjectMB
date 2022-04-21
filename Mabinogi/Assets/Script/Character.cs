@@ -74,6 +74,8 @@ public class Character : Movable
     protected IEnumerator wait;
     /// <summary> 피격 애니메이션 A, B용 변수 </summary>
     protected int hitCount = 0;
+    /// <summary> 그로기 상태 체크 </summary>
+    protected bool groggy = false;
 
     Rigidbody rigid;
     Animator anim;
@@ -91,7 +93,8 @@ public class Character : Movable
         agent.angularSpeed = 1000;  //내비게이션 회전값
         agent.acceleration = 100; //내비게이션 가속도
         agent.speed = data.Speed; //내비게이션 이동속도
-
+        runSpeed = data.Speed;
+        walkSpeed = data.Speed / 2;
         hitPoint.Max = data.HitPoint; //최대 생명력      
         hitPoint.FillableRate = 1.0f;  //부상률
         hitPoint.Current = data.HitPoint;  //현재 생명력
@@ -129,10 +132,29 @@ public class Character : Movable
     
     protected virtual void Update()
     {
-        if(skillCastingTimeLeft>0 && reservedSkill != null)
+        if(skillCastingTimeLeft>=0 && reservedSkill != null)
         {
             skillCastingTimeLeft -= Time.deltaTime;
-            agent.speed = walkSpeed;
+            switch (reservedSkill.type)
+            {
+                case Define.SkillState.Combat:
+                    agent.speed = runSpeed;
+                    MoveStop(false);
+                    break;
+                case Define.SkillState.Defense:
+                    agent.speed = walkSpeed;
+                    MoveStop(false);
+                    break;
+                case Define.SkillState.Smash:
+                    agent.speed = runSpeed;
+                    MoveStop(false);
+                    break;
+                case Define.SkillState.Counter:
+                    agent.speed = 0;
+                    MoveStop(true);
+                    break;
+
+            }           
         }else if(skillCastingTimeLeft <= 0 && reservedSkill != null)
         {
             loadedSkill = reservedSkill;
@@ -199,6 +221,7 @@ public class Character : Movable
     /// <summary> 공격 함수</summary>
     public virtual void Attack(Hitable enemyTarget)
     {
+        SetOffensive(true);
         this.transform.LookAt(enemyTarget.transform);
         enemyTarget.transform.LookAt(this.transform);
         if (waitCount != 0)
@@ -209,17 +232,29 @@ public class Character : Movable
         StartCoroutine(wait);
 
         if (enemyTarget.TakeDamage(this) == true)//공격에 성공한 경우
-        {
-            PlayAnim("Combat");
+        {        
             Debug.Log("공격 성공");
+            loadedSkill = skillList[Define.SkillState.Combat].skill;
         }
         else//공격에 실패한 경우
         {
             //공격이 실패한 경우에는 공격 대상자가 리턴값을 받아서 경직에 스스로 걸리게 해야해
             //디펜스 쓸때 공격자는 공격 모션은 유지하지만 락걸림
             //카운터는 반격 당하고 다운됨
-
+            if(enemyTarget.GetComponent<Character>().loadedSkill == skillList[Define.SkillState.Defense].skill)
+            {
+                enemyTarget.GetComponent<Character>().PlayAnim("Defense");
+            }
+            else if (enemyTarget.GetComponent<Character>().loadedSkill == skillList[Define.SkillState.Counter].skill)
+            {
+                enemyTarget.GetComponent<Character>().PlayAnim("Counter");
+            };
+            Groggy();
+            enemyTarget.GetComponent<Character>().loadedSkill = skillList[Define.SkillState.Combat].skill;
             Debug.Log("공격 실패");
+            loadedSkill = skillList[Define.SkillState.Combat].skill;
+            wait = Wait(3);
+            StartCoroutine(wait);
         };
     }
 
@@ -256,38 +291,78 @@ public class Character : Movable
         };
 
         if(result == true)
-        {
-
+        {      
             switch (Attacker.loadedSkill.type)
             {
                 case Define.SkillState.Combat:
+                    Attacker.PlayAnim("Combat");
+                    this.downGauge.Current += combatData.DownGauge;
+                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank;
+                    Debug.Log("근접 일반 공격력: " + Attacker.maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank);
                     break;
                 case Define.SkillState.Defense:
+                    Attacker.PlayAnim("Defense");
+                    this.downGauge.Current += defenseData.DownGauge;
+                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * defenseData.Coefficient * skillList[Define.SkillState.Defense].rank;
+                    Debug.Log("방어 일반 공격력: " + Attacker.maxPhysicalStrikingPower * defenseData.Coefficient * skillList[Define.SkillState.Defense].rank);
                     break;
                 case Define.SkillState.Smash:
+                    Attacker.PlayAnim("Smash");
+                    groggy = true;
                     this.downGauge.Current += smashData.DownGauge;
                     this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank;
                     Debug.Log("스매시 공격력: " + Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank);
                     break;
                 case Define.SkillState.Counter:
+                    Attacker.PlayAnim("Counter");
+                    this.downGauge.Current += counterData.DownGauge;
+                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank;
+                    Debug.Log("카운터 공격력: " + Attacker.maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank);
                     break;
             }
             
             if (this.hitPoint.Current <= 0)
             {
                 DieCheck();
-                DownCheck();
+                this.downGauge.Current = 100;
             }
             else if (this.downGauge.Current < 100)
             {
+
                 PlayAnim("HitA");
+               
             }
             else if (this.downGauge.Current >= 100)
             {
-                DownCheck();
+                if (groggy)
+                {
+                    Groggy();
+                    groggy = false;
+                }
+                else
+                {
+                    DownCheck();
+                }
             }
         }
         return result;
+    }
+
+    public void Groggy()
+    {
+        wait = Wait(downTime+2);
+        StartCoroutine(wait);
+        IEnumerator groggy = GroggyDown();
+        StartCoroutine(groggy);
+        PlayAnim("Groggy");
+        downGauge.Current = 0;
+    }
+    IEnumerator GroggyDown()
+    {
+        Debug.Log("그로기2");
+        yield return new WaitForSeconds(1.0f);
+        rigid.AddForce(gameObject.transform.forward * -600);
+        rigid.AddForce(gameObject.transform.up * 500);
     }
 
     /// <summary> 마우스 입력으로 타겟 설정 시도, 키보드 입력시 해제 </summary>

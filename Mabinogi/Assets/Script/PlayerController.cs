@@ -9,12 +9,13 @@ public class PlayerController : MonoBehaviour
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
 
     private void Start()
-    {
+    {      
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();
     }
 
     void Update()
     {
+        SkillInput();
         MouseInput();        
         KeyMove();
         SpaceOffensive();
@@ -76,6 +77,31 @@ public class PlayerController : MonoBehaviour
             player.SetTarget(null);
             player.MoveTo(calculatedLocation);
         };
+    }
+    void SkillInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("플레이어: 디펜스 시전");
+            player.Casting(Define.SkillState.Defense);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log("플레이어: 스매시 시전");
+            player.Casting(Define.SkillState.Smash);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Debug.Log("플레이어: 카운터 시전");
+            player.Casting(Define.SkillState.Counter);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
+            player.Casting(Define.SkillState.Combat);
+        }
+
+
     }
 }
 
