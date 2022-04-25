@@ -5,11 +5,13 @@ using UnityEngine;
 /// <summary> 상호작용하는 오브젝트들의 최상위 부모 오브젝트</summary>
 public class Interactable : MonoBehaviour
 {
-    public virtual Define.InteractType Interact(Interactable other) 
-    { 
-        return Define.InteractType.None; //클릭하거나 AI가 쓰는거
+    /// <summary>상호작용 하는 대상의 타입 반환 None,Talk,Attack,Get</summary>
+    public virtual Define.InteractType Interact(Interactable other)
+    {
+        return Define.InteractType.None; //기본값: 땅 클릭하거나 AI가 쓰는거 
     }
 
+    /// <summary> 적인지 아닌지 체크(true면 적)</summary>
     public static bool IsEnemy(Interactable A, Interactable B)
     {
         //        ^  xor
@@ -19,12 +21,28 @@ public class Interactable : MonoBehaviour
         //적이다    적이다     대화   x
 
         //둘의 성향이 다른 경우에 적이라고 간주함
-        return HasGoodWill(A) ^ HasGoodWill(B);
+        if(HasGoodWill(A) ^ HasGoodWill(B) == true)  //적과 내 성향이 다를 경우
+        {
+            return true; //적이 맞다
+        }
+        else  //적과 내 성향이 같을 경우
+        {
+            return false; //적이 아니다
+        }
     }
 
-    //레이어가 enemy가 아니면 좋은 의지를 가지고 있다고 함
+
+    /// <summary> 레이어가 enemy가 아니면 좋은 의지를 가지고 있다고 한다.</summary>
     public static bool HasGoodWill(Interactable target)
     {
-        return target.gameObject.layer != (int)Define.Layer.Enemy;
+        if(target.gameObject.layer == (int)Define.Layer.Enemy) //타겟의 레이어가 Enemy(적) 인가?
+        {
+            return false; //적이면 나쁜놈 false
+        }
+        else
+        {
+            return true;  //적이 아니면 착한놈 true
+        }
+        
     }
 }

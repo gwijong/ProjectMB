@@ -1,12 +1,14 @@
 
 public class Define
 {
+    /// <summary> 마우스 입력값</summary>
     public enum mouseKey
     {
         LeftClick,
         rightClick,
         middleClick
     }
+    /// <summary> 상호작용 타입</summary>
     public enum InteractType
     {
         None,
@@ -14,6 +16,7 @@ public class Define
         Attack,
         Get,
     }
+    /// <summary> 캐릭터의 상태</summary>
     public enum State
     {
         Die,
@@ -21,6 +24,7 @@ public class Define
         Idle,
         Casting,
     }
+    /// <summary> 캐릭터의 스킬 상태</summary>
     public enum SkillState
     {
         Combat = 0,
@@ -29,6 +33,7 @@ public class Define
         Counter = 3,
     }
 
+    /// <summary> 레이어 정의</summary>
     public enum Layer
     {
         Enemy = 6,
@@ -40,11 +45,14 @@ public class Define
         NPC = 12,
         Player = 13,
     }
+
+    /// <summary> 씬 정의</summary>
     public enum Scene
     {
         World,
     }
 
+    /// <summary> 이동 상태 </summary>
     public enum MoveState
     {  //속도만 다르게 해줌
        //걷고 뛰는건 Character 에서 해줌

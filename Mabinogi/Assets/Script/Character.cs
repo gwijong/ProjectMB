@@ -14,12 +14,13 @@ public class Character : Movable
     protected Gauge staminaPoint = new Gauge();
     /// <summary> 다운 게이지 summary>
     protected Gauge downGauge = new Gauge();
-
+    /// <summary> 캐릭터 데이터(플레이어, 개, 늑대 등) summary>
     public CharacterData data;
 
     [SerializeField]
     /// <summary> 지정한 타겟</summary>
     protected Interactable focusTarget;
+    /// <summary> 지정한 타겟의 타입 enum</summary>
     protected Define.InteractType focusType;
 
     [SerializeField]
@@ -61,16 +62,14 @@ public class Character : Movable
     public int magicProtective;
     /// <summary> 사망할 공격을 당했을 때 이겨내고 데들리 상태가 될 확률 </summary>
     public int deadly;
-    /// <summary> 이동 속도 </summary>
-    public int speed;
 
     /// <summary> 다운 지속 시간 </summary>
     public float downTime = 4.0f;
     /// <summary> 공격 지속 시간 </summary>
     public float attackTime = 1.0f;
-    /// <summary> 동작 불가 체크 </summary>
+    /// <summary> 피격시 동작 불가 체크 </summary>
     public int waitCount = 0;
-    /// <summary> 동작 불가 코루틴 </summary>
+    /// <summary> 피격시 동작 불가 코루틴 </summary>
     protected IEnumerator wait;
     /// <summary> 피격 애니메이션 A, B용 변수 </summary>
     protected int hitCount = 0;
@@ -80,21 +79,26 @@ public class Character : Movable
     Rigidbody rigid;
     Animator anim;
 
-    public SkillData combatData;
-    public SkillData defenseData;
-    public SkillData smashData;
-    public SkillData counterData;
+    //스킬데이터 스크립터블 오브젝트들
+    public SkillData combatData;  //기본공격 컴벳 스킬 데이터
+    public SkillData defenseData;  //디펜스 스킬 데이터
+    public SkillData smashData;  //스매시 스킬 데이터
+    public SkillData counterData; //카운터 어택 스킬 데이터
 
+    /// <summary> 내비게이션 회전값 </summary>
+    public float angularSpeed = 1000f;
+    /// <summary> 내비게이션 가속도 </summary>
+    public float acceleration = 100f;
     protected override void Start()
     {
         base.Start();
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        agent.angularSpeed = 1000;  //내비게이션 회전값
-        agent.acceleration = 100; //내비게이션 가속도
+        agent.angularSpeed = angularSpeed;  //내비게이션 회전값
+        agent.acceleration = acceleration; //내비게이션 가속도
         agent.speed = data.Speed; //내비게이션 이동속도
-        runSpeed = data.Speed;
-        walkSpeed = data.Speed / 2;
+        runSpeed = data.Speed; //이동 속도
+        walkSpeed = data.Speed / 2; //걷는 속도
         hitPoint.Max = data.HitPoint; //최대 생명력      
         hitPoint.FillableRate = 1.0f;  //부상률
         hitPoint.Current = data.HitPoint;  //현재 생명력
@@ -110,85 +114,81 @@ public class Character : Movable
         
 
         downGauge.Max = 100; //다운 게이지
-        downGauge.FillableRate = 1.0f;
+        downGauge.FillableRate = 1.0f;//다운게이지 최대 비율
         downGauge.Current = 0;  //현재 누적된 다운게이지
 
 
-        maxPhysicalStrikingPower = data.MaxPhysicalStrikingPower;
-        maxMagicStrikingPower = data.MaxMagicStrikingPower;
-        minPhysicalStrikingPower = data.MinPhysicalStrikingPower;
-        minMagicStrikingPower = data.MinMagicStrikingPower;
-        wound = data.Wound;
-        woundAttack = data.WoundAttack;
-        critical = data.Critical;
-        balance = data.Balance;
-        physicalDefensivePower = data.PhysicalDefensivePower;
-        magicDefensivePower = data.MagicDefensivePower;
-        physicalProtective = data.PhysicalProtective;
-        magicProtective = data.MagicProtective;
-        deadly = data.Deadly;
-        speed = data.Speed;
+        maxPhysicalStrikingPower = data.MaxPhysicalStrikingPower;  //최대 물리공격력
+        maxMagicStrikingPower = data.MaxMagicStrikingPower;  //최대 마법공격력
+        minPhysicalStrikingPower = data.MinPhysicalStrikingPower;  //최소 물리공격력
+        minMagicStrikingPower = data.MinMagicStrikingPower;  //최소 마법공격력
+        wound = data.Wound;  //부상
+        woundAttack = data.WoundAttack;  //공격 시 부상률
+        critical = data.Critical;  //치명타
+        balance = data.Balance;  //밸런스
+        physicalDefensivePower = data.PhysicalDefensivePower;  //물리 방어력
+        magicDefensivePower = data.MagicDefensivePower;  //마법 방어력
+        physicalProtective = data.PhysicalProtective;  //물리 보호
+        magicProtective = data.MagicProtective;  //마법 보호
+        deadly = data.Deadly;  //데들리 확률
     }
     
     protected virtual void Update()
     {
-        if(skillCastingTimeLeft>=0 && reservedSkill != null)
+        if(skillCastingTimeLeft>=0 && reservedSkill != null) //스킬 시전 시간이 남았고 시전중인 스킬이 있을 경우
         {
-            skillCastingTimeLeft -= Time.deltaTime;
-            switch (reservedSkill.type)
+            skillCastingTimeLeft -= Time.deltaTime;  //남은 스킬 시전 시간을 지속적으로 줄여줌
+            switch (reservedSkill.type)  //준비중인 현재 스킬 타입
             {
-                case Define.SkillState.Combat:
-                    agent.speed = runSpeed;
+                case Define.SkillState.Combat:  
+                    agent.speed = runSpeed;  //컴벳이면 달리는 속도
                     MoveStop(false);
                     break;
                 case Define.SkillState.Defense:
-                    agent.speed = walkSpeed;
+                    agent.speed = walkSpeed;  //디펜스는 걷는 속도
                     MoveStop(false);
                     break;
                 case Define.SkillState.Smash:
-                    agent.speed = runSpeed;
+                    agent.speed = runSpeed;  //스매시면 달리는 속도
                     MoveStop(false);
                     break;
                 case Define.SkillState.Counter:
-                    agent.speed = 0;
+                    agent.speed = 0;  //카운터면 이동 멈춤
                     MoveStop(true);
                     break;
 
             }           
-        }else if(skillCastingTimeLeft <= 0 && reservedSkill != null)
+        }else if(skillCastingTimeLeft <= 0 && reservedSkill != null)  //스킬 시전 시간이 다 지났을 경우
         {
-            loadedSkill = reservedSkill;
-            reservedSkill = null;
+            loadedSkill = reservedSkill;  //준비된 스킬 장전
+            reservedSkill = null;  // 준비중인 스킬 null로 전환
         }
              
-        PlayAnim("Move", agent.velocity.magnitude);
+        PlayAnim("Move", agent.velocity.magnitude);  //이동을 내비에서 float 값으로 받아와서 애니메이션 재생
 
-        if (waitCount == 0)
+        if (waitCount == 0)  //동작 불가 코루틴 값이 0일 경우
         {
-            MoveStop(false);
+            MoveStop(false); //이동 가능
         }
-        else
+        else //동작 불가일 경우
         {
-            focusTarget = null;
-            MoveStop(true);
+            focusTarget = null;  //타겟을 null로 바꿈(맞는 중에 공격 할 수 없기 때문)
+            MoveStop(true); //이동 불가
         }
 
-        //일단은 무조건 가는데 상황에 따라서 (스킬을 쓰면 스킬 사거리 까지만)
-        //                                (무기 사거리일 수도 있고)
-        //                                (대화 거리일 수도 있고)
-        if (focusTarget != null)
+        if (focusTarget != null) //마우스로 클릭한 타겟이 있는 경우
         {
-            float distance = (focusTarget.transform.position - transform.position).magnitude;
+            float distance = (focusTarget.transform.position - transform.position).magnitude;  //타겟과 나의 거리
 
-            if (distance > InteractableDistance(focusType))
+            if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
             {
-                MoveTo(focusTarget.transform.position);
+                MoveTo(focusTarget.transform.position);  //다가가도록 이동
             }
-            else
+            else //거리가 상호작용 가능 거리보다 가까운 경우
             {
-                MoveStop(true);
-                
-                switch(focusTarget.Interact(this))
+                MoveStop(true); //다가가는 이동 멈춤
+/////////////////////////////////////////////////////////////////////////////////////////////////////여기까지 주석 작업을 했음
+                switch (focusTarget.Interact(this))
                 {
                     case Define.InteractType.Attack:
                         Attack((Hitable)focusTarget);

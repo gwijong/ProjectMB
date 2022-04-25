@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Dog : Character
 {
-    // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();
-        skillList = SkillList.dog;
-        loadedSkill = skillList[Define.SkillState.Combat].skill;
+        skillList = SkillList.dog;  //개 스킬 리스트 사용
+        loadedSkill = skillList[Define.SkillState.Combat].skill; //스킬 기본값인 컴벳으로 준비된 스킬 설정
     }
 
-    // Update is called once per frame
+
     protected override void Update()
     {
         base.Update();

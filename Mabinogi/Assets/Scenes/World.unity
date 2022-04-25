@@ -4884,7 +4884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da0d81b684061e749b8690fe0d0f1981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   state: 2
   runSpeed: 0
   walkSpeed: 0
@@ -4900,7 +4899,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f06ba526be214564893736d0a99654cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   state: 2
   runSpeed: 0
   walkSpeed: 0
@@ -4919,7 +4917,6 @@ MonoBehaviour:
   physicalProtective: 0
   magicProtective: 0
   deadly: 0
-  speed: 0
   downTime: 4
   attackTime: 1
   waitCount: 0
@@ -4927,6 +4924,8 @@ MonoBehaviour:
   defenseData: {fileID: 11400000, guid: 04b3f309c5360a448a42d24414dd4e77, type: 2}
   smashData: {fileID: 11400000, guid: e67f3a14c8cac804ebf7475fe706b18d, type: 2}
   counterData: {fileID: 11400000, guid: a66f1b5943300cf42989ba902c1b7a63, type: 2}
+  angularSpeed: 1000
+  acceleration: 100
 --- !u!195 &1178535245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -12800,7 +12799,7 @@ Rigidbody:
   m_GameObject: {fileID: 919132148341105317}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -12819,7 +12818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f06ba526be214564893736d0a99654cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   state: 2
   runSpeed: 10
   walkSpeed: 5
@@ -12838,7 +12836,6 @@ MonoBehaviour:
   physicalProtective: 0
   magicProtective: 0
   deadly: 0
-  speed: 0
   downTime: 4
   attackTime: 1
   waitCount: 0
@@ -12846,6 +12843,8 @@ MonoBehaviour:
   defenseData: {fileID: 11400000, guid: 04b3f309c5360a448a42d24414dd4e77, type: 2}
   smashData: {fileID: 11400000, guid: e67f3a14c8cac804ebf7475fe706b18d, type: 2}
   counterData: {fileID: 11400000, guid: a66f1b5943300cf42989ba902c1b7a63, type: 2}
+  angularSpeed: 1000
+  acceleration: 100
 --- !u!65 &919132148341105320
 BoxCollider:
   m_ObjectHideFlags: 0
