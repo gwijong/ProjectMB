@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Extension
 {
-    //wantType.GetSkill(); 하면 해당하는 스킬을 돌려줌
+    /// <summary>wantType.GetSkill(); 하면 해당하는 스킬을 돌려줌</summary>
     public static Skill GetSkill(this Define.SkillState from)
     {
         switch(from)
