@@ -16,26 +16,32 @@ public class Skill
     /// <summary> 스킬 타입</summary>
     public Define.SkillState type;
 
+    public string AnimName;
+
     /// <summary> 스킬 시전 시간</summary>
     public float castingTime;
 
     /// <summary> 무조건 경합 체크</summary>
     public bool mustCheck;
+    /// <summary> 공격 불가 스킬일 경우</summary>
+    public bool cannotAttack;
 
     /// <summary> Skill 클래스 생성자</summary>
-    public Skill(Define.SkillState wantType, float wantCastingTime, winnerCheckDelegate wantWinnerCheck, bool wantMustCheck = false)
+    public Skill(Define.SkillState wantType, string wantAnimName, float wantCastingTime, winnerCheckDelegate wantWinnerCheck, bool wantMustCheck = false, bool wantCannotAttack = false)
     {
         type = wantType;
         castingTime = wantCastingTime;
         WinnerCheck = wantWinnerCheck;
         mustCheck = wantMustCheck;
+        cannotAttack = wantCannotAttack;
+        AnimName = wantAnimName;
     }
 
     //                                                               타입,시전시간,이기는 거 체크,무조건체크여부
-    public static Skill combatMastery   = new Skill(Define.SkillState.Combat, 0.0f, CombatWinCheck);
-    public static Skill smash           = new Skill(Define.SkillState.Smash, 1.0f, SmashWinCheck);
-    public static Skill counterAttack   = new Skill(Define.SkillState.Counter, 1.5f, CounterWinCheck, true);
-    public static Skill defense         = new Skill(Define.SkillState.Defense, 1.0f, DefenseWinCheck, true);
+    public static Skill combatMastery   = new Skill(Define.SkillState.Combat, "Combat", 0.0f, CombatWinCheck);
+    public static Skill smash           = new Skill(Define.SkillState.Smash, "Smash", 1.0f, SmashWinCheck);
+    public static Skill counterAttack   = new Skill(Define.SkillState.Counter, "Counter", 1.5f, CounterWinCheck, true, true);
+    public static Skill defense         = new Skill(Define.SkillState.Defense, "Defense", 1.0f, DefenseWinCheck, true, true);
 
     /// <summary> 근접 평타가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CombatWinCheck(Skill other)

@@ -21,7 +21,7 @@ public class Interactable : MonoBehaviour
         //적이다    적이다     대화   x
 
         //둘의 성향이 다른 경우에 적이라고 간주함
-        if(HasGoodWill(A) ^ HasGoodWill(B) == true)  //적과 내 성향이 다를 경우
+        if((HasGoodWill(A) ^ HasGoodWill(B)) == true)  //적과 내 성향이 다를 경우
         {
             return true; //적이 맞다
         }

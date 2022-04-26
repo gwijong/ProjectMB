@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Character : Movable
 {
     
+    #region 맴버 변수
     /// <summary> 생명력 게이지 summary>
     protected Gauge hitPoint = new Gauge();
     /// <summary> 마나 게이지 summary>
@@ -81,8 +81,6 @@ public class Character : Movable
     protected int hitCount = 0;
     /// <summary> 그로기 상태 체크 </summary>
     protected bool groggy = false;
-    /// <summary> 선공이 불가능한 스킬 체크(디펜스. 카운터) </summary>
-    protected bool cannotAttack = false;
     /// <summary> 사망 체크 </summary>
     public bool die = false;
     Rigidbody rigid;
@@ -98,8 +96,7 @@ public class Character : Movable
     public float angularSpeed = 1000f;
     /// <summary> 내비게이션 가속도 </summary>
     public float acceleration = 100f;
-    /// <summary> 다운게이지 감소 코루틴용 bool값 </summary>
-    bool subDownGauge = false;
+    #endregion
     protected override void Start()
     {
         base.Start();
@@ -126,7 +123,7 @@ public class Character : Movable
 
         downGauge.Max = 100; //다운 게이지
         downGauge.FillableRate = 1.0f;//다운게이지 최대 비율
-        downGauge.Current = 0;  //현재 누적된 다운게이지
+        downGauge.Current = 50;  //현재 누적된 다운게이지
 
 
         maxPhysicalStrikingPower = data.MaxPhysicalStrikingPower;  //최대 물리공격력
@@ -146,63 +143,25 @@ public class Character : Movable
     
     protected virtual void Update()
     {
-        if (subDownGauge == false)
-        {
-            StartCoroutine("SubDownGauge");
-        }
-
-        if (skillCastingTimeLeft>=0 && reservedSkill != null) //스킬 시전 시간이 남았고 시전중인 스킬이 있을 경우
-        {
-            skillCastingTimeLeft -= Time.deltaTime;  //남은 스킬 시전 시간을 지속적으로 줄여줌
-            switch (reservedSkill.type)  //준비중인 현재 스킬 타입
-            {
-                case Define.SkillState.Combat:  
-                    agent.speed = runSpeed;  //컴벳이면 달리는 속도
-                    cannotAttack = false;
-                    MoveStop(false);
-                    break;
-                case Define.SkillState.Defense:
-                    agent.speed = walkSpeed;  //디펜스는 걷는 속도
-                    cannotAttack = true;
-                    MoveStop(false);
-                    break;
-                case Define.SkillState.Smash:
-                    agent.speed = runSpeed;  //스매시면 달리는 속도
-                    cannotAttack = true;
-                    MoveStop(false);
-                    break;
-                case Define.SkillState.Counter:
-                    agent.speed = 0;  //카운터면 이동 멈춤
-                    cannotAttack = true;
-                    MoveStop(true);
-                    break;
-
-            }           
-        }else if(skillCastingTimeLeft <= 0 && reservedSkill != null)  //스킬 시전 시간이 다 지났을 경우
-        {
-            loadedSkill = reservedSkill;  //준비된 스킬 장전
-            if(loadedSkill == skillList[Define.SkillState.Smash].skill)//스매시 준비되면 공격 가능으로 변경
-            {
-                cannotAttack = false;
-            }
-            reservedSkill = null;  // 준비중인 스킬 null로 전환
-        }
-             
+        downGauge.Current -= 5 * Time.deltaTime;
         PlayAnim("Move", agent.velocity.magnitude);  //이동을 내비에서 float 값으로 받아와서 애니메이션 재생
 
-        if (waitCount == 0)  //동작 불가 코루틴 값이 0일 경우
-        {
-            MoveStop(false); //이동 가능
-        }
-        else //동작 불가일 경우
-        {
-            focusTarget = null;  //타겟을 null로 바꿈(맞는 중에 공격 할 수 없기 때문)
-            MoveStop(true); //이동 불가
-        }
+        TargetLookAt(focusTarget); //타겟 바라보기
 
+        SkillReady(); //skillCastingTimeLeft 남은시간 체크
+
+        MovableCheck(); //waitCount를 이용한 이동 가능 체크
+
+        TargetCheck(); //지정한 타겟 체크
+        
+    }
+    void TargetCheck()
+    {
         if (focusTarget != null) //마우스로 클릭한 타겟이 있는 경우
         {
-            float distance = (focusTarget.transform.position - transform.position).magnitude;  //타겟과 나의 거리
+            Vector3 positionDiff = (focusTarget.transform.position - transform.position);
+            positionDiff.y = 0;
+            float distance = positionDiff.magnitude;  //타겟과 나의 거리
 
             if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
             {
@@ -212,21 +171,100 @@ public class Character : Movable
             {
                 MoveStop(true); //다가가는 이동 멈춤
 
+
+                Character focusAsCharacter = null;
+
+                if(focusTarget.GetType().IsSubclassOf(typeof(Character)))
+                {
+                    focusAsCharacter = (Character)focusTarget;
+                };
+
+                Debug.Log("시도는 했다");
                 switch (focusTarget.Interact(this))//대상과 자신의 상호작용 타입
                 {
                     case Define.InteractType.Attack: //상호작용 타입이 공격이면
-                        if (cannotAttack || focusTarget.GetComponent<Character>().die == true)
+                        if (skillCastingTimeLeft > 0
+                            || loadedSkill.cannotAttack
+                            || (focusAsCharacter != null && focusAsCharacter.die == true))
                         {
-                            return;
-                        }
+                            break;
+                        };
+                        Debug.Log("그래서 때렸다!");
                         Attack((Hitable)focusTarget); //공격한다
                         break;
                     case Define.InteractType.Talk:  //상호작용 타입이 우호적이면
                         //여기선 대화로 풀어나가기
                         break;
-                };               
+                    default: Debug.Log(focusTarget.Interact(this));
+
+                        break;
+                };
                 focusTarget = null; //상호작용이 끝났으므로 타겟을 비움
-            }        
+            }
+        };
+    }
+    bool MovableCheck()
+    {
+        bool CanMove = waitCount == 0;
+
+        if (!CanMove)  //동작 불가 코루틴 값이 0일 경우
+        {
+            focusTarget = null;  //타겟을 null로 바꿈(맞는 중에 공격 할 수 없기 때문)
+        };
+
+        MoveStop(!CanMove);
+        return CanMove;
+    }
+
+    void SkillReady()
+    {
+        if (skillCastingTimeLeft >= 0 && reservedSkill != null) //스킬 시전 시간이 남았고 시전중인 스킬이 있을 경우
+        {
+            skillCastingTimeLeft -= Time.deltaTime;  //남은 스킬 시전 시간을 지속적으로 줄여줌
+            setMoveSpeed(reservedSkill.type);
+
+        }
+        else if (skillCastingTimeLeft <= 0 && reservedSkill != null)  //스킬 시전 시간이 다 지났을 경우
+        {
+            loadedSkill = reservedSkill;  //준비된 스킬 장전
+            reservedSkill = null;  // 준비중인 스킬 null로 전환
+        }
+    }
+    void setMoveSpeed(Define.SkillState type)
+    {
+        float result = runSpeed;
+        switch (type)  //준비중인 현재 스킬 타입
+        {
+            case Define.SkillState.Defense:
+                result = walkSpeed;//디펜스는 걷는 속도
+                break;
+            case Define.SkillState.Counter:
+                result = 0;  //카운터면 이동 멈춤
+                break;
+        };
+        if (walk && result > walkSpeed) result = walkSpeed;
+
+        agent.speed = result;
+    }
+
+    /// <summary> 지정한 타겟 바라봄 </summary>
+    void TargetLookAt(Interactable target)
+    {
+        if (target != null && agent.velocity.magnitude <= 1.0f)
+        {
+            Vector3 look = target.transform.position;
+            look.y = transform.position.y;
+            transform.LookAt(look);
+        };
+    }
+
+    /// <summary> 지정한 좌표 바라봄 </summary>
+    void TargetLookAt(Vector3 target)
+    {
+        if (target != null && agent.velocity.magnitude <= 1.0f)
+        {
+            target.y = transform.position.y;
+            transform.LookAt(target);
         };
     }
 
@@ -250,7 +288,6 @@ public class Character : Movable
     {
         SetOffensive(true);//전투모드로 전환
         this.transform.LookAt(enemyTarget.transform); //타겟을 바라본다.
-        enemyTarget.transform.LookAt(this.transform); //적도 나를 바라본다.
         if (waitCount != 0) //동작 불가 상태이면 공격을 못 하므로
         {
             return;  //바로 이 메서드를 나간다
@@ -258,38 +295,63 @@ public class Character : Movable
         wait = Wait(attackTime); //공격 딜레이 코루틴
         StartCoroutine(wait);
 
+        //TakeDamage함수로 들어가면 스킬이 풀리기 때문에 스킬을 임시 저장
+        Character asCharacter = null;
+        if(enemyTarget.GetType().IsSubclassOf(typeof(Character)))
+        {
+            asCharacter = (Character)enemyTarget;  //상대방 캐릭터를 취급함
+        };
+        
+        Define.SkillState otherSkill = Define.SkillState.Combat;  //상대방 스킬은 기본값 기본공격
+        if (asCharacter != null) otherSkill = asCharacter.GetSkillType();//상대방 캐릭터가 있는 경우 상대방 스킬 가져옴
+        
+
         if (enemyTarget.TakeDamage(this) == true)//공격에 성공한 경우
         {        
             Debug.Log("공격 성공");
+            PlayAnim(loadedSkill.AnimName);
+            float waitTime = 0.0f;
+            switch(loadedSkill.type)
+            {
+                case Define.SkillState.Combat: waitTime = 1.0f;
+                    break;
+                case Define.SkillState.Smash: waitTime = 4.0f;
+                    break;
+            };
+
+            wait = Wait(waitTime); //공격 실패로 3초간 경직
+            StartCoroutine(wait);
+
             loadedSkill = skillList[Define.SkillState.Combat].skill;//공격 후 기본 공격으로 준비된 스킬 초기화
         }
         else//공격에 실패한 경우
         {
             Debug.Log("공격 실패");
-            //공격이 실패한 경우에는 공격 대상자가 리턴값을 받아서 경직에 스스로 걸리게 해야함
-            //디펜스 쓸때 공격자는 공격 모션은 유지하지만 락걸림
-            //카운터는 반격 당하고 다운됨
-   
-            if (enemyTarget.GetComponent<Character>().loadedSkill == skillList[Define.SkillState.Defense].skill) //적 스킬이 디펜스일 경우
+
+            if(asCharacter != null)
             {
-                Debug.Log("적 디펜스 성공");
-                enemyTarget.GetComponent<Character>().PlayAnim("Defense"); //적 디펜스 애니메이션 재생
-                StartCoroutine(enemyTarget.GetComponent<Character>().Wait(1f));//적 디펜스 시전 중 이동 막기
-                PlayAnim("Combat");
-                wait = Wait(attackFailTime); //공격 실패로 3초간 경직
-                StartCoroutine(wait);
-            }
-            else if (enemyTarget.GetComponent<Character>().loadedSkill == skillList[Define.SkillState.Counter].skill) //적 스킬이 카운터일 경우
-            {
-                Debug.Log("적 카운터 성공");
-                enemyTarget.GetComponent<Character>().PlayAnim("Counter");//적 카운터 애니메이션 재생
-                StartCoroutine(enemyTarget.GetComponent<Character>().Wait(2f));//적 카운터 시전 중 이동 막기
-                this.downGauge.Current += counterData.DownGauge;
-                this.hitPoint.Current -= enemyTarget.GetComponent<Character>().maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank;
-                Debug.Log("카운터 공격력: " + enemyTarget.GetComponent<Character>().maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank);
-                Groggy();//반격 당했으므로 그로기 상태에 빠짐
-            };         
-            enemyTarget.GetComponent<Character>().loadedSkill = skillList[Define.SkillState.Combat].skill; //적 스킬 초기화
+                switch (otherSkill)
+                {
+                    //공격이 실패한 경우에는 공격 대상자가 리턴값을 받아서 경직에 스스로 걸리게 해야함
+                    //디펜스 쓸때 공격자는 공격 모션은 유지하지만 락걸림
+                    case Define.SkillState.Defense:
+                        PlayAnim("Combat");
+                        wait = Wait(attackFailTime); //공격 실패로 3초간 경직
+                        StartCoroutine(wait);
+                        Debug.Log("디펜스임");
+                        break;
+
+                    //카운터는 반격 당하고 다운됨
+                    case Define.SkillState.Counter:
+                        this.downGauge.Current += counterData.DownGauge;
+                        float damage = CalculateDamage(Define.SkillState.Counter);
+                        this.hitPoint.Current -= damage;
+                        Debug.Log("카운터 공격 대미지: " + damage);
+                        Groggy();//반격 당했으므로 그로기 상태에 빠짐
+                        Debug.Log("카운터임");
+                        break;
+                }
+            };
             loadedSkill = skillList[Define.SkillState.Combat].skill;// 내 스킬 초기화
 
         };
@@ -307,20 +369,22 @@ public class Character : Movable
         };
     }
 
-    public override void MoveTo(Vector3 goalPosition)  //내비게이션 이동 메서드
+    public override void MoveTo(Vector3 goalPosition, bool isWalk = false)  //내비게이션 이동 메서드
     {
-        base.MoveTo(goalPosition);
+        base.MoveTo(goalPosition, isWalk);
+
+        
     }
 
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
     public override bool TakeDamage(Character Attacker)
     {
+        transform.LookAt(Attacker.transform); //때린 상대를 바라본다
         reservedSkill = null; //준비중인 스킬 취소
         skillCastingTimeLeft = 0; //준비중인 스킬이 취소되었으므로 취소 시간도 0으로 초기화
 
         SetOffensive(true); //전투모드로 전환
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
-        cannotAttack = false;//디펜스 카운터의 행동 제약 해제
         agent.speed = runSpeed; //이동속도 초기화
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
         if (Attacker.loadedSkill != null && this.focusTarget == Attacker || (this.loadedSkill != null && this.loadedSkill.mustCheck) )
@@ -328,26 +392,25 @@ public class Character : Movable
             result = Attacker.loadedSkill.WinnerCheck(this.loadedSkill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
 
+        
         if(result == true) //공격에 성공한 경우
-        {      
+        {
+            float damage = 0.0f;
             switch (Attacker.loadedSkill.type)//상대방 스킬에 따라 내가 피해를 입음
             {
                 case Define.SkillState.Combat:
-                    Attacker.PlayAnim("Combat");
-                    StartCoroutine(Attacker.GetComponent<Character>().Wait(1f));
                     this.downGauge.Current += combatData.DownGauge;
-                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank;
-                    Debug.Log("근접 일반 공격력: " + Attacker.maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank);
+                    damage = Attacker.CalculateDamage(Define.SkillState.Combat);
+                    Debug.Log("근접 일반 공격력: " + damage);
                     break;
                 case Define.SkillState.Smash:
-                    Attacker.PlayAnim("Smash");
-                    StartCoroutine(Attacker.GetComponent<Character>().Wait(4f));
+                    damage = Attacker.CalculateDamage(Define.SkillState.Smash);
                     groggy = true;
                     this.downGauge.Current += smashData.DownGauge;
-                    this.hitPoint.Current -= Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank;
-                    Debug.Log("스매시 공격력: " + Attacker.maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank);
+                    Debug.Log("스매시 공격력: " + damage);
                     break;
             }
+            this.hitPoint.Current -= damage;
             
             if (this.hitPoint.Current <= 0)//생명력이 0이하일 경우 사망
             {
@@ -356,7 +419,6 @@ public class Character : Movable
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
             {
-
                 PlayAnim("HitA");  //피격 애니메이션 재생
                 wait = Wait(hitTime);
                 StartCoroutine(wait);
@@ -376,35 +438,58 @@ public class Character : Movable
             }
             loadedSkill = skillList[Define.SkillState.Combat].skill; //피격 시 준비된 스킬 초기화
         }
-        else
+        else //공격에 실패한 경우
         {
-
+            switch (loadedSkill.type)
+            {
+                case Define.SkillState.Defense:
+                    Debug.Log("적 디펜스 성공");
+                    PlayAnim("Defense"); //적 디펜스 애니메이션 재생
+                    StartCoroutine(Wait(1f));//적 디펜스 시전 중 이동 막기
+                    //공격을 막았는데 디펜스로 막음
+                    break;
+                case Define.SkillState.Counter:
+                    Debug.Log("적 카운터 성공");
+                    PlayAnim("Counter");//적 카운터 애니메이션 재생
+                    StartCoroutine(Wait(2f));//적 카운터 시전 중 이동 막기
+                    //공격을 막았는데 카운터로 막음
+                    break;
+                default:
+                    break;
+            };
+            loadedSkill = skillList[Define.SkillState.Combat].skill; //스킬 초기화
         }
-        
+
         return result;
     }
 
-    /// <summary> 내가 그로기 상태에 들어감</summary>
-    public void Groggy()
+
+
+    //여기서는 캐릭 스텟이나 랜덤이나 그런 거 돌릴 때 써
+    public float CalculateDamage(Define.SkillState type)
     {
-        wait = Wait(groggyTime);
-        StartCoroutine(wait);
-        IEnumerator groggy = GroggyDown();
-        StartCoroutine(groggy);
-        PlayAnim("Groggy");
-        downGauge.Current = 0;
+        switch(type)
+        {
+            case Define.SkillState.Smash:
+                return maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank;
+            case Define.SkillState.Combat:
+                return maxPhysicalStrikingPower* combatData.Coefficient* skillList[Define.SkillState.Combat].rank;
+            case Define.SkillState.Counter:
+                return maxPhysicalStrikingPower* counterData.Coefficient* skillList[Define.SkillState.Counter].rank;
+        };
+        return 0;
     }
-    /// <summary> 그로기 이후에 다운 상태로 들어감</summary>
-    IEnumerator GroggyDown()
+
+    /// <summary> 준비 완료된 스킬 리턴 </summary>
+    public Define.SkillState GetSkillType()
     {
-        Debug.Log("그로기2");
-        yield return new WaitForSeconds(1.0f);
-        rigid.AddForce(gameObject.transform.forward * -600);
-        rigid.AddForce(gameObject.transform.up * 500);
+        if (loadedSkill == null) return Define.SkillState.Combat;
+
+        return loadedSkill.type;
     }
 
     /// <summary> 마우스 입력으로 타겟 설정 시도, 키보드 입력시 타겟 해제 </summary>
-    public bool SetTarget(Character target)
+    public bool SetTarget(Interactable target)
     {
         if (target == null)
         {
@@ -476,15 +561,6 @@ public class Character : Movable
         if (anim != null) anim.SetInteger(wantName, value);
     }
 
-    /// <summary> 경직 시간 코루틴</summary>
-    public IEnumerator Wait(float time)
-    {
-        offensive = true; //전투 모드로 전환
-        waitCount++;//동작 불가 카운트 증가
-        yield return new WaitForSeconds(time);
-        waitCount--; //동작 불가 카운트 감소
-    }
-
     /// <summary> 스킬 시전중</summary>
     public void Casting(Define.SkillState value)
     {
@@ -493,15 +569,30 @@ public class Character : Movable
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
-
-
-    /// <summary> 다운 게이지 감소 코루틴 </summary>
-    IEnumerator SubDownGauge()
+    /// <summary> 경직 시간 코루틴</summary>
+    public IEnumerator Wait(float time)
     {
-        subDownGauge = true;
-        if(downGauge.Current>=5)
-        downGauge.Current = downGauge.Current - 5;
+        offensive = true; //전투 모드로 전환
+        waitCount++;//동작 불가 카운트 증가
+        yield return new WaitForSeconds(time);
+        waitCount--; //동작 불가 카운트 감소
+    }
+    /// <summary> 내가 그로기 상태에 들어감</summary>
+    public void Groggy()
+    {
+        wait = Wait(groggyTime);
+        StartCoroutine(wait);
+        IEnumerator groggy = GroggyDown();
+        StartCoroutine(groggy);
+        PlayAnim("Groggy");
+        downGauge.Current = 0;
+    }
+    /// <summary> 그로기 이후에 다운 상태로 들어감</summary>
+    IEnumerator GroggyDown()
+    {
+        Debug.Log("그로기2");
         yield return new WaitForSeconds(1.0f);
-        subDownGauge = false;
+        rigid.AddForce(gameObject.transform.forward * -600);
+        rigid.AddForce(gameObject.transform.up * 500);
     }
 }

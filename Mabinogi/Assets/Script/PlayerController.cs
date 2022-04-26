@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>플레이어 캐릭터 딱 하나</summary>
     Character player;
     /// <summary>마우스로 클릭한 타겟</summary>
-    Character target;
+    Interactable target;
     /// <summary>Ground 레이어와 Enemy 레이어의 레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
 
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 100f, layerMask))//레이, 충돌 정보, 레이 거리, 레이어마스크
             {
-                target = hit.collider.GetComponent<Character>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
+                target = hit.collider.GetComponent<Interactable>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
 
                 //캐릭터 대상 할당 실패            충돌한 대상이 땅이면
                 if(!player.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)

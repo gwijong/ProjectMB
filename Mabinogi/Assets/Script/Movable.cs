@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class Movable : Hitable
 {
     protected NavMeshAgent agent;
-
+    protected bool walk = false;
     /// <summary> 이동 상태</summary>
     public Define.MoveState state = Define.MoveState.Runnable;
 
@@ -24,8 +24,9 @@ public class Movable : Hitable
     }
 
     /// <summary> 내비게이션 이동 메서드 </summary>
-    public virtual void MoveTo(Vector3 goalPosition)  //입력에서 불러옴
+    public virtual void MoveTo(Vector3 goalPosition, bool isWalk = false)  //입력에서 불러옴
     {
+        walk = isWalk;
         agent.isStopped = false;
         agent.SetDestination(goalPosition);  //목적지는 goalPosition 좌표
     }
