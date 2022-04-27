@@ -18,24 +18,36 @@ public class EnemyDummyAI : MonoBehaviour
         {
             return;
         }
-        if(flag == false)
+        if (flag == false)
         {
             flag = true;
             StartCoroutine("DummyAI");
         }
+        LookAt();
     }
 
     IEnumerator DummyAI()
     {
+        yield return new WaitForSeconds(2.0f);
         skillNum = Random.Range(0, 4);
         character.Casting((Define.SkillState)skillNum);
         yield return new WaitForSeconds(4.0f);
-        if(skillNum!=1 && skillNum != 3)
+        if (skillNum != 1 && skillNum != 3)
         {
             character.SetTarget(GameObject.FindGameObjectWithTag("Player").GetComponent<Character>());
-        }      
+        }
+        else
+        {
+        }
         yield return new WaitForSeconds(2.0f);
         character.SetTarget(null);
         flag = false;
+    }
+
+    void LookAt()
+    {
+        Vector3 look = GameObject.FindGameObjectWithTag("Player").transform.position;
+        look.y = transform.position.y;
+        transform.LookAt(look);
     }
 }

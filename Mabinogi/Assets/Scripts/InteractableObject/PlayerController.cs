@@ -92,22 +92,27 @@ public class PlayerController : MonoBehaviour
     /// <summary>키보드 입력으로 스킬 시전</summary>
     void SkillInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("플레이어: 디펜스 시전");
             player.Casting(Define.SkillState.Defense);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("플레이어: 스매시 시전");
             player.Casting(Define.SkillState.Smash);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Debug.Log("플레이어: 카운터 시전");
             player.Casting(Define.SkillState.Counter);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
+            player.Casting(Define.SkillState.Combat);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
             player.Casting(Define.SkillState.Combat);

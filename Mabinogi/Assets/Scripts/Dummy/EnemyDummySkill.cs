@@ -18,17 +18,17 @@ public class EnemyDummySkill : MonoBehaviour
 
     void SkillInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             Debug.Log("적: 디펜스 시전");
             this.GetComponent<Character>().Casting(Define.SkillState.Defense);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             Debug.Log("적: 스매시 시전");
             this.GetComponent<Character>().Casting(Define.SkillState.Smash);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             Debug.Log("적: 카운터 시전");
             this.GetComponent<Character>().Casting(Define.SkillState.Counter);
