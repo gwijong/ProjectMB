@@ -16,6 +16,8 @@ public class EnemyDummyAI : MonoBehaviour
     {
         if (character.die)
         {
+            flag = true;
+            StopCoroutine("DummyAI");
             return;
         }
         if (flag == false)

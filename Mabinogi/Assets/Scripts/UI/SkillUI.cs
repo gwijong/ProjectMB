@@ -12,13 +12,16 @@ public class SkillUI : MonoBehaviour
     bool coroutineFlag = false;
     void Start()
     {
-        character = GetComponent<Character>();
+        character = GetComponentInParent<Character>();
+        if (character==null)
+        {
+            character = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();
+        }     
     }
 
     
     void Update()
     {
-        skillCanvas.transform.LookAt(Camera.main.transform);
         if (character.GetreservedSkill() == null)
         {
             switch (character.GetloadedSkill().type)
@@ -105,14 +108,21 @@ public class SkillUI : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            skillCanvas.transform.localScale = new Vector3(0.4f-(float)i/100, 0.4f - (float)i / 100, 0.4f - (float)i / 100);
+            skillCanvas.transform.localScale = new Vector3(0.4f - (float)i / 100, 0.4f - (float)i / 100, 0.4f - (float)i / 100);
             yield return new WaitForSeconds(0.02f);
         }
         for (int i = 0; i < 10; i++)
         {
             skillCanvas.transform.localScale = new Vector3(0.3f + (float)i / 100, 0.3f + (float)i / 100, 0.3f + (float)i / 100);
             yield return new WaitForSeconds(0.02f);
-        }       
+        }
         coroutineFlag = false;
+    }
+
+    public void SkillCancel()
+    {
+        Debug.Log("Äµ½½");
+        Reset();
+        character.Casting(Define.SkillState.Combat);
     }
 }

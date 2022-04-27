@@ -35,7 +35,7 @@ public class Interactable : MonoBehaviour
     /// <summary> 레이어가 enemy가 아니면 좋은 의지를 가지고 있다고 한다.</summary>
     public static bool HasGoodWill(Interactable target)
     {
-        if(target.gameObject.layer == (int)Define.Layer.Enemy) //타겟의 레이어가 Enemy(적) 인가?
+        if(target.gameObject.layer == (int)Define.Layer.Enemy || target.gameObject.layer == (int)Define.Layer.Tree) //타겟의 레이어가 Enemy(적)인가?
         {
             return false; //적이면 나쁜놈 false
         }

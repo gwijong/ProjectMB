@@ -97,10 +97,10 @@ public class Character : Movable
     /// <summary> 내비게이션 가속도 </summary>
     public float acceleration = 100f;
     #endregion
-    protected override void Start()
+    protected override void Awake()
     {
         #region 변수에 기본값 할당
-        base.Start();
+        base.Awake();
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         agent.angularSpeed = angularSpeed;  //내비게이션 회전값
@@ -124,7 +124,7 @@ public class Character : Movable
 
         downGauge.Max = 100; //다운 게이지
         downGauge.FillableRate = 1.0f;//다운게이지 최대 비율
-        downGauge.Current = 50;  //현재 누적된 다운게이지
+        downGauge.Current = 0;  //현재 누적된 다운게이지
 
 
         maxPhysicalStrikingPower = data.MaxPhysicalStrikingPower;  //최대 물리공격력
@@ -502,6 +502,11 @@ public class Character : Movable
     public Skill GetloadedSkill()
     {
         return loadedSkill;
+    }
+
+    public float GetCurrentHP()
+    {
+        return hitPoint.Current;
     }
 
     /// <summary> 마우스 입력으로 타겟 설정 시도, 키보드 입력시 타겟 해제 </summary>

@@ -17,7 +17,7 @@ public class Movable : Hitable
     [SerializeField] protected float walkSpeed;  //하위 클래스의 Start메서드에서 스크립터블 오브젝트 데이터의 내비메시 스피드 할당
 
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();       
         agent.speed = runSpeed;  //기본은 달리는 속도

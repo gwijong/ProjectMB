@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class PlayerController : MonoBehaviour
 {
     /// <summary>플레이어 캐릭터 딱 하나</summary>
@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     /// <summary>마우스 입력 이동이나 타겟 지정</summary>
     void MouseInput()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick))  //마우스 좌클릭 입력되면
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨

@@ -20,12 +20,12 @@ public class CameraMove : MonoBehaviour
         {
             cameraRotator.x += Input.GetAxis("Mouse X");
             cameraRotator.y -= Input.GetAxis("Mouse Y");
-            cameraRotator.y = Mathf.Clamp(cameraRotator.y, (int)-25/speed, (int)70 /speed);
+            cameraRotator.y = Mathf.Clamp(cameraRotator.y, (int)-25/speed, (int)60 /speed);
             cameraPivot.rotation = Quaternion.Euler(cameraRotator.y * speed, cameraRotator.x * speed, 0) ;
         };
 
         cameraRotator.z += -Input.GetAxis("Mouse ScrollWheel") * speed*2;
-        cameraRotator.z = Mathf.Clamp(cameraRotator.z, 25 , 70);
+        cameraRotator.z = Mathf.Clamp(cameraRotator.z, 25 , 60);
         mainCamera.fieldOfView = cameraRotator.z;
     }
 }
