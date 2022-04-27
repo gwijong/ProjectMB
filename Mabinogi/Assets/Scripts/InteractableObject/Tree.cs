@@ -4,6 +4,7 @@ using UnityEngine;
 public class Tree : Hitable
 {
     public GameObject[] items; //생성할 아이템
+    
     public float maxDistance = 3f; // 플레이어 위치에서 아이템이 배치될 최대 반경
 
     public override bool TakeDamage(Character from)
@@ -43,3 +44,5 @@ public class Tree : Hitable
         return hit.position;
     }
 }
+
+

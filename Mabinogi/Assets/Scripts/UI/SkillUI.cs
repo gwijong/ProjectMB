@@ -109,12 +109,12 @@ public class SkillUI : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             skillCanvas.transform.localScale = new Vector3(0.4f - (float)i / 100, 0.4f - (float)i / 100, 0.4f - (float)i / 100);
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.04f);
         }
         for (int i = 0; i < 10; i++)
         {
             skillCanvas.transform.localScale = new Vector3(0.3f + (float)i / 100, 0.3f + (float)i / 100, 0.3f + (float)i / 100);
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.04f);
         }
         coroutineFlag = false;
     }
