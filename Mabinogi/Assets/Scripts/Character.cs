@@ -141,7 +141,9 @@ public class Character : Movable
         magicProtective = data.MagicProtective;  //마법 보호
         deadly = data.Deadly;  //데들리 확률
 
-        Skill.combatMastery.castingTime = combatData.CastTime;
+
+        //스킬 캐스팅 시간을 스크립터블 데이터의 캐스팅 시간으로 대입
+        Skill.combatMastery.castingTime = combatData.CastTime; 
         Skill.defense.castingTime = defenseData.CastTime;
         Skill.smash.castingTime = smashData.CastTime;
         Skill.counterAttack.castingTime = counterData.CastTime;
@@ -162,12 +164,14 @@ public class Character : Movable
         TargetCheck(); //지정한 타겟 체크
         
     }
+
+    /// <summary> 지정한 타겟이 사물인지, 캐릭터인지 체크하는 구간 </summary>
     void TargetCheck()
     {
         if (focusTarget != null) //마우스로 클릭한 타겟이 있는 경우
         {
-            Vector3 positionDiff = (focusTarget.transform.position - transform.position);
-            positionDiff.y = 0;
+            Vector3 positionDiff = (focusTarget.transform.position - transform.position);//상대 좌표에서 내 좌표 뺌
+            positionDiff.y = 0;//높이 y는 배제함
             float distance = positionDiff.magnitude;  //타겟과 나의 거리
 
             if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
@@ -179,21 +183,22 @@ public class Character : Movable
                 MoveStop(true); //다가가는 이동 멈춤
 
 
-                Character focusAsCharacter = null;
+                Character focusAsCharacter = null; //나무 같은 사물은 못 들어감, 늑대 , 닭 같은 캐릭터만 들어감
 
-                if(focusTarget.GetType().IsSubclassOf(typeof(Character)))
+                //Type.IsSubclassOf : Type에서 파생되는지 여부를 확인
+                if (focusTarget.GetType().IsSubclassOf(typeof(Character))) //파생 클래스 캐릭터가 있는지 체크, 있으면 true
                 {
-                    focusAsCharacter = (Character)focusTarget;
+                    focusAsCharacter = (Character)focusTarget;//지정된 대상
                 };
 
                 switch (focusTarget.Interact(this))//대상과 자신의 상호작용 타입
                 {
                     case Define.InteractType.Attack: //상호작용 타입이 공격이면
-                        if (skillCastingTimeLeft > 0
-                            || loadedSkill.cannotAttack
-                            || (focusAsCharacter != null && focusAsCharacter.die == true))
+                        if (skillCastingTimeLeft > 0 //스킬 시전 시간이 남았거나
+                            || loadedSkill.cannotAttack //선공 불가 스킬을 시전했거나
+                            || (focusAsCharacter != null && focusAsCharacter.die == true)) //지정된 대상이 있으면서 지정된 대상이 사망했으면
                         {
-                            break;
+                            break;//케이스문 탈출
                         };
 
                         Attack((Hitable)focusTarget); //공격한다
@@ -201,7 +206,7 @@ public class Character : Movable
                     case Define.InteractType.Talk:  //상호작용 타입이 우호적이면
                         //여기선 대화로 풀어나가기
                         break;
-                    default: Debug.Log(focusTarget.Interact(this));
+                    default: Debug.Log(focusTarget.Interact(this));//이상한 값 들어오면 디버그
 
                         break;
                 };
@@ -209,19 +214,29 @@ public class Character : Movable
             }
         };
     }
+    /// <summary> 움직일 수 있는지 체크 </summary>
     bool MovableCheck()
     {
-        bool CanMove = waitCount == 0;
+        bool CanMove; //움직일 수 있난가?
+        if(waitCount == 0) // waitCount 누적치가 정확히 0인 경우
+        {
+            CanMove = true;
+        }
+        else
+        {
+            CanMove = false; //waitCount가 남아서 움직일 수 없음
+        }
 
-        if (!CanMove)  //동작 불가 코루틴 값이 0일 경우
+        if (CanMove == false)  //동작 불가일 경우
         {
             focusTarget = null;  //타겟을 null로 바꿈(맞는 중에 공격 할 수 없기 때문)
         };
 
-        MoveStop(!CanMove);
+        MoveStop(!CanMove);//내비게이션 이동 메서드에 이동가능한지 bool값 넣어줌
         return CanMove;
     }
 
+    /// <summary> 스킬 준비, 완료 </summary>
     void SkillReady()
     {       
         if (skillCastingTimeLeft >= 0 && reservedSkill != null) //스킬 시전 시간이 남았고 시전중인 스킬이 있을 경우
@@ -236,6 +251,8 @@ public class Character : Movable
             reservedSkill = null;  // 준비중인 스킬 null로 전환
         }
     }
+
+    /// <summary> 시전한 스킬에 따라 이동속도 변경 </summary>
     void setMoveSpeed(Define.SkillState type)
     {
         float result = runSpeed;
