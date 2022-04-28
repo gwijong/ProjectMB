@@ -447,13 +447,11 @@ public class Character : Movable
             switch (loadedSkill.type)
             {
                 case Define.SkillState.Defense:
-                    Debug.Log("적 디펜스 성공");
                     PlayAnim("Defense"); //적 디펜스 애니메이션 재생
                     StartCoroutine(Wait(1f));//적 디펜스 시전 중 이동 막기
                     //공격을 막았는데 디펜스로 막음
                     break;
                 case Define.SkillState.Counter:
-                    Debug.Log("적 카운터 성공");
                     PlayAnim("Counter");//적 카운터 애니메이션 재생
                     StartCoroutine(Wait(2f));//적 카운터 시전 중 이동 막기
                     //공격을 막았는데 카운터로 막음
@@ -617,7 +615,6 @@ public class Character : Movable
     /// <summary> 그로기 이후에 다운 상태로 들어감</summary>
     IEnumerator GroggyDown()
     {
-        Debug.Log("그로기2");
         yield return new WaitForSeconds(1.0f);
         rigid.AddForce(gameObject.transform.forward * -600);
         rigid.AddForce(gameObject.transform.up * 500);

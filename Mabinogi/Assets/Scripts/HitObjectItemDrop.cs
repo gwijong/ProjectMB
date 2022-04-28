@@ -11,8 +11,8 @@ public class HitObjectItemDrop : Hitable
     {
         //플레이어 근처에서 내비메시 위의 랜덤 위치 가져오기
         Vector3 spawnPosition = GetRandomPointOnNavMesh(from.transform.position, maxDistance);//매개변수 2개
-        //바닥에서 0.5만큼 위로 올리기
-        spawnPosition += Vector3.up * 0.5f;
+        //바닥에서 2만큼 y좌표 위로 올리기
+        spawnPosition += Vector3.up * 2f;
 
         //아이템 중 하나를 무작위로 골라 랜덤 위치에 생성
         GameObject selectedItem = items[Random.Range(0, items.Length)];
