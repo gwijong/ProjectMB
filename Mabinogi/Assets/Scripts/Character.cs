@@ -83,8 +83,8 @@ public class Character : Movable
     protected bool groggy = false;
     /// <summary> 사망 체크 </summary>
     public bool die = false;
-    Rigidbody rigid;
-    Animator anim;
+    protected Rigidbody rigid;
+    protected Animator anim;
 
     //스킬데이터 스크립터블 오브젝트들
     public SkillData combatData;  //기본공격 컴벳 스킬 데이터
