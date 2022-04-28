@@ -8,15 +8,19 @@ public class HPUI : MonoBehaviour
     public Image hpGauge;
     float maxHP;
     float currentHP;
+    Character character;
     void Start()
     {
-        maxHP = gameObject.GetComponentInParent<Character>().GetCurrentHP();        
+        maxHP = gameObject.GetComponentInParent<Character>().GetCurrentHP();
+        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
+        GameManager.update.UpdateMethod += OnUpdate;
+        character = gameObject.GetComponentInParent<Character>();//부모 오브젝트의 캐릭터 컴포넌트 가져오기
     }
 
     // Update is called once per frame
-    void Update()
+    void OnUpdate()
     {
-        currentHP = gameObject.GetComponentInParent<Character>().GetCurrentHP();
-        hpGauge.fillAmount = currentHP / maxHP;
+        currentHP = character.GetCurrentHP();//생명력 가져옴
+        hpGauge.fillAmount = currentHP / maxHP; //생명력 이미지 채워진 비율 갱신
     }
 }

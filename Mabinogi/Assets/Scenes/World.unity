@@ -2923,7 +2923,7 @@ Transform:
   m_Children:
   - {fileID: 1448852008}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &537735326
 GameObject:
@@ -6349,7 +6349,7 @@ GameObject:
   - component: {fileID: 1141139341}
   - component: {fileID: 1141139340}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: '@Manager'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6367,7 +6367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77541909cabf46d4f95fc32c6a41ddfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameover: 0
 --- !u!114 &1141139341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6392,7 +6391,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1153503563
 PrefabInstance:
@@ -6654,7 +6653,7 @@ Transform:
   m_Children:
   - {fileID: 1802619732}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1178535242
 GameObject:
@@ -6828,7 +6827,7 @@ Transform:
   - {fileID: 484666521}
   - {fileID: 1787122702}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &1178535250
 MonoBehaviour:
@@ -7774,7 +7773,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1394121947
 GameObject:
@@ -9715,7 +9714,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1625485149
 PrefabInstance:
@@ -10212,7 +10211,7 @@ Transform:
   - {fileID: 543450652197013338}
   - {fileID: 543450652378319746}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1696968268
 GameObject:
@@ -12149,7 +12148,7 @@ GameObject:
   - component: {fileID: 2094427187}
   - component: {fileID: 2094427186}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12234,7 +12233,7 @@ RectTransform:
   - {fileID: 2080774484}
   - {fileID: 704015989}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -14072,7 +14071,7 @@ Transform:
   - {fileID: 7458781902744875565}
   - {fileID: 355165905}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &543450652375181684
 Transform:
@@ -15568,7 +15567,7 @@ GameObject:
   - component: {fileID: 919132148341105319}
   - component: {fileID: 919132148341105318}
   m_Layer: 13
-  m_Name: Dog
+  m_Name: Player(Dog)
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

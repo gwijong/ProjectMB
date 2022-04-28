@@ -4,39 +4,40 @@ using UnityEngine;
 
 public class EnemyDummySkill : MonoBehaviour
 {
-    // Start is called before the first frame update
+    Character character;//적 캐릭터
+
     void Start()
     {
-        
+        character = GetComponent<Character>();
+        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
+        GameManager.update.UpdateMethod += OnUpdate;
     }
 
     // Update is called once per frame
-    void Update()
+    void OnUpdate()
     {
         SkillInput();
     }
 
+
+    /// <summary> 7컴벳  8디펜스  9스매시  0카운터 </summary>
     void SkillInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            Debug.Log("적: 디펜스 시전");
-            this.GetComponent<Character>().Casting(Define.SkillState.Defense);
+            character.Casting(Define.SkillState.Defense);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            Debug.Log("적: 스매시 시전");
-            this.GetComponent<Character>().Casting(Define.SkillState.Smash);
+            character.Casting(Define.SkillState.Smash);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            Debug.Log("적: 카운터 시전");
-            this.GetComponent<Character>().Casting(Define.SkillState.Counter);
+            character.Casting(Define.SkillState.Counter);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            Debug.Log("적: 스킬 취소, 컴벳으로 전환");
-            this.GetComponent<Character>().Casting(Define.SkillState.Combat);
+            character.Casting(Define.SkillState.Combat);
         }
 
 
