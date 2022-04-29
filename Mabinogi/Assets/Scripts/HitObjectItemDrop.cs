@@ -1,6 +1,6 @@
 using UnityEngine.AI; // 내비메시 관련 코드
 using UnityEngine;
-
+using System.Collections;
 public class HitObjectItemDrop : Hitable
 {
     public GameObject[] items; //생성할 아이템
@@ -9,6 +9,9 @@ public class HitObjectItemDrop : Hitable
 
     public override bool TakeDamage(Character from)
     {
+        StopCoroutine("Shake");//기존 나무 흔들기 코루틴 중지
+        StartCoroutine("Shake");//나무 흔들기 코루틴 실행
+
         //플레이어 근처에서 내비메시 위의 랜덤 위치 가져오기
         Vector3 spawnPosition = GetRandomPointOnNavMesh(from.transform.position, maxDistance);//매개변수 2개
         //바닥에서 2만큼 y좌표 위로 올리기
@@ -38,6 +41,22 @@ public class HitObjectItemDrop : Hitable
         NavMesh.SamplePosition(randomPos, out hit, distance, NavMesh.AllAreas);//out = 출력전용 매개변수
         //찾은 점 반환
         return hit.position;
+    }
+
+    IEnumerator Shake()
+    {
+        for(int i = 0; i<10; i++)
+        {
+            if(i%2 == 0)
+            {
+                transform.position = transform.position + new Vector3(0.05f, 0, 0.05f);
+            }
+            else
+            {
+                transform.position = transform.position + new Vector3(-0.05f, 0,-0.05f);
+            }
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
 

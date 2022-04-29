@@ -152,6 +152,7 @@ public class Character : Movable
 
     protected virtual void OnUpdate()
     {
+
         downGauge.Current -= 5 * Time.deltaTime;
         PlayAnim("Move", agent.velocity.magnitude);  //이동을 내비에서 float 값으로 받아와서 애니메이션 재생
 
@@ -173,7 +174,6 @@ public class Character : Movable
             Vector3 positionDiff = (focusTarget.transform.position - transform.position);//상대 좌표에서 내 좌표 뺌
             positionDiff.y = 0;//높이 y는 배제함
             float distance = positionDiff.magnitude;  //타겟과 나의 거리
-
             if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
             {
                 MoveTo(focusTarget.transform.position);  //다가가도록 이동
@@ -217,8 +217,8 @@ public class Character : Movable
     /// <summary> 움직일 수 있는지 체크 </summary>
     bool MovableCheck()
     {
-        bool CanMove; //움직일 수 있난가?
-        if(waitCount == 0) // waitCount 누적치가 정확히 0인 경우
+        bool CanMove = true; //움직일 수 있는가가?
+        if (waitCount == 0) // waitCount 누적치가 정확히 0인 경우
         {
             CanMove = true;
         }
@@ -266,7 +266,6 @@ public class Character : Movable
                 break;
         };
         if (walk && result > walkSpeed) result = walkSpeed;
-
         agent.speed = result;
     }
 
@@ -336,7 +335,8 @@ public class Character : Movable
             float waitTime = 0.0f;
             switch(loadedSkill.type)
             {
-                case Define.SkillState.Combat: waitTime = 1.0f;
+                case Define.SkillState.Combat:
+                    waitTime = 1.0f;
                     break;
                 case Define.SkillState.Smash: waitTime = 4.0f;
                     break;
@@ -433,7 +433,7 @@ public class Character : Movable
             }
             this.hitPoint.Current -= damage;
             
-            if (this.hitPoint.Current <= 0)//생명력이 0이하일 경우 사망
+            if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
             {
                 DieCheck();
                 this.downGauge.Current = 100;
@@ -584,6 +584,10 @@ public class Character : Movable
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
     protected void PlayAnim(string wantName)  
     {
+        if(wantName == "Combat") //애니메이션 스킬이 컴벳일 경우 3가지 랜덤한 애니메이션 실행
+        {
+            anim.SetInteger("CombatNumber", Random.Range(0, 3));
+        }
         if (anim != null) anim.SetTrigger(wantName);
     }
     /// <summary> 애니메이터 파라미터(bool) 설정</summary>

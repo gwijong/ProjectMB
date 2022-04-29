@@ -104,7 +104,8 @@ public class SkillList
     /// <summary> 내가 배운 스킬들</summary>
     SkillInfo[] skills;
     /// <summary> 개의 스킬 정보</summary>
-    static CharacterSkill dogSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/DogSkill");
+    static CharacterSkill dogSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/DogSkill"); 
+    static CharacterSkill playerSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/PlayerSkill");
     /// <summary> 스킬 정보 하나 인덱스로 사용</summary>
     public SkillInfo this[int index]
     {
@@ -143,6 +144,14 @@ public class SkillList
         new SkillInfo(Define.SkillState.Defense, dogSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, dogSkill.CounterRank),
     });
+
+    public static SkillList player = new SkillList(new SkillInfo[]
+{
+        new SkillInfo(Define.SkillState.Combat, playerSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Smash, playerSkill.SmashRank),
+        new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
+        new SkillInfo(Define.SkillState.Counter, playerSkill.CounterRank),
+});
     /// <summary> 닭이 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList chicken;
 
