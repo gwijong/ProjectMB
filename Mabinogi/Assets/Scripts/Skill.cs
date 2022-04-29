@@ -152,8 +152,12 @@ public class SkillList
         new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, playerSkill.CounterRank),
 });
-    /// <summary> 닭이 가진 스킬들을 스킬 리스트에 대입</summary>
-    public static SkillList chicken;
+    /// <summary> 암탉이 가진 스킬들을 스킬 리스트에 대입</summary>
+    public static SkillList hen = new SkillList(new SkillInfo[]
+{
+        new SkillInfo(Define.SkillState.Combat, playerSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
+});
 
     /// <summary> 늑대가 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList wolf = new SkillList(new SkillInfo[]

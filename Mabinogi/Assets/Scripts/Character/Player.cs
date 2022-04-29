@@ -15,7 +15,7 @@ public class Player : Character
 
     private void Start()
     {
-        anim = GameObject.FindGameObjectWithTag("PlayerBody").GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
     }

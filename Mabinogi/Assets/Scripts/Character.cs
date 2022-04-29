@@ -436,7 +436,6 @@ public class Character : Movable
             if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
             {
                 DieCheck();
-                this.downGauge.Current = 100;
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
             {
@@ -564,6 +563,7 @@ public class Character : Movable
     /// <summary> 다운 </summary>
     public void DownCheck()
     {
+        rigid.velocity = new Vector3(0, 0, 0);
         rigid.AddForce(gameObject.transform.forward * -600);
         rigid.AddForce(gameObject.transform.up * 500);
         wait = Wait(downTime);
@@ -577,6 +577,7 @@ public class Character : Movable
     {
         die = true;
         PlayAnim("Die");
+        rigid.velocity = new Vector3(0, 0, 0);
         rigid.AddForce(gameObject.transform.forward * -600);
         rigid.AddForce(gameObject.transform.up * 500);
     }

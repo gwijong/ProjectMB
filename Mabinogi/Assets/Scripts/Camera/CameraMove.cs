@@ -32,7 +32,7 @@ public class CameraMove : MonoBehaviour
 
         //마우스 휠 값 입력받아서 카메라 줌인 줌아웃
         cameraRotator.z += -Input.GetAxis("Mouse ScrollWheel") * speed * 2;
-        cameraRotator.z = Mathf.Clamp(cameraRotator.z, 25, 60); //너무 가깝거나 멀지 않도록 제약
+        cameraRotator.z = Mathf.Clamp(cameraRotator.z, 25, 80); //너무 가깝거나 멀지 않도록 제약
         mainCamera.fieldOfView = cameraRotator.z;
     }
 }
