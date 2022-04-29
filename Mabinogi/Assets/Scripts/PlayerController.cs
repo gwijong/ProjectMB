@@ -2,18 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     /// <summary>플레이어 캐릭터 딱 하나</summary>
-    Character player;
+    public GameObject player;
+    Character playerCharacter;
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
     /// <summary>Ground 레이어와 Enemy 레이어의 레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
 
+    private void Awake()
+    {
+        player.tag = "Player";
+        player.layer = (int)Define.Layer.Player;
+        playerCharacter = player.GetComponent<Character>();
+        player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = true;
+        GetComponentInChildren<CameraPivot>().following_object = player.transform;
+        player.GetComponent<EnemyDummyAI>().enabled = false;
+    }
     private void Start()
     {      
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Character>();  //플레이어 태그 찾아서 가져옴
+        ;  //플레이어 태그 찾아서 가져옴
 
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
@@ -22,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     void OnUpdate()
     {
-        if(player.die == true)
+        if(playerCharacter.die == true)
         {
             return;
         }
@@ -37,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            player.SetOffensive();
+            playerCharacter.SetOffensive();
         };
     }
 
@@ -49,6 +60,35 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
+        if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick) && Input.GetKey(KeyCode.LeftControl))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨
+            RaycastHit hit;  //충돌 물체 정보 받아올 데이터 컨테이너
+
+            if (Physics.Raycast(ray, out hit, 100f, layerMask))//레이, 충돌 정보, 레이 거리, 레이어마스크
+            {
+                target = hit.collider.GetComponent<Character>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
+
+                if (target != null)
+                {
+                    player.GetComponent<EnemyDummyAI>().enabled = true;
+                    player.tag = "Untagged";
+                    player.layer = (int)Define.Layer.Enemy;
+                    player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = false;
+
+                    player = hit.collider.gameObject;
+                    player.tag = "Player";
+                    player.layer = (int)Define.Layer.Player;
+                    playerCharacter = player.GetComponent<Character>();
+                    player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = true;
+                    player.GetComponent<EnemyDummyAI>().enabled = false;
+                    GetComponentInChildren<CameraPivot>().following_object = player.transform;
+                }
+            };
+            return;
+        }
+
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick))  //마우스 좌클릭 입력되면
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨
@@ -59,9 +99,9 @@ public class PlayerController : MonoBehaviour
                 target = hit.collider.GetComponent<Interactable>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
 
                 //캐릭터 대상 할당 실패            충돌한 대상이 땅이면
-                if(!player.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)
+                if(!playerCharacter.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)
                 {
-                    player.MoveTo(hit.point);  //충돌한 좌표로 플레이어 캐릭터 이동
+                    playerCharacter.MoveTo(hit.point);  //충돌한 좌표로 플레이어 캐릭터 이동
                 };
             };
         };
@@ -93,8 +133,8 @@ public class PlayerController : MonoBehaviour
             Vector3 calculatedLocation = cameraForward + cameraRight;  //계산된 좌표
             calculatedLocation += player.transform.position; //계산된 좌표에 플레이어의 현재 위치를 더함
 
-            player.SetTarget(null);//키보드 이동중이므로 지정된 타겟을 비움
-            player.MoveTo(calculatedLocation); //플레이어위치에서 계산된 좌표로 조금씩 이동
+            playerCharacter.SetTarget(null);//키보드 이동중이므로 지정된 타겟을 비움
+            playerCharacter.MoveTo(calculatedLocation); //플레이어위치에서 계산된 좌표로 조금씩 이동
         };
     }
 
@@ -104,27 +144,27 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("플레이어: 디펜스 시전");
-            player.Casting(Define.SkillState.Defense);
+            playerCharacter.Casting(Define.SkillState.Defense);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("플레이어: 스매시 시전");
-            player.Casting(Define.SkillState.Smash);
+            playerCharacter.Casting(Define.SkillState.Smash);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Debug.Log("플레이어: 카운터 시전");
-            player.Casting(Define.SkillState.Counter);
+            playerCharacter.Casting(Define.SkillState.Counter);
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
-            player.Casting(Define.SkillState.Combat);
+            playerCharacter.Casting(Define.SkillState.Combat);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
-            player.Casting(Define.SkillState.Combat);
+            playerCharacter.Casting(Define.SkillState.Combat);
         }
     }
 }

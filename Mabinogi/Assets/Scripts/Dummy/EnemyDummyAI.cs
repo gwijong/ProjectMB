@@ -9,34 +9,47 @@ public class EnemyDummyAI : MonoBehaviour
     Character playerCharacter; //적(플레이어 캐릭터 컴포넌트)
     bool aiStart = false; //인공지능 시작 체크
     int skillNum; //인공지능이 시전할 랜덤 스킬 번호
+    IEnumerator coroutine;
 
+    private void OnEnable()
+    {
+        aiStart = false;
+        coroutine = DummyAI();
+    }
     private void Start()
     {
         character = gameObject.GetComponent<Character>();//이 몬스터 캐릭터 가져오기
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
         player = GameObject.FindGameObjectWithTag("Player"); //플레이어 오브젝트 찾아옴
-        playerCharacter = player.GetComponent<Character>();//플레이어 캐릭터 가져오기
+        playerCharacter = player.GetComponent<Character>();//플레이어 캐릭터 가져오기       
     }
     void OnUpdate()
     {
         if (character.die)//자신 캐릭터 사망시 동작하지 않음
         {
             aiStart = true;
-            StopCoroutine("DummyAI"); //인공지능 코루틴 중지
+            stopCoroutine(); //인공지능 코루틴 중지
             return;
         }
         if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
         {
             aiStart = true;
-            StartCoroutine("DummyAI"); //인공지능 코루틴 시작
+            StartCoroutine(coroutine); //인공지능 코루틴 시작
         }
         LookAt();//타겟을 계속 쳐다봄
+    }
+
+    public void stopCoroutine()
+    {
+        if(coroutine!=null)
+        StopCoroutine(coroutine);
     }
 
     /// <summary> 더미 인공지능 </summary>
     IEnumerator DummyAI()
     {
+        character.Casting(Define.SkillState.Combat);
         yield return new WaitForSeconds(2.0f); //우선 2초 대기
         skillNum = Random.Range(0, 4);  //스킬 고름
         character.Casting((Define.SkillState)skillNum);  //스킬 시전
@@ -53,6 +66,8 @@ public class EnemyDummyAI : MonoBehaviour
     /// <summary> 적(플레이어)를 계속 바라보는 메서드 </summary>
     void LookAt()
     {
+        player = GameObject.FindGameObjectWithTag("Player"); //플레이어 오브젝트 찾아옴
+        playerCharacter = player.GetComponent<Character>();//플레이어 캐릭터 가져오기
         Vector3 look = player.transform.position;//플레이어 위치
         look.y = transform.position.y; //위 아래를 쳐다보지 않음, 회전만 함
         transform.LookAt(look);
