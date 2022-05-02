@@ -104,8 +104,19 @@ public class SkillList
     /// <summary> 내가 배운 스킬들</summary>
     SkillInfo[] skills;
     /// <summary> 개의 스킬 정보</summary>
-    static CharacterSkill dogSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/DogSkill"); 
+    static CharacterSkill dogSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/DogSkill");
+    /// <summary> 플레이어의 스킬 정보</summary>
     static CharacterSkill playerSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/PlayerSkill");
+    /// <summary> 암탉의 스킬 정보</summary>
+    static CharacterSkill henSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/HenSkill");
+    /// <summary> 수탉의 스킬 정보</summary>
+    static CharacterSkill roosterSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/RoosterSkill");
+    /// <summary> 여우 스킬 정보</summary>
+    static CharacterSkill foxrSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/FoxSkill");
+    /// <summary> 양의 스킬 정보</summary>
+    static CharacterSkill sheepSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/SheepSkill");
+    /// <summary> 늑대의 스킬 정보</summary>
+    static CharacterSkill wolfSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/WolfSkill");
     /// <summary> 스킬 정보 하나 인덱스로 사용</summary>
     public SkillInfo this[int index]
     {
@@ -145,27 +156,47 @@ public class SkillList
         new SkillInfo(Define.SkillState.Counter, dogSkill.CounterRank),
     });
 
+    /// <summary> 플레이어가 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList player = new SkillList(new SkillInfo[]
-{
+    {
         new SkillInfo(Define.SkillState.Combat, playerSkill.CombatRank),
         new SkillInfo(Define.SkillState.Smash, playerSkill.SmashRank),
         new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, playerSkill.CounterRank),
-});
+    });
     /// <summary> 암탉이 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList hen = new SkillList(new SkillInfo[]
-{
-        new SkillInfo(Define.SkillState.Combat, playerSkill.CombatRank),
-        new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
-});
+    {
+        new SkillInfo(Define.SkillState.Combat, henSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Defense, henSkill.DefenseRank),
+    });
+    /// <summary> 수탉이 가진 스킬들을 스킬 리스트에 대입</summary>
+    public static SkillList rooster = new SkillList(new SkillInfo[]
+    {
+        new SkillInfo(Define.SkillState.Combat, roosterSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Defense, roosterSkill.DefenseRank),
+    });
 
+    /// <summary> 여우가 가진 스킬들을 스킬 리스트에 대입</summary>
+    public static SkillList fox = new SkillList(new SkillInfo[]
+    {
+        new SkillInfo(Define.SkillState.Combat, foxrSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Defense, foxrSkill.DefenseRank),
+    });
+    /// <summary> 양이 가진 스킬들을 스킬 리스트에 대입</summary>
+    /// 
+    public static SkillList sheep = new SkillList(new SkillInfo[]
+    {
+        new SkillInfo(Define.SkillState.Combat, sheepSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Defense, sheepSkill.DefenseRank),
+    });
     /// <summary> 늑대가 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList wolf = new SkillList(new SkillInfo[]
     {
-        new SkillInfo(Define.SkillState.Combat, 4),
-        new SkillInfo(Define.SkillState.Smash, 1),
-        new SkillInfo(Define.SkillState.Defense, 1),
-        new SkillInfo(Define.SkillState.Counter, 1),
+        new SkillInfo(Define.SkillState.Combat, wolfSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Smash, wolfSkill.SmashRank),
+        new SkillInfo(Define.SkillState.Defense, wolfSkill.DefenseRank),
+        new SkillInfo(Define.SkillState.Counter, wolfSkill.CounterRank),
     });
 
 }
