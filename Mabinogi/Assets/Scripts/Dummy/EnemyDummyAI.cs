@@ -35,11 +35,13 @@ public class EnemyDummyAI : MonoBehaviour
         if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
         {
             aiStart = true;
+            coroutine = DummyAI();
             StartCoroutine(coroutine); //인공지능 코루틴 시작
         }
         LookAt();//타겟을 계속 쳐다봄
     }
 
+    /// <summary> 코루틴 중지 </summary>
     public void stopCoroutine()
     {
         if(coroutine!=null)
@@ -61,6 +63,7 @@ public class EnemyDummyAI : MonoBehaviour
         yield return new WaitForSeconds(2.0f); //2초 대기
         character.SetTarget(null); //타겟 해제
         aiStart = false; //코루틴 재실행 준비
+
     }
 
     /// <summary> 적(플레이어)를 계속 바라보는 메서드 </summary>

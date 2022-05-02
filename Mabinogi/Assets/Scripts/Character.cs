@@ -35,7 +35,7 @@ public class Character : Movable
     /// <summary> 조작 가능 여부</summary>
     protected bool controllable = true;
     /// <summary> 일상, 전투모드 값</summary>
-    protected bool offensive = false;
+    protected bool offensive = true;
     /// <summary> 최대물리공격력 </summary>
     public int maxPhysicalStrikingPower;
     /// <summary> 최대마법공격력 </summary>
@@ -147,6 +147,9 @@ public class Character : Movable
         Skill.defense.castingTime = defenseData.CastTime;
         Skill.smash.castingTime = smashData.CastTime;
         Skill.counterAttack.castingTime = counterData.CastTime;
+
+        SetOffensive();//일상모드로 전환하고 이동속도를 걷기로 맞춰줌
+
         #endregion
     }
 
@@ -366,7 +369,7 @@ public class Character : Movable
                     //카운터는 반격 당하고 다운됨
                     case Define.SkillState.Counter:
                         this.downGauge.Current += counterData.DownGauge;
-                        float damage = CalculateDamage(Define.SkillState.Counter);
+                        float damage = asCharacter.CalculateDamage(Define.SkillState.Counter);
                         this.hitPoint.Current -= damage;
                         Debug.Log("카운터 공격 대미지: " + damage);
                         Groggy();//반격 당했으므로 그로기 상태에 빠짐
@@ -407,6 +410,7 @@ public class Character : Movable
         SetOffensive(true); //전투모드로 전환
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
         agent.speed = runSpeed; //이동속도 초기화
+        walk = false;
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
         if (Attacker.loadedSkill != null && this.focusTarget == Attacker || (this.loadedSkill != null && this.loadedSkill.mustCheck) )
         {
@@ -552,6 +556,20 @@ public class Character : Movable
     {
         offensive = !offensive;
         PlayAnim("Offensive", offensive);
+        if (!offensive && agent.speed >= runSpeed)
+        {
+            walk = true;
+            agent.speed = walkSpeed;
+        }
+        else if (offensive)
+        {
+            walk = false;
+            agent.speed = runSpeed;
+            if (reservedSkill != null)
+                setMoveSpeed(reservedSkill.type);
+            if (loadedSkill != null)
+                setMoveSpeed(loadedSkill.type);
+        }
     }
     /// <summary> 매개변수 값을 줘서 일상, 전투모드 전환 </summary>
     public void SetOffensive(bool value)
