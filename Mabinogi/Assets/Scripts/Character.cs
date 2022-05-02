@@ -180,6 +180,10 @@ public class Character : Movable
             if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
             {
                 MoveTo(focusTarget.transform.position);  //다가가도록 이동
+                if(focusTarget.Interact(this)== Define.InteractType.Attack)//대상이 적이면 전투모드로 이동
+                {
+                    SetOffensive(true);
+                }
             }
             else //거리가 상호작용 가능 거리보다 가까운 경우
             {
@@ -443,7 +447,11 @@ public class Character : Movable
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
             {
-                PlayAnim("HitA");  //피격 애니메이션 재생
+                //그로기 상태거나 날아가는 상태가 아니면
+                if(anim.GetCurrentAnimatorClipInfo(0)[0].clip.name!="Groggy"|| anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Blowaway_Ground")
+                {
+                    PlayAnim("HitA");  //피격 애니메이션 재생
+                }
                 wait = Wait(hitTime);
                 StartCoroutine(wait);
 
@@ -576,6 +584,21 @@ public class Character : Movable
     {
         offensive = value;
         PlayAnim("Offensive", offensive);
+
+        if (!offensive && agent.speed >= runSpeed)
+        {
+            walk = true;
+            agent.speed = walkSpeed;
+        }
+        else if (offensive)
+        {
+            walk = false;
+            agent.speed = runSpeed;
+            if (reservedSkill != null)
+                setMoveSpeed(reservedSkill.type);
+            if (loadedSkill != null)
+                setMoveSpeed(loadedSkill.type);
+        }
     }
 
     /// <summary> 다운 </summary>
