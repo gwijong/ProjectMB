@@ -60,4 +60,14 @@ public class Define
         Walkable,
         Runnable,
     }
+
+    public enum Item
+    {
+        None,
+        Fruit,
+        Bottle,
+        Egg,
+        LifePotion,
+        ManaPotion,
+    }
 }
