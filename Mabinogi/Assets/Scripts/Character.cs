@@ -7,11 +7,11 @@ public class Character : Movable
     
     #region 맴버 변수
     /// <summary> 생명력 게이지 summary>
-    protected Gauge hitPoint = new Gauge();
+    public Gauge hitPoint = new Gauge();
     /// <summary> 마나 게이지 summary>
-    protected Gauge manaPoint = new Gauge();
+    public Gauge manaPoint = new Gauge();
     /// <summary> 스태미나 게이지 summary>
-    protected Gauge staminaPoint = new Gauge();
+    public Gauge staminaPoint = new Gauge();
     /// <summary> 다운 게이지 summary>
     protected Gauge downGauge = new Gauge();
     /// <summary> 캐릭터 데이터(플레이어, 개, 늑대 등) summary>
@@ -156,7 +156,8 @@ public class Character : Movable
     protected virtual void OnUpdate()
     {
 
-        downGauge.Current -= 5 * Time.deltaTime;
+        GaugeCheck(); // 각종 게이지 관리
+
         PlayAnim("Move", agent.velocity.magnitude);  //이동을 내비에서 float 값으로 받아와서 애니메이션 재생
 
         TargetLookAt(focusTarget); //타겟 바라보기
@@ -167,6 +168,21 @@ public class Character : Movable
 
         TargetCheck(); //지정한 타겟 체크
         
+    }
+
+    /// <summary> 게이지들 업데이트 </summary>
+    void GaugeCheck()
+    {
+        downGauge.Current -= 5 * Time.deltaTime; //다운게이지를 초당 5씩 빼줌
+        if (loadedSkill.type == Define.SkillState.Combat && reservedSkill == null) //스킬이 컴벳이고 시전중인 스킬이 없는 경우
+        {
+            staminaPoint.Current += 0.4f * Time.deltaTime; //스태미나 초당 0.4 증가
+            manaPoint.Current += 0.1f * Time.deltaTime; // 마나 초당 0.1 증가
+        }
+        if (loadedSkill.type == Define.SkillState.Counter) //시전된 스킬이 카운터이면
+        {
+            staminaPoint.Current -= 1 * Time.deltaTime; //초당 1씩 스태미나 감소
+        }
     }
 
     /// <summary> 지정한 타겟이 사물인지, 캐릭터인지 체크하는 구간 </summary>
@@ -207,7 +223,6 @@ public class Character : Movable
                         {
                             break;//케이스문 탈출
                         };
-
                         Attack((Hitable)focusTarget); //공격한다
                         break;
                     case Define.InteractType.Talk:  //상호작용 타입이 우호적이면
@@ -227,7 +242,7 @@ public class Character : Movable
         bool CanMove = true; //움직일 수 있는가가?
         if (waitCount == 0) // waitCount 누적치가 정확히 0인 경우
         {
-            CanMove = true;
+            CanMove = true; //이동 가능
         }
         else
         {
@@ -317,7 +332,9 @@ public class Character : Movable
     {
         SetOffensive(true);//전투모드로 전환
         this.transform.LookAt(enemyTarget.transform); //타겟을 바라본다.
-        if (waitCount != 0) //동작 불가 상태이면 공격을 못 하므로
+
+        //동작 불가 상태이거나 컴벳인데 스태미나가 2 미만이면 공격을 못 하므로
+        if (waitCount != 0 ||(loadedSkill.type==Define.SkillState.Combat && staminaPoint.Current<combatData.CastCost)) 
         {
             return;  //바로 이 메서드를 나간다
         }
@@ -344,6 +361,7 @@ public class Character : Movable
             {
                 case Define.SkillState.Combat:
                     waitTime = 1.0f;
+                    staminaPoint.Current -= combatData.CastCost; //근접 공격은 스태미나를 2 차감
                     break;
                 case Define.SkillState.Smash: waitTime = 4.0f;
                     break;
@@ -539,18 +557,18 @@ public class Character : Movable
     /// <summary> 마우스 입력으로 타겟 설정 시도, 키보드 입력시 타겟 해제 </summary>
     public bool SetTarget(Interactable target)
     {
-        if (target == null)
+        if (target == null) //타겟이 널이면
         {
-            focusTarget = null;
+            focusTarget = null;  //바라보는 타겟을 null 대입
             return false;
         };
 
-        if (gameObject.layer == (int)Define.Layer.Player && target.gameObject.layer == (int)Define.Layer.Enemy)
+        if (gameObject.layer == (int)Define.Layer.Player && target.gameObject.layer == (int)Define.Layer.Enemy) //플레이어의 타겟이 적인 경우
         {
             focusTarget = target;
             return true;
         }
-        else if(gameObject.layer == (int)Define.Layer.Enemy && target.gameObject.layer == (int)Define.Layer.Player)
+        else if(gameObject.layer == (int)Define.Layer.Enemy && target.gameObject.layer == (int)Define.Layer.Player) // 적의 타겟이 플레이어인 경우
         {
             focusTarget = target;
             return true;
@@ -562,65 +580,57 @@ public class Character : Movable
     /// <summary> 스페이스바 입력으로 일상, 전투모드 전환 </summary>
     public void SetOffensive()
     {
-        offensive = !offensive;
-        PlayAnim("Offensive", offensive);
-        if (!offensive && agent.speed >= runSpeed)
-        {
-            walk = true;
-            agent.speed = walkSpeed;
-        }
-        else if (offensive)
-        {
-            walk = false;
-            agent.speed = runSpeed;
-            if (reservedSkill != null)
-                setMoveSpeed(reservedSkill.type);
-            if (loadedSkill != null)
-                setMoveSpeed(loadedSkill.type);
-        }
+        offensive = !offensive; //현재 상태를 뒤집음
+        OffensiveSetting();
     }
     /// <summary> 매개변수 값을 줘서 일상, 전투모드 전환 </summary>
     public void SetOffensive(bool value)
     {
         offensive = value;
-        PlayAnim("Offensive", offensive);
+        OffensiveSetting();
+    }
 
-        if (!offensive && agent.speed >= runSpeed)
+    /// <summary> 일상, 전투모드에 맞춰 애니메이션과 이동속도 전환 </summary>
+    void OffensiveSetting()
+    {
+        PlayAnim("Offensive", offensive); //offensive bool값에 맞춰 애니메이터의 Offensive bool값 전환
+
+        if (!offensive && agent.speed >= runSpeed) //일상모드이고 현재 이동속도가 달리는 속도 이상이면
         {
-            walk = true;
-            agent.speed = walkSpeed;
+            walk = true; //걷기로 전환
+            agent.speed = walkSpeed; //걷기 속도로 전환
         }
-        else if (offensive)
+        else if (offensive) //전투모드이면
         {
-            walk = false;
-            agent.speed = runSpeed;
-            if (reservedSkill != null)
-                setMoveSpeed(reservedSkill.type);
-            if (loadedSkill != null)
-                setMoveSpeed(loadedSkill.type);
+            walk = false; //뛰기로 전환
+            agent.speed = runSpeed; //달리는 속도로 전환
+            if (reservedSkill != null) //준비중인 스킬이 있으면
+                setMoveSpeed(reservedSkill.type); //준비중인 스킬 이동속도로 세팅
+            if (loadedSkill != null) //준비완료된 스킬이 있으면
+                setMoveSpeed(loadedSkill.type); //준비완료된 스킬 이동속도로 세팅
         }
     }
 
     /// <summary> 다운 </summary>
     public void DownCheck()
     {
-        rigid.velocity = new Vector3(0, 0, 0);
-        rigid.AddForce(gameObject.transform.forward * -600);
-        rigid.AddForce(gameObject.transform.up * 500);
-        wait = Wait(downTime);
-        StartCoroutine(wait);
-        PlayAnim("BlowawayA");
-        downGauge.Current = 0;
+        rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
+        rigid.AddForce(gameObject.transform.forward * -600);  //뒤로 날아가기
+        rigid.AddForce(gameObject.transform.up * 500); //뒤로(위로) 날아가기2
+        wait = Wait(downTime); //조작 불가 코루틴
+        StartCoroutine(wait);  //조작 불가 시작
+        PlayAnim("BlowawayA"); //날아가는 애니메이션 시작
+        downGauge.Current = 0; //다운게이지 초기화
     }
 
     /// <summary> 사망 체크 </summary>
     public void DieCheck()
     {
-        die = true;
-        PlayAnim("Die");
-        rigid.velocity = new Vector3(0, 0, 0);
-        rigid.AddForce(gameObject.transform.forward * -600);
-        rigid.AddForce(gameObject.transform.up * 500);
+        die = true;  //사망 상태로 전환
+        PlayAnim("Die");  //사망 트리거 체크
+        rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
+        rigid.AddForce(gameObject.transform.forward * -600); //뒤로 날아가기
+        rigid.AddForce(gameObject.transform.up * 500); //뒤로(위로) 날아가기2
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
@@ -654,6 +664,34 @@ public class Character : Movable
         loadedSkill = skillList[Define.SkillState.Combat].skill;
         SkillInfo currentSkill = skillList[value];
         if (currentSkill == null) return; //입력된 스킬이 null일 경우 리턴
+
+        switch (currentSkill.skill.type)//상대방 스킬에 따라 내가 피해를 입음
+        {
+
+            
+            case Define.SkillState.Defense:
+                if (staminaPoint.Current < defenseData.CastCost)  //현재 스킬 시전에 필요한 스태미나보다 적은 경우
+                {
+                    return; // 리턴하고 스킬 시전 안함
+                }
+                staminaPoint.Current -= defenseData.CastCost; // 시전비용만큼 스태미나 차감
+                break;
+            case Define.SkillState.Smash:
+                if (staminaPoint.Current < smashData.CastCost) //현재 스킬 시전에 필요한 스태미나보다 적은 경우
+                {
+                    return; // 리턴하고 스킬 시전 안함
+                }
+                staminaPoint.Current -= smashData.CastCost; // 시전비용만큼 스태미나 차감
+                break;
+            case Define.SkillState.Counter:
+                if (staminaPoint.Current < counterData.CastCost) //현재 스킬 시전에 필요한 스태미나보다 적은 경우
+                {
+                    return; // 리턴하고 스킬 시전 안함
+                }
+                staminaPoint.Current -= counterData.CastCost; // 시전비용만큼 스태미나 차감
+                break;
+        }
+
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
@@ -669,17 +707,17 @@ public class Character : Movable
     public void Groggy()
     {
         wait = Wait(groggyTime);
-        StartCoroutine(wait);
-        IEnumerator groggy = GroggyDown();
-        StartCoroutine(groggy);
-        PlayAnim("Groggy");
-        downGauge.Current = 0;
+        StartCoroutine(wait);  //조작불가 코루틴 시작
+        IEnumerator groggy = GroggyDown(); 
+        StartCoroutine(groggy); //그로기 다운 코루틴 시작
+        PlayAnim("Groggy"); //그로기 애니메이션 시작
+        downGauge.Current = 0; //다운게이지 초기화
     }
     /// <summary> 그로기 이후에 다운 상태로 들어감</summary>
     IEnumerator GroggyDown()
     {
-        yield return new WaitForSeconds(1.0f);
-        rigid.AddForce(gameObject.transform.forward * -600);
-        rigid.AddForce(gameObject.transform.up * 500);
+        yield return new WaitForSeconds(1.0f); //1초간 그로기 애니메이션이 재생되도록 대기
+        rigid.AddForce(gameObject.transform.forward * -600);  //1초뒤 뒤로 날아감
+        rigid.AddForce(gameObject.transform.up * 500); //1초뒤 위로 날아감
     }
 }

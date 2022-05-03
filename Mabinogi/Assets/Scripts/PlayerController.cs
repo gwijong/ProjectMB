@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     void MouseInput()
     {
 
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject()) //UI 버튼 누를 경우 리턴
         {
             return;
         }

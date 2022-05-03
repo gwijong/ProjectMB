@@ -12,8 +12,8 @@ public class HPUI : MonoBehaviour
     void Start()
     {
         maxHP = gameObject.GetComponentInParent<Character>().GetCurrentHP();
-        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
-        GameManager.update.UpdateMethod += OnUpdate;
+        GameManager.update.UpdateMethod -= OnUpdate;
+        GameManager.update.UpdateMethod += OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         character = gameObject.GetComponentInParent<Character>();//부모 오브젝트의 캐릭터 컴포넌트 가져오기
     }
 
