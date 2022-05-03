@@ -15,4 +15,15 @@ public static class Extension
             default:                        return Skill.combatMastery;
         }
     }
+
+    public static Vector2Int GetSize(this Define.Item item)
+    {
+        switch (item)
+        {          
+            case Define.Item.Bottle: return new Vector2Int(1, 2);
+            case Define.Item.Wool: return new Vector2Int(2, 2);
+
+            default : return Vector2Int.one;
+        }
+    }
 }

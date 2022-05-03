@@ -69,5 +69,6 @@ public class Define
         Egg,
         LifePotion,
         ManaPotion,
+        Wool,
     }
 }

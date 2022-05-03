@@ -6,6 +6,7 @@ using UnityEngine.UI;
 /// <summary> 셀 정보 가지는 곳 </summary>
 public class CellInfo  
 {
+    CellInfo root = null; //아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이면 이놈이 시작지점이다
     /// <summary> 아이템 타입 </summary>
     Define.Item itemType = Define.Item.None;
     /// <summary> 아이템 개수 </summary>
@@ -16,6 +17,18 @@ public class CellInfo
     public Image itemImage = null;
     /// <summary> 아이템 개수 표시하는 텍스트 </summary>
     public Text amountText= null;
+    /// <summary> 인벤토리 안에서 셀 위치 </summary>
+    Vector2Int location;
+
+    static Color normalColor = new Color(0.9f,0.9f,0.9f);
+    static Color filledColor = new Color(0.7f,0.7f,0.7f);//뭐가 들어있을 때 컬러
+
+    /// <summary> 로케이션 지정하는 생성자 </summary>
+    public CellInfo(Vector2Int wantLocation)
+    {
+        location = wantLocation;
+        root = this;
+    }
 
     /// <summary> 아이템 타입 반환 </summary>
     public Define.Item GetItemType()
@@ -26,8 +39,59 @@ public class CellInfo
     /// <summary> 아이템 변경 </summary>
     public void SetItem(Define.Item wantItem)
     {
-
+        itemType = wantItem;
+        CalculateColor();
     }
+
+
+    /// <summary> 루트 셋 </summary>
+    public void SetRoot(CellInfo setRoot)
+    {
+        root = setRoot;
+        CalculateColor();
+    }
+
+    public void SetColor(Color wantColor)
+    {
+        buttonImage.color = wantColor;
+    }
+    
+    public void CalculateColor()
+    {
+        if (IsEmpty())
+        {
+            SetColor(normalColor);
+        }
+        else
+        {
+            SetColor(filledColor);
+        };
+    }
+
+    /// <summary> 루트 반환 </summary>
+    public CellInfo GetRoot()
+    {
+        return root;
+    }
+
+    public Vector2Int GetLocation()
+    {
+        return location;
+    }
+
+    /// <summary> 칸이 비어있는지 </summary>
+    public bool IsEmpty()
+    {
+        return (root == null || root == this) && itemType == Define.Item.None; 
+    }
+
+    public void Clear()
+    {
+        root = this;
+        SetItem(Define.Item.None);
+    }
+
+    
 }
 
 public class Inventoty : MonoBehaviour
@@ -45,7 +109,9 @@ public class Inventoty : MonoBehaviour
     /// <summary> 마우스가 올려진 셀 위치</summary>
     Vector2Int overedCellLocation = new Vector2Int(-1, -1);
     /// <summary> [?,?] 칸의 정보</summary>
-    CellInfo[,] infoArray; 
+    CellInfo[,] infoArray;
+
+    //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
     void Start()
     {
@@ -59,15 +125,14 @@ public class Inventoty : MonoBehaviour
                 GameObject currentCell = Instantiate(cell) ; //현재 셀 만들기
                 currentCell.transform.SetParent(parent.transform); //현재 셀을 부모 오브젝트의 자식 오브젝트로 지정
 
-                infoArray[y, x] = new CellInfo(); //클래스 CellInfo 인스턴스 만들기
+                infoArray[y, x] = new CellInfo(new Vector2Int(x,y)); //클래스 CellInfo 인스턴스 만들기
 
                 infoArray[y, x].amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
                 infoArray[y, x].buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
                 infoArray[y, x].itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
 
-                infoArray[y, x].buttonImage.color = new Color(0.6f, 0.6f, 0.6f);//버튼이미지 색상 회색으로 바꿈
-                infoArray[y, x].itemImage.color = new Color(0.0f, 0.0f, 1f);//아이템 이미지 색상 파란색으로 바꿈                
-
+                infoArray[y, x].CalculateColor();
+                
                 RectTransform childRect = currentCell.GetComponent<RectTransform>(); //현재 셀의 RectTransform 가져옴
                 Vector2 pos = cellAnchor.anchoredPosition + new Vector2((48 * x), (-48 * y));//각 셀들의 위치를 시작 기준점에서 48픽셀 간격으로 배치함
                 childRect.anchoredPosition = pos;//현재 셀의 앵커 포지션을 시작 기준점에서 48 * x, -48 * y 간격으로 배치함
@@ -85,7 +150,7 @@ public class Inventoty : MonoBehaviour
         if (overedCellLocation.x >= 0 && overedCellLocation.y >= 0) //마우스 커서가 0,0 이상이면
         {
             //해당 좌표 셀의 버튼 이미지의 컬러를 회색으로 바꿈
-            infoArray[overedCellLocation.y, overedCellLocation.x].buttonImage.color = new Color(0.6f, 0.6f, 0.6f);
+            infoArray[overedCellLocation.y, overedCellLocation.x].CalculateColor();
         }
 
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
@@ -103,15 +168,19 @@ public class Inventoty : MonoBehaviour
             //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
             infoArray[overedCellLocation.y, overedCellLocation.x].buttonImage.color = new Color(1f, 1f, 1f); 
 
-            //int overlap = 0;
-            //Debug.Log(CanPlace(overedCellLocation, new Vector2Int(2, 3), out overlap));//2,3의 아이템이 들어갈 공간인지 체크
+            int overlap = 0;
+            int amount = 0;
+            if (Input.GetMouseButtonDown(1))
+                SubItem(overedCellLocation, out amount);
+            if (Input.GetMouseButtonDown(0))
+            {
+                PutItem(overedCellLocation,Define.Item.Bottle, 1);
+            }
+
+            
+
         };
 
-        //CursorPickItem();
-        if (Input.GetMouseButtonDown(0))
-        {
-            PutItem(overedCellLocation,new Vector2Int(2,3));
-        }
     }
 
     //좌표, 아이템크기,
@@ -133,7 +202,7 @@ public class Inventoty : MonoBehaviour
             for(int x = 0; x < itemSize.x; x++) //아이템의 x크기 만큼 반복
             {
                 //아이템 크기만큼의 공간이 전부 빈 상태가 아닌 경우
-                if(infoArray[position.y + y, position.x + x].GetItemType() != Define.Item.None)
+                if(infoArray[position.y + y, position.x + x].IsEmpty() == false)
                 {
                     ++OverlapTime;
                     result = false;
@@ -142,36 +211,69 @@ public class Inventoty : MonoBehaviour
         };
         return result;
     }
-
-
-
-
-
-
-    public GameObject holdingItemCell;
-    public void CursorPickItem()
+                          //셀 좌표
+    void PutItem(Vector2Int position, Define.Item item, int amount)
     {
-        holdingItemCell.transform.position = Input.mousePosition;
-    }
-    //아이템 놓기
-    void PutItem(Vector2Int overedCellLocation, Vector2Int size)
-    {
+        Vector2Int size = item.GetSize();
         int overlap;
-        if (CanPlace(overedCellLocation, size, out overlap) == true)
+        if (CanPlace(position, size, out overlap) == true)
         {
-            for(int y = 0; y < size.y; y++)
+            infoArray[position.y, position.x].SetItem(item);
+            for(int x = 0; x < size.x; x++)
             {
-                for (int x = 0; x < size.x; x++)
+                for (int y = 0; y < size.y; y++)
                 {
-                    infoArray[overedCellLocation.y + y, overedCellLocation.x + x].itemImage.color = new Color(1.0f, 1.0f, 1f);
+                    if (x == 0 && y == 0) continue;
+                    infoArray[position.y + y, position.x + x].SetRoot(infoArray[position.y, position.x]);
                 }
-            }         
+            }
         }
+    }
+    /// <summary> 해당된 셀의 아이템 리턴</summary>
+    Define.Item SubItem(Vector2Int position, out int amount)
+    {
+        CellInfo selectedInfo = CheckItemRoot(position);
+        Vector2Int rootLocation = selectedInfo.GetLocation();
+
+        amount = selectedInfo.amount;
+        Define.Item result = selectedInfo.GetItemType();
+
+
+        if (result == Define.Item.None)
+        {
+            return result;
+        }
+        else
+        {     
+            Vector2Int size = result.GetSize();
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    infoArray[rootLocation.y + y, rootLocation.x + x].Clear();
+                }
+            }            
+        }
+        return result;
+    }
+
+    /// <summary> 해당된 셀의 아이템 리턴</summary>
+    Define.Item CheckItem(Vector2Int position)
+    {
+        return CheckItemRoot(position).GetItemType();
+    }
+
+    /// <summary> 해당된 칸의 루트를 체크하는 구간</summary>
+    CellInfo CheckItemRoot(Vector2Int position)
+    {
+        return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
     }
 }
 
 
 /*
+ * 그 위치에 아이템이 있는지 찾아봐야 함
+ * 어떤 아이템이 있는지 체크해보기
  * 아이템을 실제로 놓아봐야됨
  * 아이템을 놓을 때 그 위치(기준점)에만 하나를 놓고 나머지 칸을 구성하는 애들은 그 자리를 가리키고 있어야 해
  * OE___
@@ -183,3 +285,5 @@ public class Inventoty : MonoBehaviour
  * 스왑하려고 할 때 같은 종류의 아이템이면 겹치기
  * 같은 종류의 아이템인데 겹칠 수 있는 숫자보다 많으면 남은 숫자만큼은 마우스에다가 놓기
  */
+
+//마우스가 올려져 있는 칸의 루트 확인, 루트의 아이템 타입의 사이즈 받아옴, 사이즈 개수만큼 하이라이트 해줌,지금 마우스 말고 직전에 있었던 마우스도 체크해야함 그래야 원래 색깔로 돌려줌, 직전과 지금 마우스 위치 다르면 직전은 풀어줘야함
