@@ -81,6 +81,7 @@ public class EnemyDummyAI : MonoBehaviour
         transform.LookAt(look);
     }
 
+    /// <summary> 플레이어 사망시 AI 스킬 기본값으로 만드는 코루틴 </summary>
     IEnumerator Die()
     {
         yield return new WaitForSeconds(3.0f);

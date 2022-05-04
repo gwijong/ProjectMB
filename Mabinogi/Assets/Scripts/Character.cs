@@ -619,8 +619,8 @@ public class Character : Movable
     public void DownCheck()
     {
         rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
-        rigid.AddForce(gameObject.transform.forward * -600);  //뒤로 날아가기
-        rigid.AddForce(gameObject.transform.up * 500); //뒤로(위로) 날아가기2
+        rigid.AddForce(transform.forward * -600);  //뒤로 날아가기
+        rigid.AddForce(transform.up * 1000, ForceMode.Impulse); //뒤로(위로) 날아가기2
         wait = Wait(downTime); //조작 불가 코루틴
         StartCoroutine(wait);  //조작 불가 시작
         PlayAnim("BlowawayA"); //날아가는 애니메이션 시작
@@ -633,9 +633,9 @@ public class Character : Movable
         die = true;  //사망 상태로 전환
         PlayAnim("Die");  //사망 트리거 체크
         rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
-        rigid.AddForce(gameObject.transform.forward * -600); //뒤로 날아가기
-        rigid.AddForce(gameObject.transform.up * 500); //뒤로(위로) 날아가기2
-        StartCoroutine("Die");
+        rigid.AddForce(transform.forward * -600); //뒤로 날아가기
+        rigid.AddForce(transform.up * 1000, ForceMode.Impulse); //뒤로(위로) 날아가기2
+        StartCoroutine("Die");//사망 코루틴 실행
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
@@ -728,12 +728,12 @@ public class Character : Movable
 
     IEnumerator Die()
     {
-        yield return new WaitForSeconds(1.5f);
-        rigid.constraints = RigidbodyConstraints.FreezeAll;
-        gameObject.GetComponent<BoxCollider>().enabled = false;
+        yield return new WaitForSeconds(1.5f); //1.5초 대기
+        rigid.constraints = RigidbodyConstraints.FreezeAll; //리지드바디 고정시킴
+        gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
-        nav.speed = 0;
-        nav.angularSpeed = 0;
-        nav.radius = 0;
+        nav.speed = 0; //내비 이동속도 0 대입
+        nav.angularSpeed = 0; //내비 회전속도 0 대입
+        nav.radius = 0; //내비 반지름 범위 0 대입
     }
 }

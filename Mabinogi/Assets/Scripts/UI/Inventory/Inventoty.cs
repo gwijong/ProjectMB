@@ -131,7 +131,9 @@ public class Inventoty : MonoBehaviour
 
     void Start()
     {
-        
+        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
+        GameManager.update.UpdateMethod += OnUpdate;
+
         infoArray = new CellInfo[height, width]; //2차원 배열의 크기를 소지품창 크기로 설정
 
         for (int y = 0; y < height; y++)
@@ -156,7 +158,7 @@ public class Inventoty : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnUpdate()
     {
         /// <summary> 마우스 좌표 </summary>
         Vector3 mousePosition = Input.mousePosition;
