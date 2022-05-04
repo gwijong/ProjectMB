@@ -43,7 +43,7 @@ public class HitObjectItemDrop : Hitable
         return hit.position;
     }
 
-    IEnumerator Shake()
+    IEnumerator Shake()//³ª¹« Èçµé±â
     {
         for(int i = 0; i<10; i++)
         {

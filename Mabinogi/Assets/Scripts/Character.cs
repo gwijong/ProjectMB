@@ -620,7 +620,7 @@ public class Character : Movable
     {
         rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
         rigid.AddForce(transform.forward * -600);  //뒤로 날아가기
-        rigid.AddForce(transform.up * 1000, ForceMode.Impulse); //뒤로(위로) 날아가기2
+        rigid.AddForce(transform.up * 500); //뒤로(위로) 날아가기2
         wait = Wait(downTime); //조작 불가 코루틴
         StartCoroutine(wait);  //조작 불가 시작
         PlayAnim("BlowawayA"); //날아가는 애니메이션 시작
@@ -634,7 +634,7 @@ public class Character : Movable
         PlayAnim("Die");  //사망 트리거 체크
         rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
         rigid.AddForce(transform.forward * -600); //뒤로 날아가기
-        rigid.AddForce(transform.up * 1000, ForceMode.Impulse); //뒤로(위로) 날아가기2
+        rigid.AddForce(transform.up * 500); //뒤로(위로) 날아가기2
         StartCoroutine("Die");//사망 코루틴 실행
     }
 
