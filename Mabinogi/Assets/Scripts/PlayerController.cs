@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+
 public class PlayerController : MonoBehaviour
 {
     /// <summary>플레이어 캐릭터 딱 하나</summary>

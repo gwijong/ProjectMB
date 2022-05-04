@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(EnemyDummyAI))] //더미 인공지능이 기본 장착되어 있어야 함
+[RequireComponent(typeof(Rigidbody))] //리지드바디가 기본 장착되어 있어야 함
+[RequireComponent(typeof(BoxCollider))] //콜라이더가 기본 장착되어 있어야 함
 public class Character : Movable
 {
     
@@ -631,6 +635,7 @@ public class Character : Movable
         rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
         rigid.AddForce(gameObject.transform.forward * -600); //뒤로 날아가기
         rigid.AddForce(gameObject.transform.up * 500); //뒤로(위로) 날아가기2
+        StartCoroutine("Die");
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
@@ -719,5 +724,16 @@ public class Character : Movable
         yield return new WaitForSeconds(1.0f); //1초간 그로기 애니메이션이 재생되도록 대기
         rigid.AddForce(gameObject.transform.forward * -600);  //1초뒤 뒤로 날아감
         rigid.AddForce(gameObject.transform.up * 500); //1초뒤 위로 날아감
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1.5f);
+        rigid.constraints = RigidbodyConstraints.FreezeAll;
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
+        nav.speed = 0;
+        nav.angularSpeed = 0;
+        nav.radius = 0;
     }
 }

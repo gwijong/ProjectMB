@@ -10,7 +10,7 @@ public class EnemyDummyAI : MonoBehaviour
     bool aiStart = false; //인공지능 시작 체크
     int skillNum; //인공지능이 시전할 랜덤 스킬 번호
     IEnumerator coroutine;
-
+    bool die = false;
     private void OnEnable()
     {
         aiStart = false;
@@ -26,10 +26,15 @@ public class EnemyDummyAI : MonoBehaviour
     }
     void OnUpdate()
     {
-        if (character.die)//자신 캐릭터 사망시 동작하지 않음
+        if (character.die || playerCharacter.die == true)//자신 캐릭터 사망하거나 플레이어 사망시 동작하지 않음
         {
             aiStart = true;
             stopCoroutine(); //인공지능 코루틴 중지
+            if (die == false)
+            {
+                die = true;
+                StartCoroutine("Die");
+            }
             return;
         }
         if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
@@ -52,15 +57,15 @@ public class EnemyDummyAI : MonoBehaviour
     IEnumerator DummyAI()
     {
         character.Casting(Define.SkillState.Combat);
-        yield return new WaitForSeconds(2.0f); //우선 2초 대기
+        yield return new WaitForSeconds(Random.Range(0.5f,3.0f)); //우선 2초 대기
         skillNum = Random.Range(0, 4);  //스킬 고름
         character.Casting((Define.SkillState)skillNum);  //스킬 시전
-        yield return new WaitForSeconds(4.0f);   // 4초 대기
+        yield return new WaitForSeconds(Random.Range(2f, 6.0f));   // 4초 대기
         if (skillNum != 1 && skillNum != 3)  // 선공스킬인지 체크
         {
             character.SetTarget(playerCharacter);  //선공스킬이면 공격
         }
-        yield return new WaitForSeconds(2.0f); //2초 대기
+        yield return new WaitForSeconds(Random.Range(0.5f, 3.0f)); //2초 대기
         character.SetTarget(null); //타겟 해제
         aiStart = false; //코루틴 재실행 준비
 
@@ -74,5 +79,13 @@ public class EnemyDummyAI : MonoBehaviour
         Vector3 look = player.transform.position;//플레이어 위치
         look.y = transform.position.y; //위 아래를 쳐다보지 않음, 회전만 함
         transform.LookAt(look);
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(3.0f);
+        character.SetTarget(null);
+        character.Casting(Define.SkillState.Combat);
+        character.SetOffensive(false);
     }
 }

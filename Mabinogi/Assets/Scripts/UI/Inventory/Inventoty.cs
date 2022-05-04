@@ -6,7 +6,8 @@ using UnityEngine.UI;
 /// <summary> 셀 정보 가지는 곳 </summary>
 public class CellInfo  
 {
-    CellInfo root = null; //아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이면 이놈이 시작지점이다
+    /// <summary> 아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이거나 나 자신 셀이면 이놈이 시작지점이다 </summary>
+    CellInfo root = null; 
     /// <summary> 아이템 타입 </summary>
     Define.Item itemType = Define.Item.None;
     /// <summary> 아이템 개수 </summary>
@@ -19,24 +20,27 @@ public class CellInfo
     public Text amountText= null;
     /// <summary> 인벤토리 안에서 셀 위치 </summary>
     Vector2Int location;
-
+    /// <summary> 아이템 창 칸의 평소 색상 </summary>
     static Color normalColor = new Color(0.9f,0.9f,0.9f);
-    static Color filledColor = new Color(0.7f,0.7f,0.7f);//뭐가 들어있을 때 컬러
+    /// <summary> 뭔가 아이템이 들어있을 때 어두운 컬러 </summary>
+    static Color filledColor = new Color(0.7f,0.7f,0.7f);
+    /// <summary> 마우스 커서가 위치한 칸 밝게 강조하는 컬러 </summary>
+    public static Color highlightColor = new Color(1, 1, 1);
 
-    /// <summary> 로케이션 지정하는 생성자 </summary>
+    /// <summary> 소지품창 안에서의 아이템 좌표와 나 자신을 루트로 지정하는 생성자 </summary>
     public CellInfo(Vector2Int wantLocation)
     {
-        location = wantLocation;
-        root = this;
+        location = wantLocation; //인벤토리 안에서의 셀 위치 지정
+        root = this; //루트는 나 자신 셀이다
     }
 
-    /// <summary> 아이템 타입 반환 </summary>
+    /// <summary> Define.Item 아이템 타입 반환 </summary>
     public Define.Item GetItemType()
     {
         return itemType;
     }
 
-    /// <summary> 아이템 변경 </summary>
+    /// <summary> 셀의 아이템 변경과 칸의 색상 세팅 </summary>
     public void SetItem(Define.Item wantItem)
     {
         itemType = wantItem;
@@ -44,18 +48,20 @@ public class CellInfo
     }
 
 
-    /// <summary> 루트 셋 </summary>
+    /// <summary> 루트 변경과 칸의 색상 세팅 </summary>
     public void SetRoot(CellInfo setRoot)
     {
         root = setRoot;
         CalculateColor();
     }
 
+    /// <summary> 버튼 이미지 원하는 색상 지정 normalColor, filledColor, highlightColor </summary>
     public void SetColor(Color wantColor)
     {
         buttonImage.color = wantColor;
     }
-    
+
+    /// <summary> 칸이 비어있으면 normalColor, 칸이 차있으면 filledColor </summary>
     public void CalculateColor()
     {
         if (IsEmpty())
@@ -74,17 +80,27 @@ public class CellInfo
         return root;
     }
 
+    /// <summary> 인벤토리 안에서의 셀의 위치 반환 </summary>
     public Vector2Int GetLocation()
     {
         return location;
     }
 
-    /// <summary> 칸이 비어있는지 </summary>
+    /// <summary> 칸이 비어있는지 체크. 루트가 null이거나 나 자신 셀이면서 아이템타입이 none이면 true </summary>
     public bool IsEmpty()
     {
-        return (root == null || root == this) && itemType == Define.Item.None; 
+        if((root == null || root == this) && itemType == Define.Item.None == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 
+    /// <summary> 칸을 비움. root 를 나 자신 셀로 바꾸고 아이템을 none으로 바꿈 </summary>
     public void Clear()
     {
         root = this;
@@ -150,7 +166,8 @@ public class Inventoty : MonoBehaviour
         if (overedCellLocation.x >= 0 && overedCellLocation.y >= 0) //마우스 커서가 0,0 이상이면
         {
             //해당 좌표 셀의 버튼 이미지의 컬러를 회색으로 바꿈
-            infoArray[overedCellLocation.y, overedCellLocation.x].CalculateColor();
+            //infoArray[overedCellLocation.y, overedCellLocation.x].CalculateColor();
+            CellHighlight(overedCellLocation, false); //기존 마우스 커서가 있는 아이템의 버튼 색상을 기본값으로 바꿔줌
         }
 
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
@@ -165,8 +182,8 @@ public class Inventoty : MonoBehaviour
             overedCellLocation.x = (int)mousePosition.x / 48; //마우스 좌표에서 칸 넓이인 48로 나눠서 정수로 변환
             overedCellLocation.y = (int)mousePosition.y / 48; //마우스 좌표에서 칸 높이인 48로 나눠서 정수로 변환
 
-            //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
-            infoArray[overedCellLocation.y, overedCellLocation.x].buttonImage.color = new Color(1f, 1f, 1f); 
+            
+            CellHighlight(overedCellLocation,true); //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
 
             int overlap = 0;
             int amount = 0;
@@ -183,8 +200,8 @@ public class Inventoty : MonoBehaviour
 
     }
 
-    //좌표, 아이템크기,
-    bool CanPlace(Vector2Int position, Vector2Int itemSize, out int OverlapTime)
+    /// <summary> 해당 위치에 아이템을 밀어 넣는게 가능한지 체크 </summary>
+    bool CanPlace(Vector2Int position, Vector2Int itemSize, out int OverlapTime)    //셀 좌표, 아이템크기,아이템 사이즈 , 아이템 겹친 횟수
     {
         bool result = true; //true면 넣을 수 있음, false 면 넣을 수 없음
         OverlapTime = 0;
@@ -204,74 +221,108 @@ public class Inventoty : MonoBehaviour
                 //아이템 크기만큼의 공간이 전부 빈 상태가 아닌 경우
                 if(infoArray[position.y + y, position.x + x].IsEmpty() == false)
                 {
-                    ++OverlapTime;
+                    ++OverlapTime; //아이템 겹친 횟수 증가
                     result = false;
                 };
             };
         };
         return result;
     }
-                          //셀 좌표
+
+    /// <summary> 아이템 밀어넣기 시도 </summary>
     void PutItem(Vector2Int position, Define.Item item, int amount)
     {
-        Vector2Int size = item.GetSize();
-        int overlap;
-        if (CanPlace(position, size, out overlap) == true)
+        Vector2Int size = item.GetSize();//해당 아이템의 사이즈 가져오기
+        int overlap;//겹쳐진 횟수
+        if (CanPlace(position, size, out overlap) == true) //해당 좌표에 해당 사이즈의 아이템을 밀어 넣을  수 있으면
         {
-            infoArray[position.y, position.x].SetItem(item);
+            infoArray[position.y, position.x].SetItem(item); //y,x 좌표에 아이템 밀어넣음
             for(int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
                 {
                     if (x == 0 && y == 0) continue;
+
+                    //첫번째 칸 루트를 제외한 나머지 칸 루트들은 y,x를 바라보게 지정
                     infoArray[position.y + y, position.x + x].SetRoot(infoArray[position.y, position.x]);
                 }
             }
         }
     }
-    /// <summary> 해당된 셀의 아이템 리턴</summary>
-    Define.Item SubItem(Vector2Int position, out int amount)
+    /// <summary> 해당된 셀의 아이템 빼서 리턴</summary>
+    Define.Item SubItem(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
     {
-        CellInfo selectedInfo = CheckItemRoot(position);
-        Vector2Int rootLocation = selectedInfo.GetLocation();
+        CellInfo selectedInfo = CheckItemRoot(position);//해당 좌표 셀의 루트 CellInfo 가져옴
+        Vector2Int rootLocation = selectedInfo.GetLocation(); //루트 좌표는 해당 좌표 셀의 루트의 좌표이다
 
-        amount = selectedInfo.amount;
-        Define.Item result = selectedInfo.GetItemType();
+        amount = selectedInfo.amount; //아이템 개수
+        Define.Item result = selectedInfo.GetItemType();//해당 셀의 아이템 타입 가져옴
 
 
-        if (result == Define.Item.None)
+        if (result == Define.Item.None) //가져온 아이템 타입이 None이면
         {
-            return result;
+            return result; // None 반환 아무것도 없음
         }
-        else
+        else //가져온 아이템 타입이 있으면
         {     
-            Vector2Int size = result.GetSize();
+            Vector2Int size = result.GetSize(); //해당 아이템 사이즈를 확장메서드에서 가져옴
             for (int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
                 {
-                    infoArray[rootLocation.y + y, rootLocation.x + x].Clear();
+                    infoArray[rootLocation.y + y, rootLocation.x + x].Clear(); //아이템 사이즈 범위만큼 비워줌
                 }
             }            
         }
-        return result;
+        return result; //해당 셀의 아이템 타입 반환
     }
 
-    /// <summary> 해당된 셀의 아이템 리턴</summary>
+    /// <summary> 해당 좌표 셀의 아이템 타입 반환</summary>
     Define.Item CheckItem(Vector2Int position)
     {
         return CheckItemRoot(position).GetItemType();
     }
 
-    /// <summary> 해당된 칸의 루트를 체크하는 구간</summary>
+    /// <summary> 해당된 칸의 루트를 체크해서 나 자신 CellInfo나 기준점 CellInfo반환</summary>
     CellInfo CheckItemRoot(Vector2Int position)
     {
         return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
     }
+
+    /// <summary> 루트를 따라서 하위 셀들 하이라이트 같이 해주는 메서드</summary>
+    void CellHighlight(Vector2Int position, bool isHighright)
+    {
+        CellInfo rootCellInfo = CheckItemRoot(position);
+        Define.Item CellItem = CheckItem(position); //해당 좌표의 아이템 받아옴
+        Vector2Int size = CellItem.GetSize(); // 아이템 사이즈 받아옴
+        if (isHighright)
+        {
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    //아이템 사이즈만큼 하이라이트 해줌
+                    infoArray[rootCellInfo.GetLocation().y + y, rootCellInfo.GetLocation().x + x].SetColor(CellInfo.highlightColor); 
+                }
+            }
+        }
+        else
+        {
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    //아이템 사이즈만큼 원래 색상으로 돌려줌
+                    infoArray[rootCellInfo.GetLocation().y + y, rootCellInfo.GetLocation().x + x].CalculateColor();
+                }
+            }
+        }
+    }   
 }
 
 
 /*
+ * 
  * 그 위치에 아이템이 있는지 찾아봐야 함
  * 어떤 아이템이 있는지 체크해보기
  * 아이템을 실제로 놓아봐야됨
@@ -284,6 +335,12 @@ public class Inventoty : MonoBehaviour
  * 두 개 이상 겹치면 아무 것도 하지 않기
  * 스왑하려고 할 때 같은 종류의 아이템이면 겹치기
  * 같은 종류의 아이템인데 겹칠 수 있는 숫자보다 많으면 남은 숫자만큼은 마우스에다가 놓기
+ * 
+ * 
+ * 마우스가 올려져 있는 칸의 루트 확인, 
+ * 루트의 아이템 타입의 사이즈 받아옴, 
+ * 사이즈 개수만큼 하이라이트 해줌,
+ * 지금 마우스 말고 직전에 있었던 마우스도 체크해야함 그래야 원래 색깔로 돌려줌, 
+ * 직전과 지금 마우스 위치 다르면 직전은 풀어줘야함
  */
 
-//마우스가 올려져 있는 칸의 루트 확인, 루트의 아이템 타입의 사이즈 받아옴, 사이즈 개수만큼 하이라이트 해줌,지금 마우스 말고 직전에 있었던 마우스도 체크해야함 그래야 원래 색깔로 돌려줌, 직전과 지금 마우스 위치 다르면 직전은 풀어줘야함

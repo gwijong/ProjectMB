@@ -7,7 +7,7 @@ public class CameraMove : MonoBehaviour
     Camera mainCamera;//메인 카메라 자신
     public Transform cameraPivot; //플레이어 캐릭터에 종속되어있는 카메라 기준점 오브젝트
     public float speed = 20; //회전 속도
-    Vector3 cameraRotator = Vector3.forward * 80; 
+    Vector3 cameraRotator = Vector3.forward * 70; //z좌표를 기본적으로 70으로 뒤로 당겨서 멀리 보이게 함
 
     private void Start()
     {

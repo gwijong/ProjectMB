@@ -16,12 +16,13 @@ public static class Extension
         }
     }
 
+    /// <summary>Define.Item.GetSize(); 하면 해당 아이템 사이즈 반환 </summary>
     public static Vector2Int GetSize(this Define.Item item)
     {
         switch (item)
         {          
-            case Define.Item.Bottle: return new Vector2Int(1, 2);
-            case Define.Item.Wool: return new Vector2Int(2, 2);
+            case Define.Item.Bottle: return new Vector2Int(1, 2); //물병은 1,2이다
+            case Define.Item.Wool: return new Vector2Int(2, 2);  //양털은 2,2이다
 
             default : return Vector2Int.one;
         }
