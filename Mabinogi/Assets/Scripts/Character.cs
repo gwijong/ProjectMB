@@ -358,7 +358,6 @@ public class Character : Movable
 
         if (enemyTarget.TakeDamage(this) == true)//공격에 성공한 경우
         {        
-            Debug.Log("공격 성공");
             PlayAnim(loadedSkill.AnimName);
             float waitTime = 0.0f;
             switch(loadedSkill.type)
@@ -378,8 +377,6 @@ public class Character : Movable
         }
         else//공격에 실패한 경우
         {
-            Debug.Log("공격 실패");
-
             if(asCharacter != null)
             {
                 switch (otherSkill)
@@ -397,7 +394,6 @@ public class Character : Movable
                         this.downGauge.Current += counterData.DownGauge;
                         float damage = asCharacter.CalculateDamage(Define.SkillState.Counter);
                         this.hitPoint.Current -= damage;
-                        Debug.Log("카운터 공격 대미지: " + damage);
                         Groggy();//반격 당했으므로 그로기 상태에 빠짐
                         break;
                 }
@@ -452,13 +448,11 @@ public class Character : Movable
                 case Define.SkillState.Combat:
                     this.downGauge.Current += combatData.DownGauge;
                     damage = Attacker.CalculateDamage(Define.SkillState.Combat);
-                    Debug.Log("근접 일반 공격력: " + damage);
                     break;
                 case Define.SkillState.Smash:
                     damage = Attacker.CalculateDamage(Define.SkillState.Smash);
                     groggy = true;
                     this.downGauge.Current += smashData.DownGauge;
-                    Debug.Log("스매시 공격력: " + damage);
                     break;
             }
             this.hitPoint.Current -= damage;
