@@ -41,10 +41,22 @@ public class CellInfo
     }
 
     /// <summary> 셀의 아이템 변경과 칸의 색상 세팅 </summary>
-    public void SetItem(Define.Item wantItem)
+    public void SetItem(Define.Item wantItem, int wantAmount)
     {
+        Vector2Int itemSize = wantItem.GetSize();
         itemType = wantItem;
+        itemImage.sprite = wantItem.GetItemImage();
+        if (itemImage.sprite == null)
+        {
+            itemImage.color = Color.clear;
+        }
+        else
+        {
+            itemImage.color = Color.white;
+        }
+        itemImage.transform.localScale = new Vector3(itemSize.x, itemSize.y, 1);
         CalculateColor();
+        SetAmount(wantAmount);
     }
 
 
@@ -100,11 +112,17 @@ public class CellInfo
         
     }
 
+    public void SetAmount(int wantAmount)
+    {
+        amount = wantAmount;
+        amountText.text = wantAmount > 0 ? wantAmount.ToString() : "";
+    }
+
     /// <summary> 칸을 비움. root 를 나 자신 셀로 바꾸고 아이템을 none으로 바꿈 </summary>
     public void Clear()
     {
         root = this;
-        SetItem(Define.Item.None);
+        SetItem(Define.Item.None,0);
     }
 
     
@@ -126,11 +144,29 @@ public class Inventoty : MonoBehaviour
     Vector2Int overedCellLocation = new Vector2Int(-1, -1);
     /// <summary> [?,?] 칸의 정보</summary>
     CellInfo[,] infoArray;
+    /// <summary> 마우스가 집고있는 아이템</summary>
+    public static CellInfo mouseItem { get; private set; }
+
+    public static RectTransform mouseItemPos;
 
     //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
     void Start()
     {
+        if (mouseItem == null)
+        {
+            GameObject currentCell = Instantiate(cell);
+            currentCell.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
+            mouseItemPos = currentCell.GetComponent<RectTransform>();
+            mouseItem = new CellInfo(new Vector2Int(0,0));
+            mouseItem.amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
+            mouseItem.buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
+            mouseItem.itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
+            mouseItem.itemImage.rectTransform.pivot = Vector2.one * 0.5f;
+            mouseItem.SetItem(Define.Item.Wool,1);
+            mouseItem.buttonImage.enabled = false;
+            currentCell.GetComponent<Button>().enabled = false;
+        }
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
 
@@ -156,10 +192,23 @@ public class Inventoty : MonoBehaviour
                 childRect.anchoredPosition = pos;//현재 셀의 앵커 포지션을 시작 기준점에서 48 * x, -48 * y 간격으로 배치함
             }
         }
+        foreach (CellInfo current in infoArray)
+        {
+            current.itemImage.transform.SetParent(parent.transform);
+            current.amountText.transform.SetParent(parent.transform);
+            current.SetItem(Define.Item.None,0);
+        }
+        PutItem(Vector2Int.one, Define.Item.Wool, 3);
+        PutItem(Vector2Int.zero, Define.Item.Fruit, 1);
     }
 
     private void OnUpdate()
     {
+        if(mouseItemPos == null)
+        {
+            return;
+        }
+        mouseItemPos.position = Input.mousePosition; 
         /// <summary> 마우스 좌표 </summary>
         Vector3 mousePosition = Input.mousePosition;
         mousePosition -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
@@ -193,7 +242,7 @@ public class Inventoty : MonoBehaviour
                 SubItem(overedCellLocation, out amount);
             if (Input.GetMouseButtonDown(0))
             {
-                PutItem(overedCellLocation,Define.Item.Bottle, 1);
+                LeftClick(overedCellLocation);
             }
 
             
@@ -208,7 +257,9 @@ public class Inventoty : MonoBehaviour
         bool result = true; //true면 넣을 수 있음, false 면 넣을 수 없음
         OverlapTime = 0;
 
-        if (infoArray[overedCellLocation.y, overedCellLocation.x] == null) return false; //좌표값이 null일 경우 리턴
+        List<CellInfo> rootList = new List<CellInfo>(); //겹친 루트 갯수 확인
+
+        if (infoArray[position.y, position.x] == null) return false; //좌표값이 null일 경우 리턴
         Vector2Int rightBottom = position + itemSize - Vector2Int.one; //아이템의 오른쪽 아래 모서리 좌표
 
         // 좌표가 0보다 작아서 소지품 창 범위 벗어나거나, 아이템 오른쪽 아래 모서리 좌표가 소지품창 크기보다 초과되면
@@ -223,22 +274,114 @@ public class Inventoty : MonoBehaviour
                 //아이템 크기만큼의 공간이 전부 빈 상태가 아닌 경우
                 if(infoArray[position.y + y, position.x + x].IsEmpty() == false)
                 {
-                    ++OverlapTime; //아이템 겹친 횟수 증가
+                    CellInfo currentRoot = infoArray[position.y + y, position.x + x].GetRoot();
+                    if (!rootList.Contains(currentRoot))
+                    {
+                        rootList.Add(currentRoot);
+                    };
                     result = false;
                 };
             };
+        };
+        OverlapTime = rootList.Count;
+        return result;
+    }
+
+    void LeftClick(Vector2Int pos)
+    {
+        
+        if (pos == null || pos.x < 0 || pos.y < 0 || pos.x >= width || pos.y >= height)
+        {
+            return;
+        }
+        int overlapTime = 0;
+        int currentAmount = 0;
+        Define.Item currentItem = Define.Item.None;
+
+        CellInfo currentCell = CheckItemRoot(pos);
+
+        if (mouseItem.GetItemType() == Define.Item.None)
+        {
+            currentItem = SubItem(pos, out currentAmount);
+            mouseItem.SetItem(currentItem, currentAmount);
+        }
+        else
+        {
+            if(CanPlace(pos, mouseItem.GetItemType().GetSize(), out overlapTime))
+            {
+                TryRemovePlace(pos,currentCell.GetLocation() , out currentItem, out currentAmount);
+            }
+            else
+            {
+                if(overlapTime <= 1)
+                {
+                    if(currentCell.GetItemType() == mouseItem.GetItemType())
+                    {                       
+                        int maxStack = currentCell.GetItemType().GetMaxStack();                      
+                        if(currentCell.amount >= maxStack) // 얘는 이미 다 찼어
+                        {
+                            //int temp = mouseItem.amount;
+                            //mouseItem.amount = currentCell.amount;
+                            //currentCell.amount = temp;
+                            mouseItem.amount = mouseItem.amount ^ currentCell.amount;
+                            currentCell.amount = mouseItem.amount ^ currentCell.amount;
+                            mouseItem.amount = mouseItem.amount ^ currentCell.amount;
+                            mouseItem.SetAmount(mouseItem.amount);
+                            currentCell.SetAmount(currentCell.amount);
+
+                        }
+                        else // 그리고 아직 덜 찬 상태였다!
+                        {
+                            currentCell.amount += mouseItem.amount;
+                            // 넘은양   둘중 더 큰 거      마이너스가 되면(안넘었으면)  0인 거지
+                            int overAmount = Mathf.Max(0, currentCell.amount - maxStack);
+                            mouseItem.amount = overAmount;
+                            currentCell.amount -= overAmount;
+                            mouseItem.SetAmount(mouseItem.amount);
+                            currentCell.SetAmount(currentCell.amount);
+                            
+                        }
+                    }
+                    else
+                    {
+                        currentCell = CheckItemRoot(pos, mouseItem.GetItemType().GetSize());
+                        if(currentCell != null)
+                        {
+                            TryRemovePlace(pos, currentCell.GetLocation(), out currentItem, out currentAmount);
+                        };
+                    }
+                }
+            }
+        }
+        if(mouseItem.amount <= 0)
+        {
+            mouseItem.SetItem(Define.Item.None, 0);
+        }
+    }
+
+    bool TryRemovePlace(Vector2Int pos, Vector2Int currentPos, out Define.Item currentItem, out int currentAmount)
+    {
+        currentItem = SubItem(currentPos, out currentAmount);
+        bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount);
+        if(result == false)
+        {
+            PutItem(currentPos, currentItem, currentAmount);
+        }
+        else
+        {
+            mouseItem.SetItem(currentItem, currentAmount);
         };
         return result;
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
-    void PutItem(Vector2Int position, Define.Item item, int amount)
+    bool PutItem(Vector2Int position, Define.Item item, int amount)
     {
         Vector2Int size = item.GetSize();//해당 아이템의 사이즈 가져오기
         int overlap;//겹쳐진 횟수
         if (CanPlace(position, size, out overlap) == true) //해당 좌표에 해당 사이즈의 아이템을 밀어 넣을  수 있으면
         {
-            infoArray[position.y, position.x].SetItem(item); //y,x 좌표에 아이템 밀어넣음
+            infoArray[position.y, position.x].SetItem(item, amount); //y,x 좌표에 아이템 밀어넣음
             for(int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
@@ -249,7 +392,9 @@ public class Inventoty : MonoBehaviour
                     infoArray[position.y + y, position.x + x].SetRoot(infoArray[position.y, position.x]);
                 }
             }
-        }
+            return true;
+        };
+        return false;
     }
     /// <summary> 해당된 셀의 아이템 빼서 리턴</summary>
     Define.Item SubItem(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
@@ -289,6 +434,24 @@ public class Inventoty : MonoBehaviour
     CellInfo CheckItemRoot(Vector2Int position)
     {
         return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
+    }
+
+    CellInfo CheckItemRoot(Vector2Int position, Vector2Int size)
+    {
+        if (position.x < 0 || position.y < 0 || position.x + size.x > width || position.y + size.y > height) return null;
+
+        for (int x = 0; x < size.x; x++)
+        {
+            for(int y = 0; y < size.y; y++)
+            {
+                if(infoArray[position.y + y, position.x + x].GetItemType() != Define.Item.None)
+                {
+                    return infoArray[position.y + y, position.x + x];
+                };
+            };
+        };
+
+        return infoArray[position.y,position.x];
     }
 
     /// <summary> 루트를 따라서 하위 셀들 하이라이트 같이 해주는 메서드</summary>
