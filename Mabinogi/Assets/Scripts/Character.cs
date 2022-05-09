@@ -159,7 +159,6 @@ public class Character : Movable
 
     protected virtual void OnUpdate()
     {
-
         GaugeCheck(); // 각종 게이지 관리
 
         PlayAnim("Move", agent.velocity.magnitude);  //이동을 내비에서 float 값으로 받아와서 애니메이션 재생
@@ -296,7 +295,7 @@ public class Character : Movable
     }
 
     /// <summary> 지정한 타겟 바라봄 </summary>
-    void TargetLookAt(Interactable target)
+    public void TargetLookAt(Interactable target)
     {
         if (target != null && agent.velocity.magnitude <= 1.0f)
         {
@@ -459,7 +458,7 @@ public class Character : Movable
             
             if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
             {
-                DieCheck();
+                Dead();
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
             {
@@ -561,27 +560,11 @@ public class Character : Movable
             return false;
         };
 
-        if (gameObject.layer == (int)Define.Layer.Player && target.gameObject.layer == (int)Define.Layer.Enemy) //플레이어의 타겟이 적인 경우
+        if(IsEnemy(this, target))
         {
             focusTarget = target;
             return true;
-        }
-        else if(gameObject.layer == (int)Define.Layer.Enemy && target.gameObject.layer == (int)Define.Layer.Player) // 적의 타겟이 플레이어인 경우
-        {
-            focusTarget = target;
-            return true;
-        }
-        else if (gameObject.layer == (int)Define.Layer.Enemy && target.gameObject.layer == (int)Define.Layer.Livestock) // 적의 타겟이 가축인 경우
-        {
-            focusTarget = target;
-            return true;
-        }
-        else if (gameObject.layer == (int)Define.Layer.Livestock && target.gameObject.layer == (int)Define.Layer.Enemy) // 가축의 타겟이 적인 경우
-        {
-            focusTarget = target;
-            return true;
-        }
-
+        };
         return false;
     }
 
@@ -623,8 +606,7 @@ public class Character : Movable
     public void DownCheck()
     {
         rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
-        rigid.AddForce(transform.forward * -600);  //뒤로 날아가기
-        rigid.AddForce(transform.up * 500); //뒤로(위로) 날아가기2
+        Blowaway();
         wait = Wait(downTime); //조작 불가 코루틴
         StartCoroutine(wait);  //조작 불가 시작
         PlayAnim("BlowawayA"); //날아가는 애니메이션 시작
@@ -632,13 +614,11 @@ public class Character : Movable
     }
 
     /// <summary> 사망 체크 </summary>
-    public void DieCheck()
+    public void Dead()
     {
         die = true;  //사망 상태로 전환
         PlayAnim("Die");  //사망 트리거 체크
         rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
-        rigid.AddForce(transform.forward * -600); //뒤로 날아가기
-        rigid.AddForce(transform.up * 500); //뒤로(위로) 날아가기2
         StartCoroutine("Die");//사망 코루틴 실행
     }
 
@@ -726,18 +706,26 @@ public class Character : Movable
     IEnumerator GroggyDown()
     {
         yield return new WaitForSeconds(1.0f); //1초간 그로기 애니메이션이 재생되도록 대기
-        rigid.AddForce(gameObject.transform.forward * -600);  //1초뒤 뒤로 날아감
-        rigid.AddForce(gameObject.transform.up * 500); //1초뒤 위로 날아감
+        Blowaway();
+    }
+
+    /// <summary> 캐릭터가 뒤로 밀려나고 날아감</summary>
+    void Blowaway()
+    {
+        rigid.AddForce(gameObject.transform.forward * -600);
+        agent.velocity = (Vector3.up * 500);
     }
 
     IEnumerator Die()
     {
+        Blowaway();
         yield return new WaitForSeconds(1.5f); //1.5초 대기
         rigid.constraints = RigidbodyConstraints.FreezeAll; //리지드바디 고정시킴
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
         nav.speed = 0; //내비 이동속도 0 대입
         nav.angularSpeed = 0; //내비 회전속도 0 대입
-        nav.radius = 0; //내비 반지름 범위 0 대입
+        nav.radius = 0.01f; //내비 반지름 범위 0 대입
     }
+
 }

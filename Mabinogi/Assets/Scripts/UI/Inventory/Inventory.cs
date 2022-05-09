@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> 셀 정보 가지는 곳 </summary>
-public class CellInfo  
+public class CellInfo
 {
     /// <summary> 아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이거나 나 자신 셀이면 이놈이 시작지점이다 </summary>
-    CellInfo root = null; 
+    CellInfo root = null;
     /// <summary> 아이템 타입 </summary>
     Define.Item itemType = Define.Item.None;
     /// <summary> 아이템 개수 </summary>
@@ -17,13 +17,13 @@ public class CellInfo
     /// <summary> 아이템 이미지 </summary>
     public Image itemImage = null;
     /// <summary> 아이템 개수 표시하는 텍스트 </summary>
-    public Text amountText= null;
+    public Text amountText = null;
     /// <summary> 인벤토리 안에서 셀 위치 </summary>
     Vector2Int location;
     /// <summary> 아이템 창 칸의 평소 색상 </summary>
-    static Color normalColor = new Color(0.9f,0.9f,0.9f);
+    static Color normalColor = new Color(0.9f, 0.9f, 0.9f);
     /// <summary> 뭔가 아이템이 들어있을 때 어두운 컬러 </summary>
-    static Color filledColor = new Color(0.7f,0.7f,0.7f);
+    static Color filledColor = new Color(0.7f, 0.7f, 0.7f);
     /// <summary> 마우스 커서가 위치한 칸 밝게 강조하는 컬러 </summary>
     public static Color highlightColor = new Color(1, 1, 1);
 
@@ -101,7 +101,7 @@ public class CellInfo
     /// <summary> 칸이 비어있는지 체크. 루트가 null이거나 나 자신 셀이면서 아이템타입이 none이면 true </summary>
     public bool IsEmpty()
     {
-        if((root == null || root == this) && itemType == Define.Item.None == true)
+        if ((root == null || root == this) && itemType == Define.Item.None == true)
         {
             return true;
         }
@@ -109,7 +109,7 @@ public class CellInfo
         {
             return false;
         }
-        
+
     }
 
     /// <summary> 개수가 0이면 "" 처리함 </summary>
@@ -117,6 +117,29 @@ public class CellInfo
     {
         amount = wantAmount;
         amountText.text = wantAmount > 0 ? wantAmount.ToString() : "";
+    }
+
+    /// <summary> 개수를 더해서 남은 걸 리턴 </summary>
+    public int AddAmount(int wantAmount)
+    {
+        amount += wantAmount;  //루트 아이템의 갯수에 줍는 아이템 갯수 더함                                                    
+        int overAmount = Mathf.Max(0, amount - itemType.GetMaxStack()); //아이템 겹치기 초과치 계산
+        amount -= overAmount;
+        SetAmount(amount); //마우스 아이템 텍스트 갱신
+
+        return overAmount;
+    }
+
+    //아이템 소모 시 빼는 메서드
+    /// <summary> 현재 개수에서 원하는 개수만큼 뺌 </summary>
+    public int SubAmount(int wantAmount)
+    {
+        int result = Mathf.Min(wantAmount, amount);//내가 가지고 있는 것보다 초과해서 뺄 수는 없음
+
+        amount -= result;
+        SetAmount(amount); //마우스 아이템 텍스트 갱신
+
+        return result;
     }
 
     /// <summary> 칸을 비움. root 를 나 자신 셀로 바꾸고 아이템을 none으로 바꿈 </summary>
@@ -405,7 +428,7 @@ public class Inventory : MonoBehaviour
     bool TryRemovePlace(Vector2Int pos, Vector2Int currentPos, out Define.Item currentItem, out int currentAmount)
     {
         currentItem = SubItem(currentPos, out currentAmount);//현재 좌표에서 현재 개수만큼 빼서 현재 아이템에 대입
-        bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount);//마우스가 집고 있는 아이템을 pos 좌표에 밀어넣기 시도
+        bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount) > 0;//마우스가 집고 있는 아이템을 pos 좌표에 밀어넣기 시도
         if (result == false) //밀어넣기가 실패했다면
         {
             PutItem(currentPos, currentItem, currentAmount);//현재 좌표에 현재 아이템을 현재 개수만큼 밀어넣음
@@ -418,8 +441,10 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
-    bool PutItem(Vector2Int position, Define.Item item, int amount)
+    int PutItem(Vector2Int position, Define.Item item, int amount)
     {
+        amount = Mathf.Min(amount, item.GetMaxStack());
+
         Vector2Int size = item.GetSize();//해당 아이템의 사이즈 가져오기
         int overlap;//겹쳐진 횟수
         if (CanPlace(position, size, out overlap) == true) //해당 좌표에 해당 사이즈의 아이템을 밀어 넣을  수 있으면
@@ -435,48 +460,70 @@ public class Inventory : MonoBehaviour
                     infoArray[position.y + y, position.x + x].SetRoot(infoArray[position.y, position.x]);
                 }
             }
-            return true;
+            return amount;
         };
-        return false;
+        return 0;
     }
 
-    public bool GetItem(Define.Item item, int amount)  
+    /// <summary> 소지품창에서 같은 아이템 찾아서 리스트에 넣음</summary>
+    public List<CellInfo> FindItemList(Define.Item item) //아이템 찾는중
     {
+        List<CellInfo> result = new List<CellInfo>(); //해당 아이템을 가지고 있는 모든 셀 리턴
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                if(infoArray[y, x].GetRoot().GetItemType() == item) //주운 아이템이 소지품 창 안의 아이템과 같은 경우
+                CellInfo root = infoArray[y, x].GetRoot();
+                if (root.GetItemType() == item)
                 {
-                    CellInfo root = infoArray[y, x].GetRoot(); //해당 좌표의 루트 가져옴
-                    root.amount += amount;  //루트 아이템의 갯수에 줍는 아이템 갯수 더함                                                    
-                    int overAmount = Mathf.Max(0, root.amount - item.GetMaxStack()); //아이템 겹치기 초과치 계산
-                    root.amount -= overAmount; //루트 아이템의 갯수에 초과치만큼 빼줌
-                    amount = overAmount; //남은 갯수에 초과치 대입
-                    root.SetAmount(root.amount); //마우스 아이템 텍스트 갱신
-                    if (amount <= 0) //남은 아이템이 0보다 작으면
+                    if (!result.Contains(root))
                     {
-                        return true; //트루 반환
+                        result.Add(root);
                     }
                 }
             }
         }
-        if (amount >= 1)
+        return result;
+    }
+    
+    /// <summary> 리스트에서 지정한 아이템 개수 모두 더해서 리턴</summary>
+    public int GetItemAmount(Define.Item item)
+    {
+        int result = 0;
+        foreach(CellInfo current in FindItemList(item))
+        {
+            result += current.amount;
+        }
+
+        return result;
+    }
+
+    public int GetItem(Define.Item item, int amount)  
+    {
+        List<CellInfo> sameList = FindItemList(item);
+        for(int i = 0; i < sameList.Count; i++)
+        {
+            amount = sameList[i].AddAmount(amount); //넣고 남은값
+
+            if (amount <= 0) //남은 아이템이 0보다 작으면
+            {
+                return 0; //트루 반환
+            }
+        }
+        if (amount >= 1)//위에서 중복돤 아이템들 겹치고 나서 남은 아이템이 있으면
         {
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
-                {                 
-                    if (GameObject.FindGameObjectWithTag("Inventory").GetComponentInChildren<Inventory>().
-                    PutItem(Vector2Int.zero + new Vector2Int(x, y), item, amount)) //소지품창을 돌면서 인벤토리에 밀어넣기 시도
-                    {
-                        //아이템을 소지품창에 밀어넣는데 성공했으면
-                        return true;//트루 반환                       
-                    }
+                {
+                    //밀어넣은 아이템 개수만큼 amount 빼줌
+                    amount -= PutItem(Vector2Int.zero + new Vector2Int(x, y), item, amount); 
+                    
+                    if (amount <= 0) return 0;//남은 아이템이 0과 같거나 작으면 트루 반환                       
                 }
             }
         }
-        return false; //못 밀어넣었으면 반환
+        return amount; //못 밀어넣었으면 반환
     }
     /// <summary> 해당된 셀의 아이템 빼서 리턴</summary>
     Define.Item SubItem(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
