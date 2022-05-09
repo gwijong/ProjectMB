@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
     /// <summary>Ground 레이어와 Enemy 레이어의 레이어마스크</summary>
-    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player;
 
     private void Awake()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
@@ -71,10 +71,14 @@ public class PlayerController : MonoBehaviour
                 if (target != null)
                 {
                     player.GetComponent<EnemyDummyAI>().enabled = true; //기존 플레이어 캐릭터의 인공지능 켜줌
-                    player.tag = "Untagged";  //기존 플레이어 캐릭터의 태그 초기화
-                    player.layer = (int)Define.Layer.Enemy;  //기존 플레이어 캐릭터의 레이어를 적으로 바꿈
+                    if(player.tag == "Enemy")
+                    {
+                        player.layer = (int)Define.Layer.Enemy;  //기존 플레이어 캐릭터의 레이어를 적으로 바꿈
+                    }else if(player.tag == "Friendly")
+                    {
+                        player.layer = (int)Define.Layer.Livestock;//가축이면 캐릭터의 레이어를 가축으로 바꿈
+                    }
                     player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = false; //기존 캐릭터의 말풍선 눌려서 스킬취소하는 기능 꺼줌
-
                     player = hit.collider.gameObject;  //마우스 좌클릭으로 지정한 플레이어 캐릭터를 플레이어로 지정
                     player.GetComponent<EnemyDummyAI>().stopCoroutine();//인공지능 코루틴 중지
                     PlayerSetting();
@@ -105,7 +109,6 @@ public class PlayerController : MonoBehaviour
     /// <summary>플레이어 캐릭터로 전환</summary>
     void PlayerSetting()
     {
-        player.tag = "Player"; //플레이어의 태그를 플레이어로 변경
         player.layer = (int)Define.Layer.Player;  //플레이어의 레이어를 플레이어로 변경
         playerCharacter = player.GetComponent<Character>();  //플레이어의 캐릭터 컴포넌트를 가져옴
         player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌

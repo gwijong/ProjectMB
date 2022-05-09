@@ -13732,13 +13732,13 @@ GameObject:
   - component: {fileID: 1178535245}
   - component: {fileID: 1178535244}
   - component: {fileID: 1178535252}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Dog
-  m_TagString: Untagged
+  m_TagString: Friendly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1178535244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13886,9 +13886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!1 &1205421099
 GameObject:
   m_ObjectHideFlags: 0
@@ -24918,9 +24915,9 @@ GameObject:
   - component: {fileID: 2136128197}
   - component: {fileID: 2136128196}
   - component: {fileID: 2136128200}
-  m_Layer: 6
+  m_Layer: 13
   m_Name: Human
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25048,9 +25045,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!1 &2145606668
 GameObject:
   m_ObjectHideFlags: 0
@@ -25651,13 +25645,13 @@ GameObject:
   - component: {fileID: 338128137602524064}
   - component: {fileID: 338128137602524068}
   - component: {fileID: 338128137602524070}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Hen
-  m_TagString: Untagged
+  m_TagString: Friendly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &338128137602524064
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25783,9 +25777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!4 &354156122174764894
 Transform:
   m_ObjectHideFlags: 0
@@ -27524,13 +27515,13 @@ GameObject:
   - component: {fileID: 919132147505279143}
   - component: {fileID: 919132147505279142}
   - component: {fileID: 919132147505279144}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Sheep
-  m_TagString: Untagged
+  m_TagString: Friendly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &919132147505279142
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -27608,9 +27599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!1 &919132148370673976
 GameObject:
   m_ObjectHideFlags: 0
@@ -27628,11 +27616,11 @@ GameObject:
   - component: {fileID: 919132148370673977}
   m_Layer: 6
   m_Name: Wolf
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &919132148370673977
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27661,9 +27649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!114 &919132148370673979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27759,11 +27744,11 @@ GameObject:
   - component: {fileID: 919132148373828563}
   m_Layer: 6
   m_Name: Fox
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &919132148373828559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27870,9 +27855,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!1 &919132148543790560
 GameObject:
   m_ObjectHideFlags: 0
@@ -27888,13 +27870,13 @@ GameObject:
   - component: {fileID: 919132148543790563}
   - component: {fileID: 919132148543790562}
   - component: {fileID: 919132148543790561}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Rooster
-  m_TagString: Untagged
+  m_TagString: Friendly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &919132148543790561
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27936,9 +27918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!114 &919132148543790564
 MonoBehaviour:
   m_ObjectHideFlags: 0

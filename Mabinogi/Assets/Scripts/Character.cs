@@ -571,6 +571,16 @@ public class Character : Movable
             focusTarget = target;
             return true;
         }
+        else if (gameObject.layer == (int)Define.Layer.Enemy && target.gameObject.layer == (int)Define.Layer.Livestock) // 적의 타겟이 가축인 경우
+        {
+            focusTarget = target;
+            return true;
+        }
+        else if (gameObject.layer == (int)Define.Layer.Livestock && target.gameObject.layer == (int)Define.Layer.Enemy) // 가축의 타겟이 적인 경우
+        {
+            focusTarget = target;
+            return true;
+        }
 
         return false;
     }

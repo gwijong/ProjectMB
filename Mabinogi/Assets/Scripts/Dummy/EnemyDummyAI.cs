@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyDummyAI : MonoBehaviour
 {
-    public LayerMask whatIsTarget;
+    //public LayerMask whatIsTarget;
+    int layerMask = 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player;
     Character character;//인공지능 몬스터 나 자신
     GameObject player; //적(플레이어)
     Character playerCharacter; //적(플레이어 캐릭터 컴포넌트)
@@ -32,7 +33,12 @@ public class EnemyDummyAI : MonoBehaviour
         {
             return;
         }
-        if (character.die == true || playerCharacter.die == true)//자신 캐릭터 사망하면 동작하지 않음
+
+        if(playerCharacter.die == true)
+        {
+            StartCoroutine("Die");
+        }
+        if (character.die == true)//자신 캐릭터 사망하면 동작하지 않음
         {
             aiStart = true;
             stopCoroutine(); //인공지능 코루틴 중지
@@ -98,7 +104,11 @@ public class EnemyDummyAI : MonoBehaviour
     /// <summary> 적(플레이어)를 계속 바라보는 메서드 </summary>
     void LookAt()
     {
-        if(player != null)
+        if (gameObject.layer == (int)Define.Layer.Player)
+        {
+            return;
+        }
+        if(player != null && playerCharacter.die == false)
         {
             Vector3 look = player.transform.position;//플레이어 위치
             look.y = transform.position.y; //위 아래를 쳐다보지 않음, 회전만 함
@@ -127,7 +137,7 @@ public class EnemyDummyAI : MonoBehaviour
                 character.Casting(Define.SkillState.Combat);
                 character.SetOffensive(false);
             }
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, whatIsTarget); //반지름 10짜리 동그란 콜라이더 만든다
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 10f, layerMask); //반지름 10짜리 동그란 콜라이더 만든다
 
             //모든 콜라이더를 순회하면서 살아 있는 Player 찾기
             for (int i = 0; i < colliders.Length; i++)
@@ -135,8 +145,19 @@ public class EnemyDummyAI : MonoBehaviour
                 //콜라이더로부터 Character 컴포넌트 가져오기
                 Character pCharacter = colliders[i].GetComponent<Character>();
 
-                //Character 컴포넌트가 존재하며, 태그가 플레이어이면
-                if (pCharacter != null && pCharacter.tag == "Player")
+                //Character 컴포넌트가 존재하며, 레이어가 플레이어나 가축이고 내가 몬스터이면
+                if (pCharacter != null && pCharacter.die ==false && (pCharacter.gameObject.layer == (int)Define.Layer.Player|| pCharacter.gameObject.layer == (int)Define.Layer.Livestock) && character.tag=="Enemy")
+                {
+                    //추적 대상을 해당 playerCharacter 설정
+                    player = pCharacter.gameObject;
+                    playerCharacter = player.GetComponent<Character>();
+                    LookAt();//타겟을 계속 쳐다봄
+
+                    //for 문 루프 즉시 정지
+                    break;
+                }
+                //Character 컴포넌트가 존재하며, 레이어가 적이고 내가 가축이면
+                if (pCharacter != null && pCharacter.die == false && (pCharacter.gameObject.layer == (int)Define.Layer.Enemy) && character.tag == "Friendly")
                 {
                     //추적 대상을 해당 playerCharacter 설정
                     player = pCharacter.gameObject;
