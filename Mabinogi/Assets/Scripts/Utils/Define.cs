@@ -66,9 +66,11 @@ public class Define
         None,
         Fruit,
         Bottle,
+        BottleWater,
         Egg,
         LifePotion,
         ManaPotion,
         Wool,
+        Firewood,
     }
 }
