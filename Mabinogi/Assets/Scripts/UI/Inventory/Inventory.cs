@@ -128,7 +128,7 @@ public class CellInfo
     
 }
 
-public class Inventoty : MonoBehaviour
+public class Inventory : MonoBehaviour
 {
     /// <summary> 소지품창 넓이 </summary>
     public int width;
@@ -138,6 +138,8 @@ public class Inventoty : MonoBehaviour
     public RectTransform cellAnchor;
     /// <summary> 아이템창 각 칸 프리팹</summary>
     public GameObject cell;
+    /// <summary> 마우스 커서 따라다니는 칸 프리팹</summary>
+    public GameObject mouseCell;
     /// <summary> 인벤토리 창 UI 이미지</summary>
     public GameObject parent;
     /// <summary> 마우스가 올려진 셀 위치</summary>
@@ -155,8 +157,9 @@ public class Inventoty : MonoBehaviour
     {
         if (mouseItem == null)
         {
-            GameObject currentCell = Instantiate(cell);
+            GameObject currentCell = Instantiate(mouseCell);
             currentCell.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
+            currentCell.tag = "MouseCell";
             mouseItemPos = currentCell.GetComponent<RectTransform>();
             mouseItem = new CellInfo(new Vector2Int(0,0));
             mouseItem.amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
@@ -375,7 +378,7 @@ public class Inventoty : MonoBehaviour
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
-    bool PutItem(Vector2Int position, Define.Item item, int amount)
+    public bool PutItem(Vector2Int position, Define.Item item, int amount)
     {
         Vector2Int size = item.GetSize();//해당 아이템의 사이즈 가져오기
         int overlap;//겹쳐진 횟수

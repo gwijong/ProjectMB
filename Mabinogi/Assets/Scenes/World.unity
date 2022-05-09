@@ -3699,6 +3699,7 @@ MonoBehaviour:
   height: 10
   cellAnchor: {fileID: 1515897890}
   cell: {fileID: 3442442585268735776, guid: 42fa0ed2615f8004db9c99b01a3e64fd, type: 3}
+  mouseCell: {fileID: 3442442585268735776, guid: 198e16a02423d0548bb7a0f9a617e430, type: 3}
   parent: {fileID: 261662409}
 --- !u!1 &264644055
 GameObject:
@@ -13796,7 +13797,7 @@ NavMeshAgent:
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 1000
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -18133,7 +18134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1579923005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18193,7 +18194,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!224 &1579923008
 RectTransform:
@@ -18827,7 +18828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1629039630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18864,6 +18865,7 @@ MonoBehaviour:
   height: 10
   cellAnchor: {fileID: 1407092987}
   cell: {fileID: 3442442585268735776, guid: 42fa0ed2615f8004db9c99b01a3e64fd, type: 3}
+  mouseCell: {fileID: 3442442585268735776, guid: 198e16a02423d0548bb7a0f9a617e430, type: 3}
   parent: {fileID: 1629039629}
 --- !u!114 &1629039632
 MonoBehaviour:
@@ -24953,7 +24955,7 @@ NavMeshAgent:
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 1000
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -25738,7 +25740,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -27536,7 +27538,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -27706,7 +27708,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -27806,7 +27808,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -27975,7 +27977,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

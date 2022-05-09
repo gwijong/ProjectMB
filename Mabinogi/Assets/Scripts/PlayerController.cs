@@ -20,9 +20,9 @@ public class PlayerController : MonoBehaviour
         PlayerSetting();
     }
     private void Start()
-    {      
-        ;  //플레이어 태그 찾아서 가져옴
-
+    {
+        //플레이어 태그 찾아서 가져옴
+        
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             cameraForward *= keyInput.y;  //키보드 WS 입력값 받음
             cameraRight *= keyInput.x;  //키보드 AD 입력값 받음
 
-            Vector3 calculatedLocation = cameraForward + cameraRight;  //계산된 좌표
+            Vector3 calculatedLocation = cameraForward*5 + cameraRight*5;  //계산된 좌표에 5를 곱해줌. 내비메시 StoppingDistance가 2이므로 2 이상이어야함
             calculatedLocation += player.transform.position; //계산된 좌표에 플레이어의 현재 위치를 더함
 
             playerCharacter.SetTarget(null);//키보드 이동중이므로 지정된 타겟을 비움
