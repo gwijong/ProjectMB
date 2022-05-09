@@ -166,7 +166,7 @@ public class Inventory : MonoBehaviour
             mouseItem.amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
             mouseItem.buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
             mouseItem.itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
-            mouseItem.itemImage.rectTransform.pivot = Vector2.one * 0.5f; // 마우스따라다니는 아이템 이미지 중심점을 0.5,0.5로 맞춤
+            mouseItem.itemImage.rectTransform.pivot = Vector2.zero; // 마우스따라다니는 아이템 이미지 중심점을 0,0로 맞춤
             mouseItem.SetItem(Define.Item.None,0);//마우스가 쥐고 있는 아이템을 비워주고 0개로 설정
             mouseItem.buttonImage.enabled = false; //버튼 이미지(아이템 칸) 끔
             currentCell.GetComponent<Button>().enabled = false; //버튼 컴포넌트 끔
@@ -418,7 +418,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
-    public bool PutItem(Vector2Int position, Define.Item item, int amount)
+    bool PutItem(Vector2Int position, Define.Item item, int amount)
     {
         Vector2Int size = item.GetSize();//해당 아이템의 사이즈 가져오기
         int overlap;//겹쳐진 횟수
@@ -438,6 +438,45 @@ public class Inventory : MonoBehaviour
             return true;
         };
         return false;
+    }
+
+    public bool GetItem(Define.Item item, int amount)  
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if(infoArray[y, x].GetRoot().GetItemType() == item) //주운 아이템이 소지품 창 안의 아이템과 같은 경우
+                {
+                    CellInfo root = infoArray[y, x].GetRoot(); //해당 좌표의 루트 가져옴
+                    root.amount += amount;  //루트 아이템의 갯수에 줍는 아이템 갯수 더함                                                    
+                    int overAmount = Mathf.Max(0, root.amount - item.GetMaxStack()); //아이템 겹치기 초과치 계산
+                    root.amount -= overAmount; //루트 아이템의 갯수에 초과치만큼 빼줌
+                    amount = overAmount; //남은 갯수에 초과치 대입
+                    root.SetAmount(root.amount); //마우스 아이템 텍스트 갱신
+                    if (amount <= 0) //남은 아이템이 0보다 작으면
+                    {
+                        return true; //트루 반환
+                    }
+                }
+            }
+        }
+        if (amount >= 1)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {                 
+                    if (GameObject.FindGameObjectWithTag("Inventory").GetComponentInChildren<Inventory>().
+                    PutItem(Vector2Int.zero + new Vector2Int(x, y), item, amount)) //소지품창을 돌면서 인벤토리에 밀어넣기 시도
+                    {
+                        //아이템을 소지품창에 밀어넣는데 성공했으면
+                        return true;//트루 반환                       
+                    }
+                }
+            }
+        }
+        return false; //못 밀어넣었으면 반환
     }
     /// <summary> 해당된 셀의 아이템 빼서 리턴</summary>
     Define.Item SubItem(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
@@ -527,7 +566,17 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-    }   
+    }
+
+    /*
+루트들을
+왼쪽 위에서부터
+찾아서
+가져오면
+그냥 그 가져온 배열에서
+덜 찬 녀석 채워주면 되잖아
+
+     */
 }
 
 

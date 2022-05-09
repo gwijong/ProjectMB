@@ -42,19 +42,21 @@ public class EnemyDummyAI : MonoBehaviour
 
         if (playerCharacter.die == true) //적이 죽으면
         {
-            StartCoroutine("Reset"); //내 리셋 코루틴 실행
+            Reset();
+            return;
         }
         //자신 캐릭터 사망하면 동작하지 않음
         if (character.die == true)//내가 죽으면
         {
             aiStart = true;  //인공지능 코루틴이 실행되지 않도록 인공지능 코루틴이 시작했다고 설정
             stopCoroutine(); //인공지능 코루틴 중지
-            StartCoroutine("Reset"); //내 리셋 코루틴 실행
+            Reset();
             return;
         }
         
         if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
         {
+            character.MoveStop(false);
             aiStart = true; //인공지능 시작 bool값 true로 변경
             coroutine = DummyAI(); //인공지능 코루틴 할당
             StartCoroutine(coroutine); //인공지능 코루틴 시작
@@ -120,12 +122,12 @@ public class EnemyDummyAI : MonoBehaviour
     }
 
     /// <summary> 플레이어 사망시 AI 스킬 기본값으로 만드는 코루틴 </summary>
-    IEnumerator Reset()
+    void Reset()
     {
-        yield return new WaitForSeconds(3.0f); //3초 대기
         character.SetTarget(null); //타겟 비운다
         character.Casting(Define.SkillState.Combat); //컴벳 스킬로 전환
         character.SetOffensive(false); //일상모드로 전환
+        character.MoveStop(true);
     }
 
     /// <summary> 0.25초마다 반복실행되는 플레이어를 찾는 코루틴 </summary>

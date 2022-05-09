@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4287c781ba188141aad5663e79b362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item: 2
+  item: 2
   amount: 1
 --- !u!114 &3052468593730770516
 MonoBehaviour:
@@ -291,6 +291,8 @@ GameObject:
   - component: {fileID: 3607498997560704020}
   - component: {fileID: 414246146087711665}
   - component: {fileID: 2475649270979561339}
+  - component: {fileID: 1674296992882791823}
+  - component: {fileID: 6852105548912332984}
   m_Layer: 11
   m_Name: Bottle
   m_TagString: Untagged
@@ -362,3 +364,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1674296992882791823
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133101132905883310}
+  m_Material: {fileID: 13400000, guid: 61cf45bb40d78444ca16e48e67e0eeb3, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 11.1012, y: 23.5506, z: 9.613901}
+  m_Center: {x: 0.005899906, y: 12.0703, z: 0.043850422}
+--- !u!54 &6852105548912332984
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133101132905883310}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

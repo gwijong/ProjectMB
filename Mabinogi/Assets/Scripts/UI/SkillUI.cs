@@ -55,9 +55,9 @@ public class SkillUI : MonoBehaviour
             switch (character.GetreservedSkill().type)
             {
                 case Define.SkillState.Combat:
-                    
+                    ImageOff();
                     //skillImages[(int)Define.SkillState.Combat].gameObject.SetActive(true);
-                    
+
                     break;
                 case Define.SkillState.Defense:
                     Casting();
