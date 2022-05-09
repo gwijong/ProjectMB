@@ -112,6 +112,7 @@ public class CellInfo
         
     }
 
+    /// <summary> 개수가 0이면 "" 처리함 </summary>
     public void SetAmount(int wantAmount)
     {
         amount = wantAmount;
@@ -148,27 +149,27 @@ public class Inventory : MonoBehaviour
     CellInfo[,] infoArray;
     /// <summary> 마우스가 집고있는 아이템</summary>
     public static CellInfo mouseItem { get; private set; }
-
+    /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
     public static RectTransform mouseItemPos;
 
     //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
     void Start()
     {
-        if (mouseItem == null)
+        if (mouseItem == null) //마우스가 집고있는 아이템이 없으면 아래에서 할당해줌
         {
-            GameObject currentCell = Instantiate(mouseCell);
-            currentCell.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
-            currentCell.tag = "MouseCell";
-            mouseItemPos = currentCell.GetComponent<RectTransform>();
-            mouseItem = new CellInfo(new Vector2Int(0,0));
+            GameObject currentCell = Instantiate(mouseCell); //마우스 계속 따라다니는 빈 셀 지정
+            currentCell.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 셀의 부모를 인벤토리로 지정
+            currentCell.tag = "MouseCell"; //마우스 셀의 태그를 지정
+            mouseItemPos = currentCell.GetComponent<RectTransform>(); //마우스 셀의 RectTransform 대입
+            mouseItem = new CellInfo(new Vector2Int(0,0)); //마우스아이템 인스턴스 생성
             mouseItem.amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
             mouseItem.buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
             mouseItem.itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
-            mouseItem.itemImage.rectTransform.pivot = Vector2.one * 0.5f;
-            mouseItem.SetItem(Define.Item.Wool,1);
-            mouseItem.buttonImage.enabled = false;
-            currentCell.GetComponent<Button>().enabled = false;
+            mouseItem.itemImage.rectTransform.pivot = Vector2.one * 0.5f; // 마우스따라다니는 아이템 이미지 중심점을 0.5,0.5로 맞춤
+            mouseItem.SetItem(Define.Item.None,0);//마우스가 쥐고 있는 아이템을 비워주고 0개로 설정
+            mouseItem.buttonImage.enabled = false; //버튼 이미지(아이템 칸) 끔
+            currentCell.GetComponent<Button>().enabled = false; //버튼 컴포넌트 끔
         }
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
@@ -188,32 +189,31 @@ public class Inventory : MonoBehaviour
                 infoArray[y, x].buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
                 infoArray[y, x].itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
 
-                infoArray[y, x].CalculateColor();
+                infoArray[y, x].CalculateColor();//칸이 비어있으면 빈 색상, 칸이 차있으면 어두운 색상
                 
                 RectTransform childRect = currentCell.GetComponent<RectTransform>(); //현재 셀의 RectTransform 가져옴
                 Vector2 pos = cellAnchor.anchoredPosition + new Vector2((48 * x), (-48 * y));//각 셀들의 위치를 시작 기준점에서 48픽셀 간격으로 배치함
                 childRect.anchoredPosition = pos;//현재 셀의 앵커 포지션을 시작 기준점에서 48 * x, -48 * y 간격으로 배치함
             }
         }
-        foreach (CellInfo current in infoArray)
+        foreach (CellInfo current in infoArray) //모든 아이템 칸들 순회
         {
-            current.itemImage.transform.SetParent(parent.transform);
-            current.amountText.transform.SetParent(parent.transform);
-            current.SetItem(Define.Item.None,0);
+            current.itemImage.transform.SetParent(parent.transform); //아이템 이미지를 인벤토리 창의 하위 오브젝트로 지정
+            current.amountText.transform.SetParent(parent.transform);//아이템 텍스트를 인벤토리 창의 하위 오브젝트로 지정
+            current.SetItem(Define.Item.None,0); //인벤토리 창 칸들을 비워줌
         }
-        PutItem(Vector2Int.one, Define.Item.Wool, 3);
-        PutItem(Vector2Int.zero, Define.Item.Fruit, 1);
+        PutItem(Vector2Int.one, Define.Item.Wool, 3); //인벤토리 실험용 기본 아이템1
+        PutItem(Vector2Int.zero, Define.Item.Fruit, 1); //인벤토리 실험용 기본 아이템2
     }
 
     private void OnUpdate()
     {
-        if(mouseItemPos == null)
+        if(mouseItemPos == null) //마우스 따라다니는 셀의 좌표가 null이면 리턴
         {
             return;
         }
-        mouseItemPos.position = Input.mousePosition; 
-        /// <summary> 마우스 좌표 </summary>
-        Vector3 mousePosition = Input.mousePosition;
+        mouseItemPos.position = Input.mousePosition; //마우스 따라다니는 셀의 좌표를 마우스 좌표로 계속 대입 갱신
+        Vector3 mousePosition = Input.mousePosition; //마우스 좌표
         mousePosition -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
         mousePosition.y *= -1;//y값이 음수면 햇갈리기 때문에 음수 곱해서 양수로 바꿔줌
 
@@ -227,9 +227,10 @@ public class Inventory : MonoBehaviour
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
             ||mousePosition.y < 0 || mousePosition.y > height * 48) // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
         {
-            if (Input.GetMouseButtonDown(0))
+            //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
+            if (Input.GetMouseButtonDown(0)) 
             {
-                DropItem();
+                DropItem(); //아이템 버리기
             }
              //overedCellLocation을 (-1,-1)로 바꿈
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
@@ -244,11 +245,11 @@ public class Inventory : MonoBehaviour
 
             int overlap = 0;
             int amount = 0;
-            if (Input.GetMouseButtonDown(1))
-                SubItem(overedCellLocation, out amount);
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(1))//마우스 우클릭하면
+                SubItem(overedCellLocation, out amount); //해당 셀의 아이템을 빼준다
+            if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
             {
-                LeftClick(overedCellLocation);
+                LeftClick(overedCellLocation); // 마우스 좌클릭 메서드 실행
             }
         };
 
@@ -256,39 +257,39 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 버리기 </summary>
     void DropItem()
     {
-        GameObject dropitem = null;
-        switch (mouseItem.GetItemType())
+        GameObject dropitem = null; //버릴 아이템
+        switch (mouseItem.GetItemType()) 
         {
-            case Define.Item.None:
+            case Define.Item.None: //버릴 아이템 타입이 none이면 버릴 아이템이 없으므로 탈출
                 return;
             case Define.Item.Fruit:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Fruit"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Fruit")); //열매 아이템 생성
                 break;
             case Define.Item.Wool:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Wool"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Wool")); //양털 아이템 생성
                 break;
             case Define.Item.Egg:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Egg"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Egg")); //달걀 아이템 생성
                 break;
             case Define.Item.Firewood:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Firewood"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Firewood")); //장작 아이템 생성
                 break;
             case Define.Item.LifePotion:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/LifePotion"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/LifePotion")); //생명력 포션 아이템 생성
                 break;
             case Define.Item.ManaPotion:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/ManaPotion"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/ManaPotion")); //마나 포션 아이템 생성
                 break;
             case Define.Item.Bottle:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Bottle"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Bottle")); //빈병 아이템 생성
                 break;
             case Define.Item.BottleWater:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater"));
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater")); //물병 아이템 생성
                 break;               
         }
-        dropitem.GetComponentInChildren<GetItemButton>().amount = mouseItem.amount;
-        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0,3,0);
-        mouseItem.Clear();
+        dropitem.GetComponentInChildren<GetItemButton>().amount = mouseItem.amount; //바닥에 떨어진 아이템의 개수는 마우스로 집고 있던 아이템의 개수이다.
+        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0,3,0);//플레이어 좌표에서 y축 3 높이에서 생성
+        mouseItem.Clear();//마우스 아이템 비워줌
     }
 
     /// <summary> 해당 위치에 아이템을 밀어 넣는게 가능한지 체크 </summary>
@@ -314,104 +315,106 @@ public class Inventory : MonoBehaviour
                 //아이템 크기만큼의 공간이 전부 빈 상태가 아닌 경우
                 if(infoArray[position.y + y, position.x + x].IsEmpty() == false)
                 {
-                    CellInfo currentRoot = infoArray[position.y + y, position.x + x].GetRoot();
-                    if (!rootList.Contains(currentRoot))
+                    CellInfo currentRoot = infoArray[position.y + y, position.x + x].GetRoot(); //현재 루트를 가져옴
+                    if (!rootList.Contains(currentRoot))//루트 리스트에 현재 루트와 같은 값이 없으면
                     {
-                        rootList.Add(currentRoot);
+                        rootList.Add(currentRoot);//루트 리스트에 현재 루트를 추가한다
                     };
                     result = false;
                 };
             };
         };
-        OverlapTime = rootList.Count;
-        return result;
+        OverlapTime = rootList.Count; //겹친 횟수는 루트 리스트의 갯수이다.
+        return result; //현재 공간에 아이템 넣을 수 있으면 true 반환
     }
 
+    /// <summary> 마우스 좌클릭 시 아이템 겹치기, 아이템 옮기기 실행 </summary>
     void LeftClick(Vector2Int pos)
     {
-        
+        //마우스 클릭한 좌표가 null이거나 소지품창의 범위를 벗어난 경우
         if (pos == null || pos.x < 0 || pos.y < 0 || pos.x >= width || pos.y >= height)
         {
-            return;
+            return; //탈출
         }
-        int overlapTime = 0;
-        int currentAmount = 0;
-        Define.Item currentItem = Define.Item.None;
+        int overlapTime = 0; //겹친 횟수
+        int currentAmount = 0; //현재 갯수
+        Define.Item currentItem = Define.Item.None; //현재 아이템을 일단 비워줌
 
-        CellInfo currentCell = CheckItemRoot(pos);
+        CellInfo currentCell = CheckItemRoot(pos); //현재 셀에 마우스 좌표의 루트 대입
 
-        if (mouseItem.GetItemType() == Define.Item.None)
+        if (mouseItem.GetItemType() == Define.Item.None)// 마우스가 집고 있는 아이템이 없는 경우
         {
-            currentItem = SubItem(pos, out currentAmount);
-            mouseItem.SetItem(currentItem, currentAmount);
+            currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
+            mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
         }
-        else
+        else //마우스가 뭔가를 집고 있는 경우
         {
-            if(CanPlace(pos, mouseItem.GetItemType().GetSize(), out overlapTime))
+            if(CanPlace(pos, mouseItem.GetItemType().GetSize(), out overlapTime))//넣을 공간이 있는 경우
             {
-                TryRemovePlace(pos,currentCell.GetLocation() , out currentItem, out currentAmount);
+                TryRemovePlace(pos,currentCell.GetLocation() , out currentItem, out currentAmount); //스왑 시도
             }
             else
             {
                 if(overlapTime <= 1)
                 {
-                    if(currentCell.GetItemType() == mouseItem.GetItemType())
+                    if(currentCell.GetItemType() == mouseItem.GetItemType()) //아이템 종류가 같으면 겹쳐주기 시도
                     {                       
-                        int maxStack = currentCell.GetItemType().GetMaxStack();                      
-                        if(currentCell.amount >= maxStack) // 얘는 이미 다 찼어
+                        int maxStack = currentCell.GetItemType().GetMaxStack(); //현재 아이템 칸의 아이템 종류의 최대 겹치는 갯수 가져옴                     
+                        if(currentCell.amount >= maxStack) // 아이템 창 아이템이 최대치로 다 차있는 경우
                         {
-                            //int temp = mouseItem.amount;
-                            //mouseItem.amount = currentCell.amount;
-                            //currentCell.amount = temp;
-                            mouseItem.amount = mouseItem.amount ^ currentCell.amount;
-                            currentCell.amount = mouseItem.amount ^ currentCell.amount;
-                            mouseItem.amount = mouseItem.amount ^ currentCell.amount;
-                            mouseItem.SetAmount(mouseItem.amount);
-                            currentCell.SetAmount(currentCell.amount);
+                            //mouseItem.amount = mouseItem.amount ^ currentCell.amount;
+                            //currentCell.amount = mouseItem.amount ^ currentCell.amount;
+                            //mouseItem.amount = mouseItem.amount ^ currentCell.amount;
+                            int temp = mouseItem.amount; //마우스 아이템 갯수 임시 저장
+                            mouseItem.amount = currentCell.amount; //마우스 아이템 갯수를 소지품창 아이템 갯수로 대입
+                            currentCell.amount = temp; //소지품창 아이템 갯수를 마우스 아이템 갯수로 대입
+                            mouseItem.SetAmount(mouseItem.amount); //마우스 집고있는 아이템 텍스트 갱신
+                            currentCell.SetAmount(currentCell.amount);//인벤토리 아이템 칸 텍스트 갱신
 
                         }
-                        else // 그리고 아직 덜 찬 상태였다!
+                        else // 아이템 창 아이템이 덜 차있는 경우
                         {
-                            currentCell.amount += mouseItem.amount;
-                            // 넘은양   둘중 더 큰 거      마이너스가 되면(안넘었으면)  0인 거지
-                            int overAmount = Mathf.Max(0, currentCell.amount - maxStack);
-                            mouseItem.amount = overAmount;
-                            currentCell.amount -= overAmount;
-                            mouseItem.SetAmount(mouseItem.amount);
-                            currentCell.SetAmount(currentCell.amount);
+                            currentCell.amount += mouseItem.amount; //일단 아이템 창 아이템에 마우스 아이템 갯수 더함
+                            // 넘은양   둘중 더 큰 거      마이너스가 되면(안넘었으면) 그나마 큰 0이 된다
+                            int overAmount = Mathf.Max(0, currentCell.amount - maxStack); //최대치 초과하지 않으면 0, 초과하면 초과한 숫자만큼 overAmount 대입
+                            mouseItem.amount = overAmount; //초과치만큼 마우스에 들고 있는다
+                            currentCell.amount -= overAmount; //초과치만큼 아이템 창 아이템의 갯수를 빼준다
+                            mouseItem.SetAmount(mouseItem.amount); //마우스 아이템 텍스트 갱신
+                            currentCell.SetAmount(currentCell.amount); //인벤토리 아이템 텍스트 갱신
                             
                         }
                     }
-                    else
+                    else //아이템 종류가 다르면 집고 있는 아이템과 소지품창 아이템을 스왑해줌
                     {
                         currentCell = CheckItemRoot(pos, mouseItem.GetItemType().GetSize());
-                        if(currentCell != null)
+                        if(currentCell != null) //아이템이 있으면
                         {
-                            TryRemovePlace(pos, currentCell.GetLocation(), out currentItem, out currentAmount);
+                            TryRemovePlace(pos, currentCell.GetLocation(), out currentItem, out currentAmount); //스왑 시도
                         };
                     }
                 }
             }
         }
-        if(mouseItem.amount <= 0)
+        if(mouseItem.amount <= 0) //마우스가 쥐고 있는 아이템 개수가 0 이하이면
         {
-            mouseItem.SetItem(Define.Item.None, 0);
+            mouseItem.SetItem(Define.Item.None, 0); //마우스가 쥐고있는 아이템 비워줌
         }
     }
 
+    /// <summary> 아이템 스왑 시도 </summary>
     bool TryRemovePlace(Vector2Int pos, Vector2Int currentPos, out Define.Item currentItem, out int currentAmount)
     {
-        currentItem = SubItem(currentPos, out currentAmount);
-        bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount);
-        if(result == false)
+        currentItem = SubItem(currentPos, out currentAmount);//현재 좌표에서 현재 개수만큼 빼서 현재 아이템에 대입
+        bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount);//마우스가 집고 있는 아이템을 pos 좌표에 밀어넣기 시도
+        if (result == false) //밀어넣기가 실패했다면
         {
-            PutItem(currentPos, currentItem, currentAmount);
+            PutItem(currentPos, currentItem, currentAmount);//현재 좌표에 현재 아이템을 현재 개수만큼 밀어넣음
         }
-        else
+        else //밀어넣기가 성공했다면
         {
-            mouseItem.SetItem(currentItem, currentAmount);
+            mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 현재 아이템, 현재 개수로 설정
         };
-        return result;
+        return result; //밀어넣기 결과 리턴
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
@@ -426,7 +429,7 @@ public class Inventory : MonoBehaviour
             {
                 for (int y = 0; y < size.y; y++)
                 {
-                    if (x == 0 && y == 0) continue;
+                    if (x == 0 && y == 0) continue; //0,0은 루트이므로 넘김
 
                     //첫번째 칸 루트를 제외한 나머지 칸 루트들은 y,x를 바라보게 지정
                     infoArray[position.y + y, position.x + x].SetRoot(infoArray[position.y, position.x]);
@@ -476,22 +479,24 @@ public class Inventory : MonoBehaviour
         return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
     }
 
+    /// <summary> 해당 좌표에서 아이템 사이즈만큼의 범위에 아이템이 있는지 체크해서 아이템이 있으면 해당 아이템 정보 돌려줌</summary>
     CellInfo CheckItemRoot(Vector2Int position, Vector2Int size)
     {
+        //소지품창 범위 넘어가면 null 리턴
         if (position.x < 0 || position.y < 0 || position.x + size.x > width || position.y + size.y > height) return null;
 
         for (int x = 0; x < size.x; x++)
-        {
-            for(int y = 0; y < size.y; y++)
+        {   //아이템 사이즈만큼 아이템 칸 순회
+            for(int y = 0; y < size.y; y++) 
             {
-                if(infoArray[position.y + y, position.x + x].GetItemType() != Define.Item.None)
+                if(infoArray[position.y + y, position.x + x].GetItemType() != Define.Item.None) //셀 안에 아이템이 있으면
                 {
-                    return infoArray[position.y + y, position.x + x];
+                    return infoArray[position.y + y, position.x + x]; //셀 정보 반환
                 };
             };
         };
 
-        return infoArray[position.y,position.x];
+        return infoArray[position.y,position.x]; //빈 셀 정보 반환
     }
 
     /// <summary> 루트를 따라서 하위 셀들 하이라이트 같이 해주는 메서드</summary>
@@ -500,7 +505,7 @@ public class Inventory : MonoBehaviour
         CellInfo rootCellInfo = CheckItemRoot(position);
         Define.Item CellItem = CheckItem(position); //해당 좌표의 아이템 받아옴
         Vector2Int size = CellItem.GetSize(); // 아이템 사이즈 받아옴
-        if (isHighright)
+        if (isHighright)//하이라이트 해줘야 하면
         {
             for (int x = 0; x < size.x; x++)
             {
@@ -511,7 +516,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        else
+        else//하이라이트 안해줘야 하면
         {
             for (int x = 0; x < size.x; x++)
             {
@@ -525,27 +530,4 @@ public class Inventory : MonoBehaviour
     }   
 }
 
-
-/*
- * 
- * 그 위치에 아이템이 있는지 찾아봐야 함
- * 어떤 아이템이 있는지 체크해보기
- * 아이템을 실제로 놓아봐야됨
- * 아이템을 놓을 때 그 위치(기준점)에만 하나를 놓고 나머지 칸을 구성하는 애들은 그 자리를 가리키고 있어야 해
- * OE___
- * EE___
- * _____
- * _____
- * 포개지는 개수에 따라 스왑할 건지 확인
- * 두 개 이상 겹치면 아무 것도 하지 않기
- * 스왑하려고 할 때 같은 종류의 아이템이면 겹치기
- * 같은 종류의 아이템인데 겹칠 수 있는 숫자보다 많으면 남은 숫자만큼은 마우스에다가 놓기
- * 
- * 
- * 마우스가 올려져 있는 칸의 루트 확인, 
- * 루트의 아이템 타입의 사이즈 받아옴, 
- * 사이즈 개수만큼 하이라이트 해줌,
- * 지금 마우스 말고 직전에 있었던 마우스도 체크해야함 그래야 원래 색깔로 돌려줌, 
- * 직전과 지금 마우스 위치 다르면 직전은 풀어줘야함
- */
 

@@ -9,10 +9,10 @@ public static class Extension
     {
         switch(from)
         {
-            case Define.SkillState.Counter: return Skill.counterAttack;
-            case Define.SkillState.Defense: return Skill.defense;
-            case Define.SkillState.Smash:   return Skill.smash;
-            default:                        return Skill.combatMastery;
+            case Define.SkillState.Counter: return Skill.counterAttack; //카운터
+            case Define.SkillState.Defense: return Skill.defense; //디펜스
+            case Define.SkillState.Smash:   return Skill.smash;  //스매시
+            default:                        return Skill.combatMastery; //근접 공격
         }
     }
 
@@ -33,6 +33,7 @@ public static class Extension
         }
     }
 
+    /// <summary>Define.Item.GetItemImage(); 하면 해당 아이템 스프라이트 반환 </summary>
     public static Sprite GetItemImage(this Define.Item item)
     {
         switch (item)
@@ -49,6 +50,7 @@ public static class Extension
         }
     }
 
+    /// <summary>Define.Item.GetMaxStack(); 하면 해당 아이템 최대 겹칠 수 있는 수 반환 </summary>
     public static int GetMaxStack(this Define.Item item)
     {
         switch (item)

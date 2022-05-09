@@ -60,7 +60,8 @@ public class Define
         Walkable,
         Runnable,
     }
-
+    
+    /// <summary> 아이템 종류 </summary>
     public enum Item
     {
         None,
