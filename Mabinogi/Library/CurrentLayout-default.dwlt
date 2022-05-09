@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 1
-  controlID: 165
+  controlID: 169
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 166
+  controlID: 170
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 442}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 167
+  controlID: 171
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 77
+  controlID: 44
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_MinSize: {x: 276, y: 192}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 192
+  controlID: 196
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -349,8 +349,8 @@ MonoBehaviour:
     y: 0
     width: 644
     height: 719
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 23}
   m_Panes:
   - {fileID: 23}
@@ -500,17 +500,17 @@ MonoBehaviour:
   m_ShowContextualTools: 0
   m_WindowGUID: 2a9d5d0b10bb2454e8fbcbb87b115091
   m_Gizmos: 1
-  m_OverrideSceneCullingMask: 0
-  m_SceneIsLit: 0
+  m_OverrideSceneCullingMask: 6917529027641081856
+  m_SceneIsLit: 1
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.013318628, y: 0.075048625, z: 0.06708354}
+    m_Target: {x: -14.005772, y: 0.83026236, z: -2.7008574}
     speed: 2
-    m_Value: {x: -0.013318628, y: 0.075048625, z: 0.06708354}
+    m_Value: {x: -14.005772, y: 0.83026236, z: -2.7008574}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -522,7 +522,7 @@ MonoBehaviour:
   m_SceneViewState:
     m_AlwaysRefresh: 0
     showFog: 1
-    showSkybox: 0
+    showSkybox: 1
     showFlares: 1
     showImageEffects: 1
     showParticleSystems: 1
@@ -557,13 +557,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.1593584, y: 0.42030036, z: -0.07495397, w: -0.89032555}
+    m_Target: {x: -0.12699783, y: 0.83367264, z: -0.21492383, w: -0.49261457}
     speed: 2
-    m_Value: {x: -0.15933089, y: 0.42022783, z: -0.07494104, w: -0.8901719}
+    m_Value: {x: -0.12699784, y: 0.83367276, z: -0.21492386, w: -0.49261463}
   m_Size:
-    m_Target: 1.5707107
+    m_Target: 1.6987433
     speed: 2
-    m_Value: 1.5707107
+    m_Value: 1.6987433
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -849,23 +849,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 6c110000
       m_LastClickedID: 0
-      m_ExpandedIDs: 8833fcff00110e0014110e00
+      m_ExpandedIDs: 52fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Inven
-        m_OriginalName: Inven
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 16140
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 11}
       m_SearchString: 
@@ -913,36 +913,36 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Prefabs/Item
+    - Assets/Resources/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Resources/Prefabs/Item
+  - Assets/Resources/Prefabs
   m_LastFoldersGridSize: 96
   m_LastProjectPath: D:\Unity\Github\Mabinogi\Mabinogi
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 179}
-    m_SelectedIDs: 6c580000
-    m_LastClickedID: 22636
-    m_ExpandedIDs: 000000000e58000010580000125800001458000016580000185800001a5800001c5800001e58000020580000225800002458000026580000285800002a5800002c5800002e58000030580000325800003458000036580000385800003a5800005c580000
+    scrollPos: {x: 0, y: 99}
+    m_SelectedIDs: 64580000
+    m_LastClickedID: 22628
+    m_ExpandedIDs: 00000000385800003a5800003c5800003e58000040580000425800004458000046580000485800004a5800004c5800004e58000050580000525800005458000056580000585800005a5800005c5800005e580000605800006258000064580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Prefabs
-      m_OriginalName: Prefabs
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 22586
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 12}
     m_SearchString: 
@@ -956,7 +956,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000e58000010580000125800001458000016580000185800001a5800001c5800001e58000020580000225800002458000026580000285800002a5800002c5800002e58000030580000325800003458000036580000385800003a580000
+    m_ExpandedIDs: 00000000385800003a5800003c5800003e58000040580000425800004458000046580000485800004a5800004c5800004e58000050580000525800005458000056580000585800005a5800005c5800005e580000605800006258000064580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -983,7 +983,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 763d00002e8a00002a8a0000923d0000943d00004a6d000078410000744100001647000056d9ffff20180200c6690000063e000038da01001ec10100fa8a0000103e0000fcc70100644b0000964b0000384b00004e8600001c9e00002a5b0000b6a10000f05f0000147c0000ac9500001c8800002c990000206800000c9e00006c31000000000000b0760000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1044,7 +1044,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 192
   m_GlobalObjectId: 
   m_LockTracker:
     m_IsLocked: 0

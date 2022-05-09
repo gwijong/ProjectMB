@@ -254,6 +254,39 @@ public class Inventory : MonoBehaviour
 
     }
 
+    void DropItem()
+    {
+        GameObject dropitem = null;
+        switch (mouseItem.GetItemType())
+        {
+            case Define.Item.Fruit:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Fruit"));
+                break;
+            case Define.Item.Wool:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Wool"));
+                break;
+            case Define.Item.Egg:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Egg"));
+                break;
+            case Define.Item.Firewood:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Firewood"));
+                break;
+            case Define.Item.LifePotion:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/LifePotion"));
+                break;
+            case Define.Item.ManaPotion:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/ManaPotion"));
+                break;
+            case Define.Item.Bottle:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Bottle"));
+                break;
+            case Define.Item.BottleWater:
+                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater"));
+                break;               
+        }
+        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+    }
+
     /// <summary> 해당 위치에 아이템을 밀어 넣는게 가능한지 체크 </summary>
     bool CanPlace(Vector2Int position, Vector2Int itemSize, out int OverlapTime)    //셀 좌표, 아이템크기,아이템 사이즈 , 아이템 겹친 횟수
     {
