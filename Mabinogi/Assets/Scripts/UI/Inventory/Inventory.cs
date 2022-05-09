@@ -227,8 +227,11 @@ public class Inventory : MonoBehaviour
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
             ||mousePosition.y < 0 || mousePosition.y > height * 48) // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
         {
-
-            //overedCellLocation을 (-1,-1)로 바꿈
+            if (Input.GetMouseButtonDown(0))
+            {
+                DropItem();
+            }
+             //overedCellLocation을 (-1,-1)로 바꿈
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
         }
         else //마우스 커서가 소지품 창 안에 있는 경우
@@ -247,18 +250,17 @@ public class Inventory : MonoBehaviour
             {
                 LeftClick(overedCellLocation);
             }
-
-            
-
         };
 
     }
-
+    /// <summary> 아이템 버리기 </summary>
     void DropItem()
     {
         GameObject dropitem = null;
         switch (mouseItem.GetItemType())
         {
+            case Define.Item.None:
+                return;
             case Define.Item.Fruit:
                 dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Fruit"));
                 break;
@@ -284,7 +286,9 @@ public class Inventory : MonoBehaviour
                 dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater"));
                 break;               
         }
-        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position;
+        dropitem.GetComponentInChildren<GetItemButton>().amount = mouseItem.amount;
+        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0,3,0);
+        mouseItem.Clear();
     }
 
     /// <summary> 해당 위치에 아이템을 밀어 넣는게 가능한지 체크 </summary>
