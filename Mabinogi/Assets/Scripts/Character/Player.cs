@@ -24,4 +24,9 @@ public class Player : Character
     {
         base.OnUpdate();
     }
+
+    public void Sheeping()
+    {
+        PlayAnim("Sheeping");
+    }
 }
