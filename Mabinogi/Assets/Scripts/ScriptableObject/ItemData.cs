@@ -4,6 +4,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable/Item/Itemdata", fileName = "ItemData")]
 public class ItemData : ScriptableObject
 {
+    [Tooltip("아이템 이름")]
+    [SerializeField]
+    private string itemName = "나무 열매";
+    /// <summary> 아이템 이름 </summary>
+    public string ItemName { get { return itemName; } }
+
     [Tooltip("구매 가격")]
     [SerializeField]
     [Range(1, 10000)]

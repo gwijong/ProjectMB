@@ -164,6 +164,17 @@ public class Inventory : MonoBehaviour
     public GameObject cell;
     /// <summary> 마우스 커서 따라다니는 칸 프리팹</summary>
     public GameObject mouseCell;
+
+    /// <summary> 마우스 커서 따라다니는 아이템 정보 UI</summary>
+    public GameObject information;
+    /// <summary> 아이템 정보 UI</summary>
+    GameObject inpo;
+
+    /// <summary> 아이템 사용 선택지문 프리팹 </summary>
+    public GameObject useUI;
+    /// <summary> 아이템 사용 선택지문 인스턴스</summary>
+    GameObject use;
+
     /// <summary> 인벤토리 창 UI 이미지</summary>
     public GameObject parent;
     /// <summary> 마우스가 올려진 셀 위치</summary>
@@ -174,6 +185,9 @@ public class Inventory : MonoBehaviour
     public static CellInfo mouseItem { get; private set; }
     /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
     public static RectTransform mouseItemPos;
+
+    /// <summary> 아이템 데이터 스크립터블 오브젝트 </summary>
+    public ItemData[] data;
 
     //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
@@ -194,6 +208,25 @@ public class Inventory : MonoBehaviour
             mouseItem.buttonImage.enabled = false; //버튼 이미지(아이템 칸) 끔
             currentCell.GetComponent<Button>().enabled = false; //버튼 컴포넌트 끔
         }
+
+        if(inpo == null)
+        {
+            inpo = Instantiate(information); //마우스 계속 따라다니는 정보창 지정
+            inpo.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 정보창의 부모를 인벤토리로 지정
+            Image inpoImage = inpo.GetComponent<Image>();//정보창 이미지 컴포넌트 가져오기
+            inpoImage.rectTransform.pivot = new Vector2(0,1); // 정보창 중심점을 0,1로 맞춤
+            inpo.SetActive(false);
+        }
+
+        if(use == null)
+        {
+            use = Instantiate(useUI);
+            use.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
+            Image useImage = inpo.GetComponent<Image>();//아이템 사용창 이미지 컴포넌트 가져오기
+            useImage.rectTransform.pivot = new Vector2(0.5f, 0.5f); // 정보창 중심점을 0.5,0.5로 맞춤
+            use.SetActive(false);
+        }
+
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
 
@@ -227,6 +260,7 @@ public class Inventory : MonoBehaviour
         }
         PutItem(Vector2Int.one, Define.Item.Wool, 3); //인벤토리 실험용 기본 아이템1
         PutItem(Vector2Int.zero, Define.Item.Fruit, 1); //인벤토리 실험용 기본 아이템2
+        PutItem(Vector2Int.one * 3, Define.Item.Firewood, 1); //인벤토리 실험용 기본 아이템2
     }
 
     private void OnUpdate()
@@ -240,6 +274,8 @@ public class Inventory : MonoBehaviour
         mousePosition -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
         mousePosition.y *= -1;//y값이 음수면 햇갈리기 때문에 음수 곱해서 양수로 바꿔줌
 
+        inpo.transform.position = Input.mousePosition; //아이템 정보창을 마우스 좌표를 항상 따라다니게 함
+
         if (overedCellLocation.x >= 0 && overedCellLocation.y >= 0) //마우스 커서가 0,0 이상이면
         {
             //해당 좌표 셀의 버튼 이미지의 컬러를 회색으로 바꿈
@@ -250,6 +286,8 @@ public class Inventory : MonoBehaviour
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
             ||mousePosition.y < 0 || mousePosition.y > height * 48) // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
         {
+            inpo.SetActive(false); //소지품창을 벗어났으므로 아이템 정보창 꺼줌
+
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
             if (Input.GetMouseButtonDown(0)) 
             {
@@ -257,6 +295,7 @@ public class Inventory : MonoBehaviour
             }
              //overedCellLocation을 (-1,-1)로 바꿈
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
+
         }
         else //마우스 커서가 소지품 창 안에 있는 경우
         {
@@ -266,17 +305,40 @@ public class Inventory : MonoBehaviour
             
             CellHighlight(overedCellLocation,true); //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
 
+
             int overlap = 0;
             int amount = 0;
             if (Input.GetMouseButtonDown(1))//마우스 우클릭하면
-                SubItem(overedCellLocation, out amount); //해당 셀의 아이템을 빼준다
+            {
+                inpo.SetActive(false);
+                UseUI(overedCellLocation, true);
+            }   
             if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
             {
+                UseUI(overedCellLocation, false);
                 LeftClick(overedCellLocation); // 마우스 좌클릭 메서드 실행
             }
+            if(use.activeSelf != true)//사용창이 꺼져있으면
+            {
+                ItemInpo(overedCellLocation, true);//정보 UI 켜줌
+            }
         };
-
     }
+
+    void UseUI(Vector2Int position, bool active)
+    {
+        use.transform.position = Input.mousePosition; //사용 UI를 마우스 커서 좌표로 이동
+        CellInfo rootCellInfo = CheckItemRoot(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
+        if (active && (rootCellInfo.GetItemType() != Define.Item.None)) //루트 아이템이 존재하면
+        {
+            use.SetActive(true); //사용창을 활성화한다
+        }
+        else//루트 아이템이 존재하지 않으면
+        {
+            use.SetActive(false);//사용창 비활성화
+        }
+    }
+
     /// <summary> 아이템 버리기 </summary>
     void DropItem()
     {
@@ -614,16 +676,33 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-
-    /*
-루트들을
-왼쪽 위에서부터
-찾아서
-가져오면
-그냥 그 가져온 배열에서
-덜 찬 녀석 채워주면 되잖아
-
-     */
+    /// <summary> 정보 UI 활성화 메서드</summary>
+    void ItemInpo(Vector2Int position, bool active)
+    {
+        CellInfo rootCellInfo = CheckItemRoot(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
+        if(active && (rootCellInfo.GetItemType() != Define.Item.None)) //루트 아이템이 존재하면
+        {
+            inpo.SetActive(true); //정보창을 활성화한다
+            Text[] text = inpo.GetComponentsInChildren<Text>(); //정보창의 자식 오브젝트의 텍스트 컴포넌트들을 가져온다
+            for(int i = 0; i< data.Length+1; i++) //스크립터블오브젝트 길이만큼 반복
+            {
+               if(i == (int)rootCellInfo.GetItemType())
+                {
+                    text[0].text = data[i-1].ItemName; //0번 텍스트컴포넌트의 텍스트를 데이터의 아이템 이름으로 바꾼다
+                    text[1].text = data[i-1].Description;//1번 텍스트컴포넌트의 텍스트를 데이터의 아이템 설명으로 바꾼다
+                }
+            }
+            
+        }
+        else//루트 아이템이 존재하지 않으면
+        {
+            inpo.SetActive(false);//정보창 비활성화
+        }
+        if(active == false)
+        {
+            inpo.SetActive(false); //정보창 비활성화
+        }
+    }
 }
 
 
