@@ -15,7 +15,7 @@ public class Talk : MonoBehaviour
         {
             sentences.Enqueue(script[0][i].ToString());
         }
-        StartCoroutine(Typing());
+        //StartCoroutine(Typing());
     }
 
     IEnumerator Typing()

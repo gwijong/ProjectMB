@@ -8,6 +8,10 @@ public class Interactable : MonoBehaviour
     /// <summary>상호작용 하는 대상의 타입 반환 None,Talk,Attack,Get,Sheeping</summary>
     public virtual Define.InteractType Interact(Interactable other)
     {
+        if(this.gameObject.layer == (int)Define.Layer.Item)
+        {
+            return Define.InteractType.Get;
+        }
         return Define.InteractType.None; //기본값: 땅 클릭하거나 AI가 쓰는거 
     }
 
@@ -57,6 +61,17 @@ public class Interactable : MonoBehaviour
         {
             return false;
         }
+    }
 
+    public bool IsItem(Interactable item)
+    {
+        if(item.gameObject.layer == (int)Define.Layer.Item)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

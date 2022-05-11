@@ -216,7 +216,6 @@ public class Character : Movable
                 {
                     focusAsCharacter = (Character)focusTarget;//지정된 대상
                 };
-                
                 switch (focusTarget.Interact(this))//대상과 자신의 상호작용 타입
                 {
                            case Define.InteractType.Attack: //상호작용 타입이 공격이면
@@ -233,6 +232,13 @@ public class Character : Movable
                         break;
                     case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
                         this.GetComponent<Player>().Sheeping();
+                        break;
+                    case Define.InteractType.Get:  //상호작용 타입이 아이템 줍기이면
+                        ItemInpo itemInpo = focusTarget.GetComponent<ItemInpo>();
+                        if (itemInpo != null)
+                        {
+                            itemInpo.GetItem();
+                        }
                         break;
                     default: Debug.Log(focusTarget.Interact(this));//이상한 값 들어오면 디버그
 
@@ -327,7 +333,7 @@ public class Character : Movable
                 {                   
                     return 4; //무기 사거리가 늘어날 경우 여기서 조정한다.
                 }
-            case Define.InteractType.Get: return 4; //아이템 줍기 가능 거리
+            case Define.InteractType.Get: return 1; //아이템 줍기 가능 거리
             case Define.InteractType.Sheeping: return 2; //양털 채집 가능 거리
             case Define.InteractType.Talk: return 6;  //대화 가능 거리
             default: return 4;  //기본값은 2이다.
@@ -408,7 +414,6 @@ public class Character : Movable
 
     public override Define.InteractType Interact(Interactable other) //상호작용 대상 타입
     {
-
         if(IsEnemy(this, other)) //상대방과 내가 적인지 체크
         {
             return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
@@ -416,6 +421,10 @@ public class Character : Movable
         else if(IsSheep(other, this))//상대방이 양이고 내가 플레이어인지 체크
         {
             return Define.InteractType.Sheeping; //상호작용 타입을 양털채집으로 리턴
+        }
+        else if (IsItem(other))
+        {
+            return Define.InteractType.Get; //상호작용 타입을 아이템 줍기로 리턴
         }
         else
         {
@@ -578,6 +587,12 @@ public class Character : Movable
         };
 
         if (IsSheep(this, target))
+        {
+            focusTarget = target;
+            return true;
+        }
+
+        if (IsItem(target))
         {
             focusTarget = target;
             return true;

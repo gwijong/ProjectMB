@@ -40,7 +40,7 @@ public class ItemManager : MonoBehaviour
                 dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater")); //물병 아이템 생성
                 break;
         }
-        dropitem.GetComponentInChildren<GetItemButton>().amount = mouseAmount; //바닥에 떨어진 아이템의 개수는 마우스로 집고 있던 아이템의 개수이다.
+        dropitem.GetComponent<ItemInpo>().amount = mouseAmount; //바닥에 떨어진 아이템의 개수는 마우스로 집고 있던 아이템의 개수이다.
         dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0, 3, 0);//플레이어 좌표에서 y축 3 높이에서 생성
     }
 }

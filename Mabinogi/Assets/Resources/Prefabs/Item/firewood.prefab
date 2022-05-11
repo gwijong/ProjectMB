@@ -109,6 +109,9 @@ GameObject:
   - component: {fileID: 8058954943840584079}
   - component: {fileID: 8058954943840584072}
   - component: {fileID: 777537572003890292}
+  - component: {fileID: 1070999783}
+  - component: {fileID: 1070999784}
+  - component: {fileID: 6205943348648808645}
   m_Layer: 11
   m_Name: firewood
   m_TagString: Untagged
@@ -221,6 +224,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1070999783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139965741586390709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8889b8e5746b3544b6306ec5406f932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1070999784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139965741586390709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f4a6f4e123e9b48b92aec4db16e0f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6205943348648808645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139965741586390709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b147ab6aeae4748ae2be62332a4133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: 8
+  amount: 1
 --- !u!1 &8232913369163578714
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,5 +445,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4287c781ba188141aad5663e79b362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: 8
-  amount: 4

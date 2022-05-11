@@ -13,16 +13,14 @@ public class PlayerController : MonoBehaviour
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
     /// <summary>Ground 레이어와 Enemy 레이어의 레이어마스크</summary>
-    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item;
 
     private void Awake()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
         PlayerSetting();
     }
     private void Start()
-    {
-        //플레이어 태그 찾아서 가져옴
-        
+    {       
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
@@ -49,6 +47,7 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+
     /// <summary>마우스 입력 이동이나 타겟 지정</summary>
     void MouseInput()
     {
@@ -57,7 +56,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
         //왼쪽 컨트롤 키를 누른 상태로 캐릭터를 마우스 좌클릭하면 그 캐릭터가 플레이어가 됨
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick) && Input.GetKey(KeyCode.LeftControl))
         {
@@ -67,7 +65,7 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))//레이, 충돌 정보, 레이 거리, 레이어마스크
             {
                 target = hit.collider.GetComponent<Character>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
-
+                
                 if (target != null)
                 {
                     player.GetComponent<EnemyDummyAI>().enabled = true; //기존 플레이어 캐릭터의 인공지능 켜줌
@@ -82,8 +80,8 @@ public class PlayerController : MonoBehaviour
                     player = hit.collider.gameObject;  //마우스 좌클릭으로 지정한 플레이어 캐릭터를 플레이어로 지정
                     player.GetComponent<EnemyDummyAI>().stopCoroutine();//인공지능 코루틴 중지
                     PlayerSetting();
-
                 }
+
             };
             return;
         }
@@ -96,7 +94,6 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))//레이, 충돌 정보, 레이 거리, 레이어마스크
             {
                 target = hit.collider.GetComponent<Interactable>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
-
                 //캐릭터 대상 할당 실패            충돌한 대상이 땅이면
                 if(!playerCharacter.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)
                 {

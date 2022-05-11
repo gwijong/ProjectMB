@@ -37,7 +37,7 @@ public class Player : Character
     /// <summary> 2초뒤 양털 생성 </summary>
     IEnumerator DropItem() 
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3f);
         GameManager.itemManager.DropItem(Define.Item.Wool, 1);
     }
 }

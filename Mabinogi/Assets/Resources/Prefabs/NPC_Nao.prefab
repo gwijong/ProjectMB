@@ -1650,9 +1650,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2630036397391190355}
   - component: {fileID: 2591114970056163002}
-  m_Layer: 0
+  - component: {fileID: 620619218}
+  m_Layer: 12
   m_Name: NPC_Nao
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1664,7 +1665,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3401366191416656873}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.4209683, y: -6.5704637, z: 0.99683166}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children:
@@ -1699,6 +1700,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &620619218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401366191416656873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e7583b64d0f7ce44b5cabb803b9830a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  script:
+  - "\uAC80\uC815\uC0C9 \uB4DC\uB808\uC2A4\uAC00 \uD558\uB298\uD558\uB298 \uB0A0\uB9B0\uB2E4.
+    \uADF8\uC73D\uD55C \uB208\uBE5B\uC73C\uB85C \uB098\uB97C \uBC14\uB77C\uBCF4\uACE0\uC788\uB2E4."
 --- !u!1 &3402292538503374413
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,8 +2867,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4287c781ba188141aad5663e79b362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: 2
-  amount: 1
 --- !u!114 &4859482238206538611
 MonoBehaviour:
   m_ObjectHideFlags: 0

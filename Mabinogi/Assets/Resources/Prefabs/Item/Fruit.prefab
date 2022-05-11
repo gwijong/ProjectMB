@@ -109,6 +109,9 @@ GameObject:
   - component: {fileID: 2211079978887520463}
   - component: {fileID: 5091112882987862017}
   - component: {fileID: 1266119328431476662}
+  - component: {fileID: 1869690469}
+  - component: {fileID: 4029301971549224496}
+  - component: {fileID: 1869690476}
   m_Layer: 11
   m_Name: Fruit
   m_TagString: Untagged
@@ -219,6 +222,44 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1869690469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2179869715769993057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8889b8e5746b3544b6306ec5406f932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4029301971549224496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2179869715769993057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b147ab6aeae4748ae2be62332a4133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: 1
+  amount: 1
+--- !u!114 &1869690476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2179869715769993057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0f4a6f4e123e9b48b92aec4db16e0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8508697610032411052
@@ -348,8 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4287c781ba188141aad5663e79b362d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: 1
-  amount: 2
 --- !u!114 &5428757607746775802
 MonoBehaviour:
   m_ObjectHideFlags: 0
