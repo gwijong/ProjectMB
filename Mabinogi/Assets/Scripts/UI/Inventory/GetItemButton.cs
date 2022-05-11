@@ -7,6 +7,7 @@ public class GetItemButton : MonoBehaviour
     /// <summary> 아이템 획득 버튼 메서드</summary>
     public void GetItem()
     {
-        GetComponentInParent<ItemInpo>().GetItem();
+        //GetComponentInParent<ItemInpo>().GetItem();
+        GameManager.manager.GetComponent<PlayerController>().SetTarget(GetComponentInParent<Interactable>());        
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(EnemyDummyAI))] //더미 인공지능이 기본 장착되어 있어야 함
+//[RequireComponent(typeof(EnemyDummyAI))] //더미 인공지능이 기본 장착되어 있어야 함
 [RequireComponent(typeof(Rigidbody))] //리지드바디가 기본 장착되어 있어야 함
 [RequireComponent(typeof(BoxCollider))] //콜라이더가 기본 장착되어 있어야 함
 public class Character : Movable
 {
-    
+
     #region 맴버 변수
+    public string characterName;
+    public float nameYpos;
     /// <summary> 생명력 게이지 summary>
     public Gauge hitPoint = new Gauge();
     /// <summary> 마나 게이지 summary>
@@ -153,6 +155,13 @@ public class Character : Movable
         Skill.counterAttack.castingTime = counterData.CastTime;
 
         SetOffensive();//일상모드로 전환하고 이동속도를 걷기로 맞춰줌
+
+        GameObject namePrefab = Instantiate(Resources.Load<GameObject>("Prefabs/NameUICanvas"));
+        namePrefab.transform.localScale = Vector3.one * 0.01f;
+        namePrefab.transform.SetParent(transform);
+        namePrefab.transform.localPosition = new Vector3(0, nameYpos, 0);
+        namePrefab.GetComponentInChildren<UnityEngine.UI.Text>().text = characterName;
+
 
         #endregion
     }

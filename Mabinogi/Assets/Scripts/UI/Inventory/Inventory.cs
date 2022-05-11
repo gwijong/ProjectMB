@@ -220,8 +220,8 @@ public class Inventory : MonoBehaviour
         {
             use = Instantiate(useUI);
             use.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
-            Image useImage = inpo.GetComponent<Image>();//아이템 사용창 이미지 컴포넌트 가져오기
-            useImage.rectTransform.pivot = new Vector2(0.5f, 0.5f); // 정보창 중심점을 0.5,0.5로 맞춤
+            Image useImage = use.GetComponent<Image>();//아이템 사용창 이미지 컴포넌트 가져오기
+            useImage.rectTransform.pivot = new Vector2(0, 1); // 정보창 중심점을 0,1로 맞춤
             use.SetActive(false);
         }
 
@@ -272,7 +272,7 @@ public class Inventory : MonoBehaviour
         mousePosition -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
         mousePosition.y *= -1;//y값이 음수면 햇갈리기 때문에 음수 곱해서 양수로 바꿔줌
 
-        inpo.transform.position = Input.mousePosition; //아이템 정보창을 마우스 좌표를 항상 따라다니게 함
+        inpo.GetComponent<RectTransform>().position = Input.mousePosition; //아이템 정보창을 마우스 좌표를 항상 따라다니게 함
 
         if (overedCellLocation.x >= 0 && overedCellLocation.y >= 0) //마우스 커서가 0,0 이상이면
         {
@@ -287,7 +287,7 @@ public class Inventory : MonoBehaviour
             inpo.SetActive(false); //소지품창을 벗어났으므로 아이템 정보창 꺼줌
 
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
-            if (Input.GetMouseButtonDown(0)) 
+            if (Input.GetMouseButtonDown(0) && mouseItem!=null && mouseItem.GetItemType() != Define.Item.None) 
             {
                 DropItem(); //아이템 버리기
             }

@@ -10,7 +10,7 @@ public class TextHighlight : MonoBehaviour
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
-        ui = GetComponentInChildren<Canvas>().gameObject;
+        ui = GetComponentInChildren<Button>().gameObject;
     }
 
     void OnUpdate()
