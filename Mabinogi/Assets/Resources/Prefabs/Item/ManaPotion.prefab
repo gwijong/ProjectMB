@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 1891320101854865724}
   - component: {fileID: 1284843756334206243}
   - component: {fileID: 8174127546419027825}
+  - component: {fileID: 1219033481582113927}
   m_Layer: 11
   m_Name: ManaPotion
   m_TagString: Untagged
@@ -225,8 +226,20 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1219033481582113927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257772239926670214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3667708592844504956
 GameObject:
   m_ObjectHideFlags: 0

@@ -196,7 +196,7 @@ public class Character : Movable
             Vector3 positionDiff = (focusTarget.transform.position - transform.position);//상대 좌표에서 내 좌표 뺌
             positionDiff.y = 0;//높이 y는 배제함
             float distance = positionDiff.magnitude;  //타겟과 나의 거리
-            if (distance > InteractableDistance(focusType)) //거리가 상호작용 가능 거리보다 먼 경우
+            if (distance > InteractableDistance(focusTarget.Interact(this))) //거리가 상호작용 가능 거리보다 먼 경우
             {
                 MoveTo(focusTarget.transform.position);  //다가가도록 이동
                 if(focusTarget.Interact(this)== Define.InteractType.Attack)//대상이 적이면 전투모드로 이동
@@ -216,10 +216,10 @@ public class Character : Movable
                 {
                     focusAsCharacter = (Character)focusTarget;//지정된 대상
                 };
-
+                
                 switch (focusTarget.Interact(this))//대상과 자신의 상호작용 타입
                 {
-                    case Define.InteractType.Attack: //상호작용 타입이 공격이면
+                           case Define.InteractType.Attack: //상호작용 타입이 공격이면
                         if (skillCastingTimeLeft > 0 //스킬 시전 시간이 남았거나
                             || loadedSkill.cannotAttack //선공 불가 스킬을 시전했거나
                             || (focusAsCharacter != null && focusAsCharacter.die == true)) //지정된 대상이 있으면서 지정된 대상이 사망했으면
@@ -230,6 +230,9 @@ public class Character : Movable
                         break;
                     case Define.InteractType.Talk:  //상호작용 타입이 우호적이면
                         //여기선 대화로 풀어나가기
+                        break;
+                    case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
+                        this.GetComponent<Player>().Sheeping();
                         break;
                     default: Debug.Log(focusTarget.Interact(this));//이상한 값 들어오면 디버그
 
@@ -324,7 +327,8 @@ public class Character : Movable
                 {                   
                     return 4; //무기 사거리가 늘어날 경우 여기서 조정한다.
                 }
-            case Define.InteractType.Get: return 2; //아이템 줍기 가능 거리
+            case Define.InteractType.Get: return 4; //아이템 줍기 가능 거리
+            case Define.InteractType.Sheeping: return 2; //양털 채집 가능 거리
             case Define.InteractType.Talk: return 6;  //대화 가능 거리
             default: return 4;  //기본값은 2이다.
         };
@@ -403,15 +407,22 @@ public class Character : Movable
     }
 
     public override Define.InteractType Interact(Interactable other) //상호작용 대상 타입
-    {       
+    {
+
         if(IsEnemy(this, other)) //상대방과 내가 적인지 체크
         {
             return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
         }
+        else if(IsSheep(other, this))//상대방이 양이고 내가 플레이어인지 체크
+        {
+            return Define.InteractType.Sheeping; //상호작용 타입을 양털채집으로 리턴
+        }
         else
         {
             return Define.InteractType.Talk; //상호작용 타입을 대화로 리턴
-        };
+        }
+        
+
     }
 
     public override void MoveTo(Vector3 goalPosition, bool isWalk = false)  //내비게이션 이동 메서드
@@ -444,7 +455,7 @@ public class Character : Movable
             float damage = 0.0f;
             switch (Attacker.loadedSkill.type)//상대방 스킬에 따라 내가 피해를 입음
             {
-                case Define.SkillState.Combat:
+                case Define.SkillState.Combat: 
                     this.downGauge.Current += combatData.DownGauge;
                     damage = Attacker.CalculateDamage(Define.SkillState.Combat);
                     break;
@@ -560,12 +571,19 @@ public class Character : Movable
             return false;
         };
 
-        if(IsEnemy(this, target))
+        if (IsEnemy(this, target))
         {
             focusTarget = target;
             return true;
         };
+
+        if (IsSheep(this, target))
+        {
+            focusTarget = target;
+            return true;
+        }
         return false;
+    
     }
 
     /// <summary> 스페이스바 입력으로 일상, 전투모드 전환 </summary>

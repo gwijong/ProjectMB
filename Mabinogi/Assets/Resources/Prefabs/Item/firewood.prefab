@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 8653312037555322720}
   - component: {fileID: 8058954943840584079}
   - component: {fileID: 8058954943840584072}
+  - component: {fileID: 777537572003890292}
   m_Layer: 11
   m_Name: firewood
   m_TagString: Untagged
@@ -122,14 +123,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7139965741586390709}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 2794800972450295878}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &6913669993536703402
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -193,7 +194,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &8058954943840584072
 BoxCollider:
@@ -208,6 +209,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.08403911, y: 0.013448203, z: 0.015731705}
   m_Center: {x: -0.00000005029142, y: -0.007968903, z: 0.0033722508}
+--- !u!114 &777537572003890292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7139965741586390709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8232913369163578714
 GameObject:
   m_ObjectHideFlags: 0

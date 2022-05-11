@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary> 상호작용하는 오브젝트들의 최상위 부모 오브젝트</summary>
 public class Interactable : MonoBehaviour
 {
-    /// <summary>상호작용 하는 대상의 타입 반환 None,Talk,Attack,Get</summary>
+    /// <summary>상호작용 하는 대상의 타입 반환 None,Talk,Attack,Get,Sheeping</summary>
     public virtual Define.InteractType Interact(Interactable other)
     {
         return Define.InteractType.None; //기본값: 땅 클릭하거나 AI가 쓰는거 
@@ -42,7 +42,21 @@ public class Interactable : MonoBehaviour
         else
         {
             return true;  //적이 아니면 착한놈 true
+        }     
+    }
+
+    /// <summary> 내가 플레이어고 상대방이 양인지 체크한다</summary>
+    public static bool IsSheep(Interactable player, Interactable sheep)
+    {
+        Sheep sp = sheep.GetComponent<Sheep>();
+        if (player.tag == "Player" && (sp != null))
+        {
+            return true;
         }
-        
+        else
+        {
+            return false;
+        }
+
     }
 }

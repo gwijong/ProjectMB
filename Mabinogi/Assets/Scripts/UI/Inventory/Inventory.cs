@@ -186,8 +186,6 @@ public class Inventory : MonoBehaviour
     /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
     public static RectTransform mouseItemPos;
 
-    /// <summary> 아이템 데이터 스크립터블 오브젝트 </summary>
-    public ItemData[] data;
 
     //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
@@ -342,38 +340,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 버리기 </summary>
     void DropItem()
     {
-        GameObject dropitem = null; //버릴 아이템
-        switch (mouseItem.GetItemType()) 
-        {
-            case Define.Item.None: //버릴 아이템 타입이 none이면 버릴 아이템이 없으므로 탈출
-                return;
-            case Define.Item.Fruit:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Fruit")); //열매 아이템 생성
-                break;
-            case Define.Item.Wool:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Wool")); //양털 아이템 생성
-                break;
-            case Define.Item.Egg:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Egg")); //달걀 아이템 생성
-                break;
-            case Define.Item.Firewood:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Firewood")); //장작 아이템 생성
-                break;
-            case Define.Item.LifePotion:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/LifePotion")); //생명력 포션 아이템 생성
-                break;
-            case Define.Item.ManaPotion:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/ManaPotion")); //마나 포션 아이템 생성
-                break;
-            case Define.Item.Bottle:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/Bottle")); //빈병 아이템 생성
-                break;
-            case Define.Item.BottleWater:
-                dropitem = Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater")); //물병 아이템 생성
-                break;               
-        }
-        dropitem.GetComponentInChildren<GetItemButton>().amount = mouseItem.amount; //바닥에 떨어진 아이템의 개수는 마우스로 집고 있던 아이템의 개수이다.
-        dropitem.transform.position = GameObject.FindGameObjectWithTag("Player").transform.position + new Vector3(0,3,0);//플레이어 좌표에서 y축 3 높이에서 생성
+        GameManager.itemManager.DropItem(mouseItem.GetItemType(), mouseItem.amount);
         mouseItem.Clear();//마우스 아이템 비워줌
     }
 
@@ -682,14 +649,15 @@ public class Inventory : MonoBehaviour
         CellInfo rootCellInfo = CheckItemRoot(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
         if(active && (rootCellInfo.GetItemType() != Define.Item.None)) //루트 아이템이 존재하면
         {
+            ItemData[] itemData = GameManager.itemManager.data;
             inpo.SetActive(true); //정보창을 활성화한다
             Text[] text = inpo.GetComponentsInChildren<Text>(); //정보창의 자식 오브젝트의 텍스트 컴포넌트들을 가져온다
-            for(int i = 0; i< data.Length+1; i++) //스크립터블오브젝트 길이만큼 반복
+            for(int i = 0; i< itemData.Length+1; i++) //스크립터블오브젝트 길이만큼 반복
             {
                if(i == (int)rootCellInfo.GetItemType())
                 {
-                    text[0].text = data[i-1].ItemName; //0번 텍스트컴포넌트의 텍스트를 데이터의 아이템 이름으로 바꾼다
-                    text[1].text = data[i-1].Description;//1번 텍스트컴포넌트의 텍스트를 데이터의 아이템 설명으로 바꾼다
+                    text[0].text = itemData[i-1].ItemName; //0번 텍스트컴포넌트의 텍스트를 데이터의 아이템 이름으로 바꾼다
+                    text[1].text = itemData[i-1].Description;//1번 텍스트컴포넌트의 텍스트를 데이터의 아이템 설명으로 바꾼다
                 }
             }
             

@@ -103,11 +103,6 @@ public class PlayerController : MonoBehaviour
                     playerCharacter.MoveTo(hit.point);  //충돌한 좌표로 플레이어 캐릭터 이동
                 };
             };
-            Sheep sheep = hit.collider.GetComponent<Sheep>();
-            if(player.tag == "Player" && sheep != null)
-            {
-                player.GetComponent<Player>().Sheeping();
-            }
         };
     }
 

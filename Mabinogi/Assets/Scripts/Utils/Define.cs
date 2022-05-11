@@ -15,6 +15,7 @@ public class Define
         Talk,
         Attack,
         Get,
+        Sheeping,
     }
     /// <summary> 캐릭터의 상태</summary>
     public enum State

@@ -43,4 +43,17 @@ public class ItemData : ScriptableObject
     private string description = "소지품창 안의 일반 아이템";
     /// <summary> 아이템 설명문 </summary>
     public string Description { get { return description; } }
+
+    [Tooltip("아이템 이미지 스프라이트")]
+    [SerializeField]
+    private Sprite itemSprite;
+    /// <summary> 아이템 이미지 스프라이트 </summary>
+    public Sprite ItemSprite { get { return itemSprite; } }
+
+    [Tooltip("아이템 겹칠 수 있는 숫자")]
+    [SerializeField]
+    [Range(1, 20)]
+    private int stack = 5;
+    /// <summary> 아이템 겹칠 수 있는 숫자 </summary>
+    public int Stack { get { return stack; } }
 }

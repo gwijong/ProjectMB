@@ -39,7 +39,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2575137560559181923
@@ -536,7 +536,8 @@ GameObject:
   - component: {fileID: 6946022713999723112}
   - component: {fileID: 4695677390530678208}
   - component: {fileID: 407851468295082354}
-  m_Layer: 0
+  - component: {fileID: 6976786244737957613}
+  m_Layer: 11
   m_Name: Wool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,3 +640,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6976786244737957613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649725658841219375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

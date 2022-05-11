@@ -25,8 +25,19 @@ public class Player : Character
         base.OnUpdate();
     }
 
+    /// <summary> 양털 채집 </summary>
     public void Sheeping()
     {
         PlayAnim("Sheeping");
+        StartCoroutine(Wait(5f));
+        //GameManager.itemManager.DropItem(Define.Item.Wool, 1);
+        StartCoroutine(DropItem());
+    }
+
+    /// <summary> 2초뒤 양털 생성 </summary>
+    IEnumerator DropItem() 
+    {
+        yield return new WaitForSeconds(2.0f);
+        GameManager.itemManager.DropItem(Define.Item.Wool, 1);
     }
 }
