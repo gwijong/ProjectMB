@@ -29,7 +29,7 @@ public class Skill
     /// <summary> Skill 클래스 생성자</summary>
     public Skill(Define.SkillState wantType, string wantAnimName, float wantCastingTime, winnerCheckDelegate wantWinnerCheck, bool wantMustCheck = false, bool wantCannotAttack = false)
     {
-        type = wantType;
+        type = wantType; 
         castingTime = wantCastingTime;
         WinnerCheck = wantWinnerCheck;
         mustCheck = wantMustCheck;
@@ -37,11 +37,14 @@ public class Skill
         AnimName = wantAnimName;
     }
 
-    //                                                               타입,시전시간,이기는 거 체크,무조건체크여부
-    public static Skill combatMastery   = new Skill(Define.SkillState.Combat, "Combat", 0.0f, CombatWinCheck);
-    public static Skill smash           = new Skill(Define.SkillState.Smash, "Smash", 1.0f, SmashWinCheck);
-    public static Skill counterAttack   = new Skill(Define.SkillState.Counter, "Counter", 1.5f, CounterWinCheck, true, true);
-    public static Skill defense         = new Skill(Define.SkillState.Defense, "Defense", 1.0f, DefenseWinCheck, true, true);
+    /// <summary> Skill 클래스 combatMastery 객체 생성</summary>
+    public static Skill combatMastery   = new Skill(Define.SkillState.Combat, "Combat", Define.SkillState.Combat.GetSkillData().CastTime, CombatWinCheck);
+    /// <summary> Skill 클래스 smash 객체 생성</summary>
+    public static Skill smash           = new Skill(Define.SkillState.Smash, "Smash", Define.SkillState.Smash.GetSkillData().CastTime, SmashWinCheck);
+    /// <summary> Skill 클래스 counterAttack 객체 생성</summary>
+    public static Skill counterAttack   = new Skill(Define.SkillState.Counter, "Counter", Define.SkillState.Counter.GetSkillData().CastTime, CounterWinCheck, true, true);
+    /// <summary> Skill 클래스 defense 객체 생성</summary>
+    public static Skill defense         = new Skill(Define.SkillState.Defense, "Defense", Define.SkillState.Defense.GetSkillData().CastTime, DefenseWinCheck, true, true);
 
     /// <summary> 근접 평타가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CombatWinCheck(Skill other)
@@ -82,7 +85,7 @@ public class Skill
     }
 }
 
-/// <summary> 스킬 하나</summary>
+/// <summary> 스킬 하나 정보(스킬상태, 스킬랭크)</summary>
 public class SkillInfo
 {
     /// <summary> 스킬</summary>
@@ -90,6 +93,7 @@ public class SkillInfo
     /// <summary> 스킬 랭크</summary>
     public int rank;
 
+    /// <summary> SkillInfo 생성자</summary>
     public SkillInfo(Define.SkillState wantType, int wantRank) 
     {
         skill = wantType.GetSkill();

@@ -10,7 +10,9 @@ public class Character : Movable
 {
 
     #region 맴버 변수
+    /// <summary> 캐릭터 이름 summary>
     public string characterName;
+    /// <summary> 이름 텍스트 UI의 Y높이 summary>
     public float nameYpos;
     /// <summary> 생명력 게이지 summary>
     public Gauge hitPoint = new Gauge();
@@ -89,14 +91,20 @@ public class Character : Movable
     protected bool groggy = false;
     /// <summary> 사망 체크 </summary>
     public bool die = false;
+    /// <summary> 리지드바디 </summary>
     protected Rigidbody rigid;
+    /// <summary> 애니메이터 </summary>
     protected Animator anim;
 
     //스킬데이터 스크립터블 오브젝트들
-    public SkillData combatData;  //기본공격 컴벳 스킬 데이터
-    public SkillData defenseData;  //디펜스 스킬 데이터
-    public SkillData smashData;  //스매시 스킬 데이터
-    public SkillData counterData; //카운터 어택 스킬 데이터
+    /// <summary> 기본공격 컴벳 스킬 데이터 </summary>
+    SkillData combatData;  
+    /// <summary> 디펜스 스킬 데이터 </summary>
+    SkillData defenseData;  
+    /// <summary> 스매시 스킬 데이터 </summary>
+    SkillData smashData;  
+    /// <summary> 카운터 어택 스킬 데이터 </summary>
+    SkillData counterData; 
 
     /// <summary> 내비게이션 회전값 </summary>
     public float angularSpeed = 1000f;
@@ -105,6 +113,12 @@ public class Character : Movable
     #endregion
     protected override void Awake()
     {
+        //스킬데이터 스크립터블 오브젝트 데이터 할당
+        combatData = Define.SkillState.Combat.GetSkillData();
+        defenseData = Define.SkillState.Defense.GetSkillData();
+        smashData = Define.SkillState.Smash.GetSkillData();
+        counterData = Define.SkillState.Counter.GetSkillData();
+
         #region 변수에 기본값 할당
         base.Awake();
         rigid = GetComponent<Rigidbody>();
@@ -147,12 +161,6 @@ public class Character : Movable
         magicProtective = data.MagicProtective;  //마법 보호
         deadly = data.Deadly;  //데들리 확률
 
-
-        //스킬 캐스팅 시간을 스크립터블 데이터의 캐스팅 시간으로 대입
-        Skill.combatMastery.castingTime = combatData.CastTime; 
-        Skill.defense.castingTime = defenseData.CastTime;
-        Skill.smash.castingTime = smashData.CastTime;
-        Skill.counterAttack.castingTime = counterData.CastTime;
 
         SetOffensive();//일상모드로 전환하고 이동속도를 걷기로 맞춰줌
 

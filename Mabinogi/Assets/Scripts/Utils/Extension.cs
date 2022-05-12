@@ -33,6 +33,19 @@ public static class Extension
         }
     }
 
+    /// <summary>Define.SkillData.GetSkillData(); 하면 해당 스킬 데이터 반환</summary>
+    public static SkillData GetSkillData(this Define.SkillState skill)
+    {
+        switch (skill)
+        {
+            case Define.SkillState.Combat: return Resources.Load<SkillData>("Data/SkillData/Combat"); //기본 근접공격 스킬 데이터 반환
+            case Define.SkillState.Defense: return Resources.Load<SkillData>("Data/SkillData/Defense");  //디펜스 스킬 데이터 반환
+            case Define.SkillState.Smash: return Resources.Load<SkillData>("Data/SkillData/Smash");  //스매시 스킬 데이터 반환
+            case Define.SkillState.Counter: return Resources.Load<SkillData>("Data/SkillData/CounterAttack");  //카운터 스킬 데이터 반환      
+            default: return Resources.Load<SkillData>("Data/SkillData/Combat"); //이상한 값 들어오면 기본 근접공격 스킬 데이터 반환
+        }
+    }
+
     /// <summary>Define.Item.GetItemImage(); 하면 해당 아이템 스프라이트 반환 </summary>
     public static Sprite GetItemImage(this Define.Item item)
     {
@@ -67,6 +80,7 @@ public static class Extension
         }
     }
 
+    /// <summary>Define.Item.MakePrefab(); 아이템 프리팹 생성후 아이템 게임오브젝트 반환 </summary>
     public static GameObject MakePrefab(this Define.Item item)
     {
         switch (item)
@@ -88,38 +102,41 @@ public static class Extension
             case Define.Item.Bottle:
                 return GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item/Bottle")); //빈병 아이템 생성
             case Define.Item.BottleWater:
-                return GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater")); //물병 아이템 생성        }
+                return GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Item/BottleWater")); //물병 아이템 생성
             default: return null;
         };
     }
 
+    /// <summary>Define.Item.GetItemName(); 아이템 이름 스트링 반환 </summary>
     public static string GetItemName(this Define.Item item)
     {
         switch (item)
         {
-            case Define.Item.Fruit: return Resources.Load<ItemData>("Data/ItemData/Fruit").ItemName; //나무열매는 5개 겹칠 수 있다
-            case Define.Item.Wool: return Resources.Load<ItemData>("Data/ItemData/Wool").ItemName;  //양털은 5개 겹칠 수 있다
-            case Define.Item.Egg: return Resources.Load<ItemData>("Data/ItemData/Egg").ItemName;  //달걀은 5개 겹칠 수 있다
-            case Define.Item.Firewood: return Resources.Load<ItemData>("Data/ItemData/Firewood").ItemName;  //나무장작은 5개 겹칠 수 있다
-            case Define.Item.LifePotion: return Resources.Load<ItemData>("Data/ItemData/LifePotion").ItemName;  //생명력 물약은 10개 겹칠 수 있다
-            case Define.Item.ManaPotion: return Resources.Load<ItemData>("Data/ItemData/ManaPotion").ItemName;  //마나 물약은 10개 겹칠 수 있다
-            case Define.Item.Bottle: return Resources.Load<ItemData>("Data/ItemData/Bottle").ItemName;  //빈병은 겹칠 수 없다
-            case Define.Item.BottleWater: return Resources.Load<ItemData>("Data/ItemData/BottleWater").ItemName;  //물병은 겹칠 수 없다
-            default: return "";
+            case Define.Item.Fruit: return Resources.Load<ItemData>("Data/ItemData/Fruit").ItemName; //나무열매 이름
+            case Define.Item.Wool: return Resources.Load<ItemData>("Data/ItemData/Wool").ItemName;  //양털 이름
+            case Define.Item.Egg: return Resources.Load<ItemData>("Data/ItemData/Egg").ItemName;  //달걀 이름
+            case Define.Item.Firewood: return Resources.Load<ItemData>("Data/ItemData/Firewood").ItemName;  //나무장작 이름
+            case Define.Item.LifePotion: return Resources.Load<ItemData>("Data/ItemData/LifePotion").ItemName;  //생명력 물약 이름
+            case Define.Item.ManaPotion: return Resources.Load<ItemData>("Data/ItemData/ManaPotion").ItemName;  //마나 물약 이름
+            case Define.Item.Bottle: return Resources.Load<ItemData>("Data/ItemData/Bottle").ItemName;  //빈병 이름
+            case Define.Item.BottleWater: return Resources.Load<ItemData>("Data/ItemData/BottleWater").ItemName;  //물병 이름
+            default: return ""; //그 외 아이템은 "" 스트링 반환
         }
     }
+
+    /// <summary>Define.Item.GetItemData(); 아이템 스크립터블 오브젝트 데이터 반환 </summary>
     public static ItemData GetItemData(this Define.Item item)
     {
         switch (item)
         {
-            case Define.Item.Fruit: return Resources.Load<ItemData>("Data/ItemData/Fruit"); //나무열매는 5개 겹칠 수 있다
-            case Define.Item.Wool: return Resources.Load<ItemData>("Data/ItemData/Wool");  //양털은 5개 겹칠 수 있다
-            case Define.Item.Egg: return Resources.Load<ItemData>("Data/ItemData/Egg");  //달걀은 5개 겹칠 수 있다
-            case Define.Item.Firewood: return Resources.Load<ItemData>("Data/ItemData/Firewood");  //나무장작은 5개 겹칠 수 있다
-            case Define.Item.LifePotion: return Resources.Load<ItemData>("Data/ItemData/LifePotion");  //생명력 물약은 10개 겹칠 수 있다
-            case Define.Item.ManaPotion: return Resources.Load<ItemData>("Data/ItemData/ManaPotion");  //마나 물약은 10개 겹칠 수 있다
-            case Define.Item.Bottle: return Resources.Load<ItemData>("Data/ItemData/Bottle");  //빈병은 겹칠 수 없다
-            case Define.Item.BottleWater: return Resources.Load<ItemData>("Data/ItemData/BottleWater");  //물병은 겹칠 수 없다
+            case Define.Item.Fruit: return Resources.Load<ItemData>("Data/ItemData/Fruit"); //나무열매 스크립터블 오브젝트
+            case Define.Item.Wool: return Resources.Load<ItemData>("Data/ItemData/Wool");  //양털 스크립터블 오브젝트
+            case Define.Item.Egg: return Resources.Load<ItemData>("Data/ItemData/Egg");  //달걀 스크립터블 오브젝트
+            case Define.Item.Firewood: return Resources.Load<ItemData>("Data/ItemData/Firewood");  //나무장작 스크립터블 오브젝트
+            case Define.Item.LifePotion: return Resources.Load<ItemData>("Data/ItemData/LifePotion");  //생명력 물약 스크립터블 오브젝트
+            case Define.Item.ManaPotion: return Resources.Load<ItemData>("Data/ItemData/ManaPotion");  //마나 물약 스크립터블 오브젝트
+            case Define.Item.Bottle: return Resources.Load<ItemData>("Data/ItemData/Bottle");  //빈병 스크립터블 오브젝트
+            case Define.Item.BottleWater: return Resources.Load<ItemData>("Data/ItemData/BottleWater");  //물병 스크립터블 오브젝트
             default: return null;
         }
     }

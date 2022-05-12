@@ -27,6 +27,10 @@ public class Interactable : MonoBehaviour
         //둘의 성향이 다른 경우에 적이라고 간주함
         if((HasGoodWill(A) ^ HasGoodWill(B)) == true)  //적과 내 성향이 다를 경우
         {
+            if(A.gameObject.layer == (int)Define.Layer.NPC|| B.gameObject.layer == (int)Define.Layer.NPC)//한쪽이라도 대화 NPC일 경우 적이 아니다
+            {
+                return false; //적이 아니다
+            }
             return true; //적이 맞다
         }
         else  //적과 내 성향이 같을 경우
