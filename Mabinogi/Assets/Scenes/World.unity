@@ -5180,17 +5180,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmPlayer: {fileID: 1544720601}
-  sfxPlayer: {fileID: 1159563826}
-  Button: {fileID: 0}
-  Buy: {fileID: 0}
-  Clear: {fileID: 0}
-  Fail: {fileID: 0}
-  Grow: {fileID: 0}
-  PauseIn: {fileID: 0}
-  PauseOut: {fileID: 0}
-  Sell: {fileID: 0}
-  Touch: {fileID: 0}
-  Unlock: {fileID: 0}
+  effectPlayer: {fileID: 1159563826}
+  punch_hit: {fileID: 8300000, guid: 90440cbc7ccabc248babca2317fc873f, type: 3}
+  punch_blow: {fileID: 8300000, guid: a0e26e0901fd8ec4fbeec3dfdd3fc3eb, type: 3}
+  guard: {fileID: 8300000, guid: 77f3b9291afeb894aa8742381073bb5c, type: 3}
+  emotion_success: {fileID: 8300000, guid: ded373e89ffc1d445bbff366c102393e, type: 3}
+  emotion_fail: {fileID: 8300000, guid: e8cf3039bbe978a49a69a89135ad28ff, type: 3}
+  eatfood: {fileID: 8300000, guid: 91c633eb75586cd419491f0e5237aef9, type: 3}
+  down: {fileID: 8300000, guid: 86a4677adc12cff4fbfb8a6540ef6b8c, type: 3}
+  drinkpotion: {fileID: 8300000, guid: ac20d37504d1aaa46bf995702b01de1f, type: 3}
+  dungeon_monster_appear1: {fileID: 8300000, guid: e2d391ce5f48d6546b53dc67a5d9da64, type: 3}
+  skill_cancel: {fileID: 8300000, guid: 7b7ed8c61f852934491eaa3b311af82c, type: 3}
+  skill_complete: {fileID: 8300000, guid: c57eee4682beaaa47947c3430d83d4db, type: 3}
+  skill_ready: {fileID: 8300000, guid: 506d80f958c0d1c4eb6e5556759c70a0, type: 3}
 --- !u!114 &1141139344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5405,7 +5407,7 @@ GameObject:
   - component: {fileID: 1159563827}
   - component: {fileID: 1159563826}
   m_Layer: 0
-  m_Name: sfxPlayer
+  m_Name: effectPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

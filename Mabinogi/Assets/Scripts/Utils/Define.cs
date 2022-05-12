@@ -75,4 +75,21 @@ public class Define
         Wool,
         Firewood,
     }
+
+    /// <summary> È¿°úÀ½ </summary>
+    public enum SoundEffect 
+    {
+        punch_hit,
+        punch_blow,
+        guard,
+        emotion_success,
+        emotion_fail,
+        eatfood,
+        down,
+        drinkpotion,
+        dungeon_monster_appear1,
+        skill_cancel,
+        skill_complete,
+        skill_ready,
+    }
 }

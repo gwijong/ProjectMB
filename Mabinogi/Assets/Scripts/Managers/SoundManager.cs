@@ -4,74 +4,82 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    /// <summary> 배경음 오디오소스 </summary>
     public AudioSource bgmPlayer;
-    public AudioSource sfxPlayer;
-
-    //public float bgm;
-    //public float sfx;
+    /// <summary> 효과음 오디오소스 </summary>
+    public AudioSource effectPlayer;
 
     [SerializeField]
-    AudioClip Button;
+    AudioClip punch_hit;
     [SerializeField]
-    AudioClip Buy;
+    AudioClip punch_blow;
     [SerializeField]
-    AudioClip Clear;
+    AudioClip guard;
     [SerializeField]
-    AudioClip Fail;
+    AudioClip emotion_success;
     [SerializeField]
-    AudioClip Grow;
+    AudioClip emotion_fail;
     [SerializeField]
-    AudioClip PauseIn;
+    AudioClip eatfood;
     [SerializeField]
-    AudioClip PauseOut;
+    AudioClip down;
     [SerializeField]
-    AudioClip Sell;
+    AudioClip drinkpotion;
     [SerializeField]
-    AudioClip Touch;
+    AudioClip dungeon_monster_appear1;
     [SerializeField]
-    AudioClip Unlock;
+    AudioClip skill_cancel;
+    [SerializeField]
+    AudioClip skill_complete;
+    [SerializeField]
+    AudioClip skill_ready;
     void Start()
     {
-        //GameManager.update.UpdateMethod -= OnUpdate;
-        //GameManager.update.UpdateMethod += OnUpdate;
+
     }
 
-    //사용 예시    GameManager.soundmanager.PlaySfxPlayer("PauseOut");
-    public void PlaySfxPlayer(string audioClipName)
+    //사용 예시    GameManager.soundmanager.PlaySfxPlayer("punch_hit");
+    public void PlaySfxPlayer(Define.SoundEffect audioClipName)
     {
         switch (audioClipName)
         {
-            case "Button":
-                sfxPlayer.clip = Button;
+            case Define.SoundEffect.punch_hit:
+                effectPlayer.clip = punch_hit;
                 break;
-            case "Buy":
-                sfxPlayer.clip = Buy;
+            case Define.SoundEffect.punch_blow:
+                effectPlayer.clip = punch_blow;
                 break;
-            case "Clear":
-                sfxPlayer.clip = Clear;
+            case Define.SoundEffect.guard:
+                effectPlayer.clip = guard;
                 break;
-            case "Fail":
-                sfxPlayer.clip = Fail;
+            case Define.SoundEffect.emotion_success:
+                effectPlayer.clip = emotion_success;
                 break;
-            case "Grow":
-                sfxPlayer.clip = Grow;
+            case Define.SoundEffect.emotion_fail:
+                effectPlayer.clip = emotion_fail;
                 break;
-            case "PauseIn":
-                sfxPlayer.clip = PauseIn;
+            case Define.SoundEffect.eatfood:
+                effectPlayer.clip = eatfood;
                 break;
-            case "PauseOut":
-                sfxPlayer.clip = PauseOut;
+            case Define.SoundEffect.down:
+                effectPlayer.clip = down;
                 break;
-            case "Sell":
-                sfxPlayer.clip = Sell;
+            case Define.SoundEffect.drinkpotion:
+                effectPlayer.clip = drinkpotion;
                 break;
-            case "Touch":
-                sfxPlayer.clip = Touch;
+            case Define.SoundEffect.dungeon_monster_appear1:
+                effectPlayer.clip = dungeon_monster_appear1;
                 break;
-            case "Unlock":
-                sfxPlayer.clip = Unlock;
+            case Define.SoundEffect.skill_cancel:
+                effectPlayer.clip = skill_cancel;
+                break;
+            case Define.SoundEffect.skill_complete:
+                effectPlayer.clip = skill_complete;
+                break;
+            case Define.SoundEffect.skill_ready:
+                effectPlayer.clip = skill_ready;
                 break;
         }
-        sfxPlayer.Play();
+        effectPlayer.Play();
     }
 }
