@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-
+/// <summary> 입력값 받아서 플레이어 이동시키는 스크립트</summary>
 public class PlayerController : MonoBehaviour
 {
     /// <summary>플레이어 캐릭터 딱 하나</summary>

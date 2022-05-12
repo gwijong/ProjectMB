@@ -10,11 +10,12 @@ public class Movable : Hitable
     protected NavMeshAgent agent;
     protected bool walk = false;
     /// <summary> 이동 상태</summary>
+    [Tooltip("이동 상태")]
     public Define.MoveState state = Define.MoveState.Runnable;
 
     /// <summary> 이동 속도 </summary>
-    [SerializeField] protected float runSpeed;  //하위 클래스의 Start메서드에서 스크립터블 오브젝트 데이터의 내비메시 스피드 할당
-    [SerializeField] protected float walkSpeed;  //하위 클래스의 Start메서드에서 스크립터블 오브젝트 데이터의 내비메시 스피드 할당
+    [SerializeField] [Tooltip("달리는 속도")] protected float runSpeed;  //하위 클래스의 Start메서드에서 스크립터블 오브젝트 데이터의 내비메시 스피드 할당
+    [SerializeField] [Tooltip("걷는 속도")] protected float walkSpeed;  //하위 클래스의 Start메서드에서 스크립터블 오브젝트 데이터의 내비메시 스피드 할당
 
 
     protected virtual void Awake()
