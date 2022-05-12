@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     Character playerCharacter;
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
-    /// <summary>Ground 레이어와 Enemy 레이어의 레이어마스크</summary>
+    /// <summary>레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item;
 
     private void Awake()
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     void OnUpdate()
     {
-        if(playerCharacter.die == true)
+        if(playerCharacter.die == true) //캐릭터 사망시 리턴
         {
             return;
         }
@@ -41,9 +41,9 @@ public class PlayerController : MonoBehaviour
     /// <summary>스페이스바 입력받아 일상, 전투모드 전환</summary>
     void SpaceOffensive()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))//스페이스바 입력하면
         {
-            playerCharacter.SetOffensive();
+            playerCharacter.SetOffensive();//전투, 일상모드 전환
         };
     }
 
@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+    /// <summary>타겟 지정</summary>
     public void SetTarget(Interactable wantTarget)
     {
         target = wantTarget;
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
         player.layer = (int)Define.Layer.Player;  //플레이어의 레이어를 플레이어로 변경
         playerCharacter = player.GetComponent<Character>();  //플레이어의 캐릭터 컴포넌트를 가져옴
         player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌
-        if (player.GetComponent<EnemyDummyAI>() != null)
+        if (player.GetComponent<EnemyDummyAI>() != null)//인공지능이 있으면
             player.GetComponent<EnemyDummyAI>().enabled = false; //인공지능 꺼줌
         GetComponentInChildren<CameraPivot>().following_object = player.transform; //카메라가 플레이어를 추적하도록 함
     }
@@ -156,28 +157,23 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("플레이어: 디펜스 시전");
-            playerCharacter.Casting(Define.SkillState.Defense);
+            playerCharacter.Casting(Define.SkillState.Defense);//디펜스 시전
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Debug.Log("플레이어: 스매시 시전");
-            playerCharacter.Casting(Define.SkillState.Smash);
+            playerCharacter.Casting(Define.SkillState.Smash);//스매시 시전
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("플레이어: 카운터 시전");
-            playerCharacter.Casting(Define.SkillState.Counter);
+            playerCharacter.Casting(Define.SkillState.Counter);//카운터 시전
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
-            playerCharacter.Casting(Define.SkillState.Combat);
+            playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("플레이어: 스킬 취소, 컴벳으로 전환");
-            playerCharacter.Casting(Define.SkillState.Combat);
+            playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
         }
     }
 }

@@ -7,7 +7,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Movable : Hitable
 {
+    /// <summary> 내비메시</summary>
     protected NavMeshAgent agent;
+    /// <summary> 걷는가?</summary>
     protected bool walk = false;
     /// <summary> 이동 상태</summary>
     [Tooltip("이동 상태")]
@@ -20,7 +22,7 @@ public class Movable : Hitable
 
     protected virtual void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();       
+        agent = GetComponent<NavMeshAgent>(); //이 캐릭터의 내비메시 컴포넌트 할당       
         agent.speed = runSpeed;  //기본은 달리는 속도
     }
 

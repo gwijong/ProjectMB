@@ -8,9 +8,9 @@ public class Interactable : MonoBehaviour
     /// <summary>상호작용 하는 대상의 타입 반환 None,Talk,Attack,Get,Sheeping</summary>
     public virtual Define.InteractType Interact(Interactable other)
     {
-        if(this.gameObject.layer == (int)Define.Layer.Item)
+        if(this.gameObject.layer == (int)Define.Layer.Item)//상호작용 대상이 아이템이면
         {
-            return Define.InteractType.Get;
+            return Define.InteractType.Get; //상호작용 타입을 줍기 리턴
         }
         return Define.InteractType.None; //기본값: 땅 클릭하거나 AI가 쓰는거 
     }
@@ -56,8 +56,8 @@ public class Interactable : MonoBehaviour
     /// <summary> 내가 플레이어고 상대방이 양인지 체크한다</summary>
     public static bool IsSheep(Interactable player, Interactable sheep)
     {
-        Sheep sp = sheep.GetComponent<Sheep>();
-        if (player.tag == "Player" && (sp != null))
+        Sheep sp = sheep.GetComponent<Sheep>(); //양 스크립트 가져오기 시도
+        if (player.tag == "Player" && (sp != null))//조작중인 캐릭터가 플레이어이고 타겟이 양일 경우
         {
             return true;
         }
@@ -67,9 +67,10 @@ public class Interactable : MonoBehaviour
         }
     }
 
+    /// <summary> 타겟이 아이템인지 체크한다</summary>
     public bool IsItem(Interactable item)
     {
-        if(item.gameObject.layer == (int)Define.Layer.Item)
+        if(item.gameObject.layer == (int)Define.Layer.Item) //타겟이 아이템 레이어이면
         {
             return true;
         }

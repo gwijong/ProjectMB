@@ -34,7 +34,7 @@ public class Player : Character
         StartCoroutine(DropItem());
     }
 
-    /// <summary> 2檬第 剧判 积己 </summary>
+    /// <summary> 3檬第 剧判 积己 </summary>
     IEnumerator DropItem() 
     {
         yield return new WaitForSeconds(3f);

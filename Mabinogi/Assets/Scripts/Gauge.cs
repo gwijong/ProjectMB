@@ -3,9 +3,12 @@ using UnityEngine;
 /// <summary> 각종 게이지들</summary>
 public class Gauge
 {
-    private float _current;  //현재 수치
-    private float _max;  //최대 수치
-    private float _fillableRate = 1.0f; // 채울 수 있는 최대 비율
+    /// <summary> 현재 수치</summary>
+    private float _current;  
+    /// <summary> 최대 수치</summary>
+    private float _max;  
+    /// <summary> 채울 수 있는 최대 비율</summary>
+    private float _fillableRate = 1.0f; 
 
     public Gauge(float value = 0.0f, float fillable = 1.0f)
     {
@@ -27,7 +30,7 @@ public class Gauge
         {
             if (value > _fillableRate) value = _fillableRate; //1을 넘지 못 하도록 예외 처리
 
-            value = Mathf.Clamp(value, 0, 1);
+            value = Mathf.Clamp(value, 0, 1);//최소값0   최대값1
             _current = _max * value;
         }
     }
@@ -41,7 +44,7 @@ public class Gauge
 
         set
         {
-            _current = Mathf.Clamp(value, 0, _max * _fillableRate);
+            _current = Mathf.Clamp(value, 0, _max * _fillableRate); //최소값0  최대값_max*_fillableRate
         }
     }
 

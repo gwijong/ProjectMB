@@ -74,7 +74,7 @@ public class EnemyDummyAI : AI
     /// <summary> 더미 인공지능 </summary>
     IEnumerator DummyAI()
     {
-        character.Casting(Define.SkillState.Combat);
+        character.Casting(Define.SkillState.Combat);//일단 스킬을 기본공격으로 설정
         yield return new WaitForSeconds(Random.Range(0.5f,3.0f)); //우선 2초 대기
         skillNum = Random.Range(0, 4);  //스킬 고름
         if (enemyCharacter != null)
@@ -112,7 +112,7 @@ public class EnemyDummyAI : AI
     /// <summary> 플레이어 사망시 AI 스킬 기본값으로 만드는 코루틴 </summary>
     void Reset()
     {
-        enemyCharacter = null;
+        enemyCharacter = null; //적 캐릭터를 비운다
         character.SetTarget(null); //타겟 비운다
         character.Casting(Define.SkillState.Combat); //컴벳 스킬로 전환
         character.SetOffensive(false); //일상모드로 전환
@@ -128,12 +128,12 @@ public class EnemyDummyAI : AI
             {
                 Reset();
             }
-            List<Character> enemyList = GetEnemyInRange(10f);
-            if (enemyList.Count > 0)
+            List<Character> enemyList = GetEnemyInRange(10f);//반지름 10의 구 안에 적 캐릭터만 리스트에 담아옴
+            if (enemyList.Count > 0) //적이 있으면
             {
-                enemyCharacter = enemyList[0];               
+                enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함              
             }         
-             yield return new WaitForSeconds(1f); //5초마다 반복 실행
+             yield return new WaitForSeconds(1f); //1초마다 반복 실행
         }
     }
 }
