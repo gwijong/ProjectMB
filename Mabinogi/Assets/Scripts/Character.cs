@@ -299,12 +299,15 @@ public class Character : Movable
         {
             skillCastingTimeLeft -= Time.deltaTime;  //남은 스킬 시전 시간을 지속적으로 줄여줌
             setMoveSpeed(reservedSkill.type);//스킬 타입에 따라 이동속도 설정
-
         }
         else if (skillCastingTimeLeft <= 0 && reservedSkill != null)  //스킬 시전 시간이 다 지났을 경우
         {
             loadedSkill = reservedSkill;  //준비된 스킬 장전
             reservedSkill = null;  // 준비중인 스킬 null로 전환
+            if(loadedSkill.type != Define.SkillState.Combat)
+            {
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
+            }
         }
     }
 
@@ -395,7 +398,7 @@ public class Character : Movable
             {
                 case Define.SkillState.Combat: //근접공격이면 1초 대기
                     waitTime = 1.0f; //공격 대기 시간
-                    staminaPoint.Current -= combatData.CastCost; //근접 공격에 성공한 경우 스태미나를 2 차감
+                    staminaPoint.Current -= combatData.CastCost; //근접 공격에 성공한 경우 스태미나를 2 차감                   
                     break;
                 case Define.SkillState.Smash: waitTime = 4.0f; //스매시면 4초 대기
                     break;
@@ -506,6 +509,7 @@ public class Character : Movable
                 if(anim.GetCurrentAnimatorClipInfo(0)[0].clip.name!="Groggy"|| anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Blowaway_Ground")
                 {
                     PlayAnim("HitA");  //피격 애니메이션 재생
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit);//펀치 효과음
                 }
                 wait = Wait(hitTime); // 피격 지속시간만큼 경직
                 StartCoroutine(wait);
@@ -663,6 +667,7 @@ public class Character : Movable
         wait = Wait(downTime); //조작 불가 코루틴
         StartCoroutine(wait);  //조작 불가 시작
         PlayAnim("BlowawayA"); //날아가는 애니메이션 시작
+
         downGauge.Current = 0; //다운게이지 초기화
     }
 
@@ -706,16 +711,14 @@ public class Character : Movable
         loadedSkill = skillList[Define.SkillState.Combat].skill; //준비 완료된 스킬을 취소하고 기본값인 기본공격으로 전환
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴
-
         switch (currentSkill.skill.type)//상대방 스킬에 따라 내가 피해를 입음
-        {
-
-            
+        {          
             case Define.SkillState.Defense:
                 if (staminaPoint.Current < defenseData.CastCost)  //현재 스킬 시전에 필요한 스태미나보다 적은 경우
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= defenseData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Smash:
@@ -723,6 +726,7 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= smashData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Counter:
@@ -730,10 +734,10 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= counterData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
         }
-
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
@@ -765,6 +769,7 @@ public class Character : Movable
     /// <summary> 캐릭터가 뒤로 밀려나고 날아감</summary>
     void Blowaway()
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_blow);//날아가는 효과음
         rigid.AddForce(gameObject.transform.forward * -600);//뒤로 밀림
         agent.velocity = (Vector3.up * 500); //위로 날림
     }

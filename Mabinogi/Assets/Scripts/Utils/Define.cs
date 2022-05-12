@@ -89,7 +89,11 @@ public class Define
         drinkpotion,
         dungeon_monster_appear1,
         skill_cancel,
-        skill_complete,
+        skill_standby,
         skill_ready,
+        inventory_open,
+        inventory_close,
+        gen_button_down,
+        character_levelup,
     }
 }

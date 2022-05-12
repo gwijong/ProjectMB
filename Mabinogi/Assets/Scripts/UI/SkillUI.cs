@@ -131,5 +131,6 @@ public class SkillUI : MonoBehaviour
     {
         Reset();
         character.Casting(Define.SkillState.Combat);
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel);//스킬 취소 효과음
     }
 }
