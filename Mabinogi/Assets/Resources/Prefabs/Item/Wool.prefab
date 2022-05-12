@@ -257,8 +257,8 @@ GameObject:
   - component: {fileID: 4695677390530678208}
   - component: {fileID: 407851468295082354}
   - component: {fileID: 6976786244737957613}
-  - component: {fileID: 1330877810}
   - component: {fileID: 3223979423551883866}
+  - component: {fileID: 7859233927734056030}
   m_Layer: 11
   m_Name: Wool
   m_TagString: Untagged
@@ -373,18 +373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1330877810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5649725658841219375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8889b8e5746b3544b6306ec5406f932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3223979423551883866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,3 +387,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: 7
   amount: 1
+--- !u!114 &7859233927734056030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649725658841219375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d335fc122180bbf47bbd1768eaf170b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

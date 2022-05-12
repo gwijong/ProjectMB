@@ -174,8 +174,8 @@ GameObject:
   - component: {fileID: 1284843756334206243}
   - component: {fileID: 8174127546419027825}
   - component: {fileID: 1219033481582113927}
-  - component: {fileID: 1649638153}
   - component: {fileID: 6860369714426598284}
+  - component: {fileID: 1011743344856031571}
   m_Layer: 11
   m_Name: ManaPotion
   m_TagString: Untagged
@@ -241,18 +241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1649638153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1257772239926670214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8889b8e5746b3544b6306ec5406f932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6860369714426598284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +255,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: 6
   amount: 1
+--- !u!114 &1011743344856031571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257772239926670214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d335fc122180bbf47bbd1768eaf170b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3667708592844504956
 GameObject:
   m_ObjectHideFlags: 0

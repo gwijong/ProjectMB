@@ -34,7 +34,6 @@ public class EnemyDummyAI : AI
     }
     void OnUpdate()
     {
-
         if(enemyCharacter == null) //적이 없으면 탈출
         {
             return;
@@ -60,6 +59,8 @@ public class EnemyDummyAI : AI
             dummyAICoroutine = DummyAI(); //인공지능 코루틴 할당
             StartCoroutine(dummyAICoroutine); //인공지능 코루틴 시작
         }
+
+        character.TargetLookAt(enemyCharacter); // 보게 만듦
     }
 
     /// <summary> 코루틴 중지 </summary>

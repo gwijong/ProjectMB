@@ -253,7 +253,10 @@ public class Character : Movable
                         //여기선 대화로 풀어나가기
                         break;
                     case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
-                        this.GetComponent<Player>().Sheeping();//플레이어의 양털채집 메서드 실행
+                        if(this.GetType().IsSubclassOf(typeof(Player))) //이걸 실행한 애가 Player이거나 Player의 자식 클래스이면
+                        {
+                            this.GetComponent<Player>().Sheeping();//플레이어의 양털채집 메서드 실행
+                        }
                         break;
                     case Define.InteractType.Get:  //상호작용 타입이 아이템 줍기이면
                         ItemInpo itemInpo = focusTarget.GetComponent<ItemInpo>(); //타겟의 아이템 정보 스크립트 컴포넌트 가져오기 시도
@@ -381,7 +384,7 @@ public class Character : Movable
 
         //TakeDamage함수로 들어가면 스킬이 풀리기 때문에 스킬을 임시 저장
         Character asCharacter = null;
-        if(enemyTarget.GetType().IsSubclassOf(typeof(Character))) //enemyTarget의 클래스가 Character 클래스의 자식클래스이면
+        if(enemyTarget.GetType().IsSubclassOf(typeof(Character))) //enemyTarget의 클래스나 상속받은 클래스가 Character 클래스의 자식클래스이거나 Character 클래스이면
         {
             asCharacter = (Character)enemyTarget;  //상대방 캐릭터를 취급함
         };
@@ -436,27 +439,20 @@ public class Character : Movable
 
         };
     }
-
-    public override Define.InteractType Interact(Interactable other) //상호작용 대상 타입
+    //other가 상호작용을 하려고 오는 놈, 반환값을 받으려고 온 대상
+    //this가 나 자신 캐릭터 스크립트 컴포넌트
+    //나 자신 캐릭터 스크립트 컴포넌트가 Interact메서드를 실행하면 나의 타입을 리턴한다.
+    //focusTarget.Interact(this)는 매개변수 other에 나 자신 this가 들어가면 focusTarget의 타입을 리턴한다.
+    public override Define.InteractType Interact(Interactable other)
     {
         if(IsEnemy(this, other)) //상대방과 내가 적인지 체크
         {
             return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
         }
-        else if(IsSheep(other, this))//상대방이 양이고 내가 플레이어인지 체크
-        {
-            return Define.InteractType.Sheeping; //상호작용 타입을 양털채집으로 리턴
-        }
-        else if (IsItem(other))
-        {
-            return Define.InteractType.Get; //상호작용 타입을 아이템 줍기로 리턴
-        }
         else
         {
             return Define.InteractType.Talk; //상호작용 타입을 대화로 리턴
         }
-        
-
     }
 
     public override void MoveTo(Vector3 goalPosition, bool isWalk = false)  //내비게이션 이동 메서드
@@ -603,25 +599,8 @@ public class Character : Movable
             focusTarget = null;  //바라보는 타겟을 null 대입
             return false;
         };
-
-        if (IsEnemy(this, target)) //나와 상대가 적이면 타겟 지정
-        {
-            focusTarget = target;
-            return true;
-        };
-
-        if (IsSheep(this, target)) //내가 플레이어이고 상대가 양이면 타겟 지정
-        {
-            focusTarget = target;
-            return true;
-        }
-
-        if (IsItem(target)) //타겟이 아이템이면 타겟 지정
-        {
-            focusTarget = target;
-            return true;
-        }
-        return false;
+        focusTarget = target;
+        return true;
     
     }
 
@@ -774,6 +753,7 @@ public class Character : Movable
         agent.velocity = (Vector3.up * 500); //위로 날림
     }
 
+    /// <summary> 사망 코루틴</summary>
     IEnumerator Die()
     {
         Blowaway();

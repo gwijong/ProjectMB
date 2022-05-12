@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 3640166836812491457}
   - component: {fileID: 4262492899507193515}
   - component: {fileID: 1732243025609159410}
-  - component: {fileID: 1830803038}
   - component: {fileID: 5947577566529399844}
+  - component: {fileID: 8179195888701386167}
   m_Layer: 11
   m_Name: BottleWater
   m_TagString: Untagged
@@ -127,18 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db760970f45a448ba2ec03e88c1f3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1830803038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6426012390117533706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8889b8e5746b3544b6306ec5406f932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5947577566529399844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,3 +141,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: 3
   amount: 1
+--- !u!114 &8179195888701386167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6426012390117533706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d335fc122180bbf47bbd1768eaf170b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
