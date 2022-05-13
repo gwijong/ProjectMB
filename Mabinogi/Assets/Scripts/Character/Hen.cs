@@ -31,4 +31,9 @@ public class Hen : Character
         }
         return Define.InteractType.Egg; //적이 아니면 달걀채집 리턴
     }
+
+    public void Fly()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.chicken_fly);//닭 나는 효과음
+    }
 }

@@ -97,4 +97,12 @@ public class Define
         gen_button_down,
         character_levelup,
     }
+
+    public enum NPCSoundEffect
+    {
+        dog01_natural_stand_offensive,
+        wolf01_natural_stand_offensive,
+        sheep,
+        chicken_fly,
+    }
 }

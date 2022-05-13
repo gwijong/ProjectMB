@@ -13,12 +13,15 @@ public class GameManager : MonoBehaviour
     public static UpdateManager update { get { return manager._update; } } //업데이트 매니저
     /// <summary> 사운드 매니저 자동구현 프로퍼티  </summary>
     public static SoundManager soundManager { get; private set; } //사운드 매니저
+    /// <summary> NPC사운드 매니저 자동구현 프로퍼티  </summary>
+    public static NPCSoundManager npcSoundManager { get; private set; } //사운드 매니저
     /// <summary> 아이템 매니저 자동구현 프로퍼티  </summary>
     public static ItemManager itemManager { get; private set; } //업데이트 매니저
     void Awake() 
     {
-        soundManager = gameObject.GetComponent<SoundManager>(); //사운드매니저 컴포넌트 할당
-        itemManager = gameObject.GetComponent<ItemManager>(); //아이템매니저 컴포넌트 할당
+        soundManager = GetComponent<SoundManager>(); //사운드매니저 컴포넌트 할당
+        itemManager = GetComponent<ItemManager>(); //아이템매니저 컴포넌트 할당
+        npcSoundManager = GetComponent<NPCSoundManager>(); //NPC사운드매니저 컴포넌트 할당
         //싱글톤 체크
         if (manager == null) //매니저가 없으면
         {

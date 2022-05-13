@@ -22,4 +22,9 @@ public class Dog : Character
     {
         base.OnUpdate();
     }
+
+    public void Bark()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.dog01_natural_stand_offensive);//개 짖는 효과음
+    }
 }

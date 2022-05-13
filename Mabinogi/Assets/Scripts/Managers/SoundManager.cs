@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 플레이어 사운드 매니저 </summary>
 public class SoundManager : MonoBehaviour
 {
     [SerializeField]
@@ -91,6 +92,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     /// <summary> 레벨업 </summary>
     AudioClip character_levelup;
+
 
     //예시: GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
     /// <summary> 사운드 이펙트 재생</summary>

@@ -30,4 +30,9 @@ public class Sheep : Character
         }
         return Define.InteractType.Sheeping; //적이 아니면 양털채집 리턴
     }
+
+    public void Bark()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.sheep);//양 우는 효과음
+    }
 }

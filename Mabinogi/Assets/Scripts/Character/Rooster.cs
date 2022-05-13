@@ -21,4 +21,8 @@ public class Rooster : Character
     {
         base.OnUpdate();
     }
+    public void Fly()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.chicken_fly);//닭 나는 효과음
+    }
 }
