@@ -30,7 +30,6 @@ public class Player : Character
     {
         PlayAnim("Sheeping");
         StartCoroutine(Wait(5f));
-        //GameManager.itemManager.DropItem(Define.Item.Wool, 1);
         StartCoroutine(DropItem());
     }
 

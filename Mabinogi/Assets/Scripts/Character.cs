@@ -170,7 +170,7 @@ public class Character : Movable
 
         SetOffensive();//일상모드로 전환하고 이동속도를 걷기로 맞춰줌
 
-        GameObject namePrefab = Instantiate(Resources.Load<GameObject>("Prefabs/NameUICanvas")); //이름 표시 캔버스 생성
+        GameObject namePrefab = Instantiate(Resources.Load<GameObject>("Prefabs/UI/NameUICanvas")); //이름 표시 캔버스 생성
         namePrefab.transform.localScale = Vector3.one * 0.01f; //이름 표시 캔버스 크기 조절
         namePrefab.transform.SetParent(transform); //이름 표시 캔버스를 이 캐릭터의 자식 오브젝트로 설정
         namePrefab.transform.localPosition = new Vector3(0, nameYpos, 0); //이름 표시 캔버스의 좌표를 이 캐릭터 좌표에서 nameYpos만큼 위로 올려줌
@@ -253,9 +253,9 @@ public class Character : Movable
                         //여기선 대화로 풀어나가기
                         break;
                     case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
-                        if(this.GetType().IsSubclassOf(typeof(Player))) //이걸 실행한 애가 Player이거나 Player의 자식 클래스이면
+                        if (GetComponent<Player>() != null)
                         {
-                            this.GetComponent<Player>().Sheeping();//플레이어의 양털채집 메서드 실행
+                            GetComponent<Player>().Sheeping();//플레이어의 양털채집 메서드 실행
                         }
                         break;
                     case Define.InteractType.Get:  //상호작용 타입이 아이템 줍기이면

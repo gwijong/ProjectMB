@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>캐릭터 머리 위에 달린 스킬 말풍선</summary>
 public class SkillUI : MonoBehaviour
 {
-    Character character; //플레이어거나 적이거나
+    Character character; //플레이어거나 적이거나 상관없이 모든 캐릭터
     public Image[] skillImages;//준비된 스킬 이미지들
     public Canvas skillCanvas; //스킬 이미지를 보여줄 조그마한 캔버스
     IEnumerator skillCastingCoroutine; //스킬 시전 말풍선 움직여줄 코루틴
@@ -28,9 +29,9 @@ public class SkillUI : MonoBehaviour
         {
             switch (character.GetloadedSkill().type)
             {
-                case Define.SkillState.Combat:
+                case Define.SkillState.Combat:  
                     Reset();
-                    //skillImages[(int)Define.SkillState.Combat].gameObject.SetActive(true);
+                    //컴벳은 말풍선을 활성화하지 않는다
 
                     break;
                 case Define.SkillState.Defense:
@@ -55,8 +56,7 @@ public class SkillUI : MonoBehaviour
             switch (character.GetreservedSkill().type)
             {
                 case Define.SkillState.Combat:
-                    ImageOff();
-                    //skillImages[(int)Define.SkillState.Combat].gameObject.SetActive(true);
+                    ImageOff(); //말풍선 이미지 꺼줌
 
                     break;
                 case Define.SkillState.Defense:

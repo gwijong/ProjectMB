@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
                     {
                         player.layer = (int)Define.Layer.Livestock;//가축이면 캐릭터의 레이어를 가축으로 바꿈
                     }
-                    player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = false; //기존 캐릭터의 말풍선 눌려서 스킬취소하는 기능 꺼줌
+                    player.GetComponentInChildren<SkillBubble>().GetComponent<Button>().enabled = false; //기존 캐릭터의 말풍선 눌려서 스킬취소하는 기능 꺼줌
                     player = hit.collider.gameObject;  //마우스 좌클릭으로 지정한 플레이어 캐릭터를 플레이어로 지정
                     if (player.GetComponent<EnemyDummyAI>() != null)
                         player.GetComponent<EnemyDummyAI>().stopCoroutine();//인공지능 코루틴 중지
@@ -114,9 +114,13 @@ public class PlayerController : MonoBehaviour
     /// <summary>플레이어 캐릭터로 전환</summary>
     void PlayerSetting()
     {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
         player.layer = (int)Define.Layer.Player;  //플레이어의 레이어를 플레이어로 변경
         playerCharacter = player.GetComponent<Character>();  //플레이어의 캐릭터 컴포넌트를 가져옴
-        player.GetComponentInChildren<SkillUI>().GetComponent<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌
+        player.GetComponentInChildren<SkillBubble>().gameObject.GetComponentInChildren<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌
         if (player.GetComponent<EnemyDummyAI>() != null)//인공지능이 있으면
             player.GetComponent<EnemyDummyAI>().enabled = false; //인공지능 꺼줌
         GetComponentInChildren<CameraPivot>().following_object = player.transform; //카메라가 플레이어를 추적하도록 함

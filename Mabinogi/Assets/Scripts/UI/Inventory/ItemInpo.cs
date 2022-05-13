@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 바닥에 떨어진 아이템 정보</summary>
 public class ItemInpo : MonoBehaviour
 {
     /// <summary> 바닥에 떨어진 아이템 종류</summary>

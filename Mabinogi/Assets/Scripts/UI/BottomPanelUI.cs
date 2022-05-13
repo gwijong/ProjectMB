@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/// <summary> 화면 하단 생명력, 마나, 스태미나 게이지들 UI </summary>
 public class BottomPanelUI : MonoBehaviour
 {
     public Image hpGauge; //생명력 게이지

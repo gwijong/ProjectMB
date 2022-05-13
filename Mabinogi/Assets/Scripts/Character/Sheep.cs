@@ -28,6 +28,6 @@ public class Sheep : Character
         {
             return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
         }
-        return Define.InteractType.Sheeping;
+        return Define.InteractType.Sheeping; //적이 아니면 양털채집 리턴
     }
 }

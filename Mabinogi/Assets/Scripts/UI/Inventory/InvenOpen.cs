@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/// <summary> 인벤토리 창 열고 닫음</summary>
 public class InvenOpen : MonoBehaviour
 {
     /// <summary> 인벤토리 창</summary>
@@ -17,6 +18,7 @@ public class InvenOpen : MonoBehaviour
         }
     }
 
+    /// <summary> 인벤토리 열기</summary>
     public void Open()
     {
         if (isOpen) //소지품창이 열려있으면 닫기

@@ -46,13 +46,13 @@ public class CellInfo
         Vector2Int itemSize = wantItem.GetSize();
         itemType = wantItem;
         itemImage.sprite = wantItem.GetItemImage();
-        if (itemImage.sprite == null)
+        if (itemImage.sprite == null) //스프라이트가 없으면
         {
-            itemImage.color = Color.clear;
+            itemImage.color = Color.clear; //투명하게 설정
         }
-        else
+        else //스프라이트가 있으면
         {
-            itemImage.color = Color.white;
+            itemImage.color = Color.white; //온전한 색상 표시
         }
         itemImage.transform.localScale = new Vector3(itemSize.x, itemSize.y, 1);
         CalculateColor();
@@ -500,28 +500,28 @@ public class Inventory : MonoBehaviour
         List<CellInfo> result = new List<CellInfo>(); //해당 아이템을 가지고 있는 모든 셀 리턴
         for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++) //소지품창 넓이만큼 순회
             {
-                CellInfo root = infoArray[y, x].GetRoot();
-                if (root.GetItemType() == item)
+                CellInfo root = infoArray[y, x].GetRoot(); 
+                if (root.GetItemType() == item) //소지품창 y,x 칸의 아이템이 찾는 아이템이면
                 {
-                    if (!result.Contains(root))
+                    if (!result.Contains(root)) //리스트에 똑같은 셀 정보 root가 이미 존재하지 않으면
                     {
-                        result.Add(root);
+                        result.Add(root); //리스트에 셀 정보 root 추가
                     }
                 }
             }
         }
-        return result;
+        return result; //리스트 반환
     }
     
     /// <summary> 리스트에서 지정한 아이템 개수 모두 더해서 리턴</summary>
     public int GetItemAmount(Define.Item item)
     {
         int result = 0;
-        foreach(CellInfo current in FindItemList(item))
+        foreach(CellInfo current in FindItemList(item)) //소지품창의 모든 아이템 셀 정보 만큼 반복
         {
-            result += current.amount;
+            result += current.amount; //소지품창 안의 찾는 아이템의 아이템 개수 리턴
         }
 
         return result;
