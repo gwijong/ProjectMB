@@ -16,6 +16,7 @@ public class Define
         Attack,
         Get,
         Sheeping,
+        Egg,
     }
     /// <summary> 캐릭터의 상태</summary>
     public enum State

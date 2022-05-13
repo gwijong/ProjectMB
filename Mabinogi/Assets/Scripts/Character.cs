@@ -258,6 +258,12 @@ public class Character : Movable
                             GetComponent<Player>().Sheeping();//플레이어의 양털채집 메서드 실행
                         }
                         break;
+                    case Define.InteractType.Egg:  //상호작용 타입이 달걀 채집이면
+                        if (GetComponent<Player>() != null)
+                        {
+                            GetComponent<Player>().Egg();//플레이어의 달걀채집 메서드 실행
+                        }
+                        break;
                     case Define.InteractType.Get:  //상호작용 타입이 아이템 줍기이면
                         ItemInpo itemInpo = focusTarget.GetComponent<ItemInpo>(); //타겟의 아이템 정보 스크립트 컴포넌트 가져오기 시도
                         if (itemInpo != null)//타겟이 아이템 정보 스크립트 컴포넌트를 가지고 있으면
@@ -423,6 +429,7 @@ public class Character : Movable
                     case Define.SkillState.Defense:
                         PlayAnim("Combat");//공격에 실패했지만 공격 애니메이션은 재생한다
                         wait = Wait(attackFailTime); //공격 실패로 3초간 경직
+                        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.guard);//닫기 효과음
                         StartCoroutine(wait);
                         break;
 
@@ -757,7 +764,9 @@ public class Character : Movable
     IEnumerator Die()
     {
         Blowaway();
-        yield return new WaitForSeconds(1.5f); //1.5초 대기
+        yield return new WaitForSeconds(1f); //1초 대기
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
+        yield return new WaitForSeconds(0.5f); //0.5초 대기
         rigid.constraints = RigidbodyConstraints.FreezeAll; //리지드바디 고정시킴
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();

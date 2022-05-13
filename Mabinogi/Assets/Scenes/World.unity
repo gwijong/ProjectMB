@@ -2330,7 +2330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &452831718
 Transform:
   m_ObjectHideFlags: 0
@@ -10075,6 +10075,10 @@ PrefabInstance:
     - target: {fileID: 3792939802897206075, guid: c24dfdf041ed4db4fb9a7814279d0f5a, type: 3}
       propertyPath: m_Name
       value: Fox
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792939802897206075, guid: c24dfdf041ed4db4fb9a7814279d0f5a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4605187952967979393, guid: c24dfdf041ed4db4fb9a7814279d0f5a, type: 3}
       propertyPath: m_RootOrder

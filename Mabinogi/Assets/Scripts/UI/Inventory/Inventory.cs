@@ -303,11 +303,9 @@ public class Inventory : MonoBehaviour
             
             CellHighlight(overedCellLocation,true); //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
 
-
-            int overlap = 0;
-            int amount = 0;
             if (Input.GetMouseButtonDown(1))//마우스 우클릭하면
             {
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
                 inpo.SetActive(false);
                 UseUI(overedCellLocation, true);
             }   
@@ -398,6 +396,7 @@ public class Inventory : MonoBehaviour
         {
             currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
             mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         }
         else //마우스가 뭔가를 집고 있는 경우
         {

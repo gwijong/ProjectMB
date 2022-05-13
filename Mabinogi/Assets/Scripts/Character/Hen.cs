@@ -22,4 +22,13 @@ public class Hen : Character
     {
         base.OnUpdate();
     }
+
+    public override Define.InteractType Interact(Interactable other)
+    {
+        if (IsEnemy(this, other)) //상대방과 내가 적인지 체크
+        {
+            return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
+        }
+        return Define.InteractType.Egg; //적이 아니면 달걀채집 리턴
+    }
 }

@@ -30,13 +30,21 @@ public class Player : Character
     {
         PlayAnim("Sheeping");
         StartCoroutine(Wait(5f));
-        StartCoroutine(DropItem());
+        StartCoroutine(DropItem(Define.Item.Wool));
     }
 
-    /// <summary> 3초뒤 양털 생성 </summary>
-    IEnumerator DropItem() 
+    public void Egg()
     {
-        yield return new WaitForSeconds(3f);
-        GameManager.itemManager.DropItem(Define.Item.Wool, 1);
+        PlayAnim("Egg");
+        StartCoroutine(Wait(5f));
+        StartCoroutine(DropItem(Define.Item.Egg));
+    }
+
+    /// <summary> 3초뒤 아이템 생성 </summary>
+    IEnumerator DropItem(Define.Item item) 
+    {
+        yield return new WaitForSeconds(2.8f);
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.emotion_success);//성공 효과음
+        GameManager.itemManager.DropItem(item, 1);
     }
 }
