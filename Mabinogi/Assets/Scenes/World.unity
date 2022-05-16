@@ -9899,6 +9899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7583b64d0f7ce44b5cabb803b9830a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentPlayer: {fileID: 0}
+  currentNPC: {fileID: 0}
   firstScript: 
   chooseSciript: 
   noteScript: 
@@ -9906,9 +9908,9 @@ MonoBehaviour:
   personalstory:
   - 
   - 
-  name: {fileID: 1666781603}
+  textName: {fileID: 1666781603}
   textScript: {fileID: 336297888}
-  portrait: {fileID: 1641304955}
+  portrait: {fileID: 1641304957}
   dark: {fileID: 2125167490}
   outline: {fileID: 1041417415}
   buttonBackgrounds:
@@ -11335,36 +11337,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1001119924}
     m_Modifications:
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: noteScript
-      value: "(\uB098\uC624\uC528\uB294 \uB098\uB97C \uBC14\uB77C\uBCF4\uACE0 \uC788\uB2E4.)"
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: shopScript
-      value: "\uBB3C\uAC74\uC774 \uB9CE\uB2F5\uB2C8\uB2E4. \uACE8\uB77C\uBCF4\uC138\uC694."
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: firstScript
-      value: "(\uAC80\uC815\uC0C9 \uB4DC\uB808\uC2A4\uB97C \uC785\uC740 \uC5EC\uC131\uC774
-        \uB098\uB97C \uBC14\uB77C\uBCF4\uACE0\uC788\uB2E4.)"
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: chooseSciript
-      value: "\uBB34\uC5C7\uC744 \uB3C4\uC640\uB4DC\uB9B4\uAE4C\uC694?"
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: personalstory.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: personalstory.Array.data[0]
-      value: "\uC800\uB294 \uAC00\uB054 \uB098\uBB34\uB97C \uBCF4\uBA70 \uC0AC\uC0C9\uC5D0
-        \uC7A0\uAE30\uACE4 \uD55C\uB2F5\uB2C8\uB2E4."
-      objectReference: {fileID: 0}
-    - target: {fileID: 901716239, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: personalstory.Array.data[1]
-      value: "(\uC88B\uC740 \uB300\uD654 \uC600\uB358 \uAC83 \uAC19\uB2E4.)"
-      objectReference: {fileID: 0}
     - target: {fileID: 4789342429737538226, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -11412,14 +11384,6 @@ PrefabInstance:
     - target: {fileID: 5277366899507070984, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
       propertyPath: m_Name
       value: NPC_Nao
-      objectReference: {fileID: 0}
-    - target: {fileID: 5277366899507070986, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5277366899507070996, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}

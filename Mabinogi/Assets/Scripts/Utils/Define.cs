@@ -105,4 +105,13 @@ public class Define
         sheep,
         chicken_fly,
     }
+
+    public enum TalkButtonType
+    {
+        ToMain,
+        EndTalk,
+        Next,
+        Shop,
+        Personal,
+    }
 }

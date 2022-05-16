@@ -4,6 +4,12 @@ using UnityEngine;
 
 public static class Extension
 {
+    /// <summary>target이 compare과 똑같거나 서브클래스인지 확인</summary>
+    public static bool IsClassOf(this System.Type target, System.Type compare)
+    {
+        return target == compare || target.IsSubclassOf(compare);
+    }
+
     /// <summary>wantType.GetSkill(); 하면 해당하는 스킬을 돌려줌</summary>
     public static Skill GetSkill(this Define.SkillState from)
     {

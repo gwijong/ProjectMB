@@ -52,20 +52,14 @@ public class Player : Character
     }
 
     /// <summary> NPC와 대화 시작 </summary>
-    public void Talk(Interactable target)
+    public void Talk(NPC target)
     {
-        if(target == (Interactable)this)
+        if(target == this)
         {
             return;
         }
-        if (target.gameObject.GetComponent<CharacterTalkScripts>() == null)
-        {
-            return;
-        }
-        DialogTalk dialog = Dialog.GetComponent<DialogTalk>();
-        CharacterTalkScripts scripts = target.gameObject.GetComponent<CharacterTalkScripts>();
-        dialog.SetText(scripts.firstScript, scripts.chooseSciript, scripts.noteScript, scripts.shopScript, scripts.personalstory);
-        dialog.name.text = target.GetComponent<Character>().characterName;
-        dialog.StartTalk();
+
+        DialogTalk dialog = FindObjectOfType<DialogTalk>();
+        dialog.SetTarget(this, target);
     }
 }

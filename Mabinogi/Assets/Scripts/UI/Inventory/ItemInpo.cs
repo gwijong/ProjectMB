@@ -14,11 +14,11 @@ public class ItemInpo : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("Inventory").GetComponentInChildren<Inventory>().
                       GetItem(item, amount) == 0) //소지품창을 돌면서 인벤토리에 밀어넣기 시도
         {  //아이템을 소지품창에 밀어넣는데 성공했으면
-            Destroy(gameObject);//주워 먹었으므로 바닥에 떨어진 아이템 삭제
+            Destroy(transform.parent.gameObject);//주워 먹었으므로 바닥에 떨어진 아이템 삭제
         }
         else
         {
-            Destroy(gameObject);//주워 먹기 실패했지만 바닥에 떨어진 아이템 삭제
+            Destroy(transform.parent.gameObject);//주워 먹기 실패했지만 바닥에 떨어진 아이템 삭제
         }
     }
 }

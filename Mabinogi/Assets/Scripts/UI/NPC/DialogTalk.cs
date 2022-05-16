@@ -6,6 +6,10 @@ using System;
 
 public class DialogTalk : MonoBehaviour
 {
+    public Character currentPlayer;
+    public NPC currentNPC;
+    Dialog currentDialog;
+
     /// <summary> 맨 처음 NPC 외형 설명하는 지문 </summary>
     public string firstScript;
     /// <summary> 대화, 거래 선택 지문 </summary>
@@ -18,11 +22,11 @@ public class DialogTalk : MonoBehaviour
     public string[] personalstory;
 
     /// <summary> NPC 이름 텍스트 </summary>
-    public Text name;
+    public Text textName;
     /// <summary> 대화지문 텍스트 </summary>
     public Text textScript;
     /// <summary> 초상인물사진 </summary>
-    public GameObject portrait;
+    public Image portrait;
     /// <summary> 대화창 뒤의 암막 </summary>
     public GameObject dark;
     /// <summary> 대화창 배경그림의 외곽선 </summary>
@@ -33,99 +37,88 @@ public class DialogTalk : MonoBehaviour
     public GameObject note;
     /// <summary> 캐릭터 스킬, 상태 UI </summary>
     public GameObject UI_Canvas;
-    /// <summary> 대화 진행 상황 </summary>
-    bool[] progress = { false, false, false, false};
     /// <summary> 현재 실행중인 코루틴 </summary>
     IEnumerator Cor;
 
-    public void StartTalk()
-    {
-        FirstTyping();
-    }
-
     private void Update()
     {
-        if(progress[0] ==true && progress[1] == false && Input.anyKeyDown)
+        if (Input.anyKeyDown && outline.activeInHierarchy)
         {
-            ChooseTyping();
+            DialogNext();
         }
-        if(progress[2] == true && Input.anyKeyDown)
+    }
+
+    public void SetDialog(Dialog wantDialog)
+    {
+        currentDialog = wantDialog;
+        portrait.sprite = currentDialog.portrait;
+        textName.text = currentDialog.npcName;
+        CoroutineStart(TextOutput(currentDialog));
+    }
+
+    public void DialogNext()
+    {
+        if(currentDialog.next == null)
         {
-            progress[2] = false;
-            PersonalStoryNext();
+            return;
+        }
+        else
+        {
+            SetDialog(currentDialog.next);
         }
     }
     /// <summary> 텍스트 한글자씩 출력 코루틴 </summary>
-    IEnumerator TextOutput(string text)
+    IEnumerator TextOutput(Dialog wantDialog)
     {
-        for (int i = 0; i < text.Length; i++)
+        SelectButtonOff();
+        textScript.text = "";
+        portrait.sprite = wantDialog.portrait;
+        portrait.gameObject.SetActive(wantDialog.portraitActive);
+        int i = 0;
+        while (textScript.text.Length< wantDialog.currentText.Length)
         {
-            textScript.text += text[i];
-            yield return new WaitForSeconds(0.05f);
+            textScript.text += wantDialog.currentText[i++];
+            yield return new WaitForSeconds(0.05f);          
+        }
+        if(wantDialog.buttonArray.Length <= 0)
+        {
+            SetButton(0, "다음", Define.TalkButtonType.Next);
+        }
+        else
+        {
+            for(int j = 0; j< wantDialog.buttonArray.Length; j++)
+            {
+                SetButton(j, wantDialog.buttonArray[j].buttonName, wantDialog.buttonArray[j].type);
+            }
         }
     }
+    
+    public void SetButton(int current, string wantText, Define.TalkButtonType wantType)
+    {
+        buttonBackgrounds[current].SetActive(true);
+        buttonBackgrounds[current].GetComponentInChildren<Text>().text = wantText;
+        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.RemoveAllListeners();
+        UnityEngine.Events.UnityAction targetFuntion;
+        switch (wantType)
+        {
+            default:
+                targetFuntion = EndTalkButton;
+                break;
+            case Define.TalkButtonType.Next:
+                targetFuntion = DialogNext;
+                break;
 
-    /// <summary> 맨 처음 NPC 외형 설명하는 지문 </summary>
-    void FirstTyping()
-    {
-        portrait.SetActive(false);
-        dark.SetActive(true);
-        outline.SetActive(true);
-        textScript.text = "";
-        UI_Canvas.SetActive(false);
-        CoroutineStart(TextOutput(firstScript));
-        progress[0] = true;
-    }
+        }
 
-    /// <summary> 대화와 거래 선택지문 </summary>
-    void ChooseTyping()
-    {
-        portrait.SetActive(true);
-        SelectButtonOff();
-        buttonBackgrounds[0].SetActive(true);
-        buttonBackgrounds[1].SetActive(true);
-        buttonBackgrounds[0].GetComponentInChildren<Text>().text = "대화를 한다";
-        buttonBackgrounds[1].GetComponentInChildren<Text>().text = "거래를 한다";
-        buttonBackgrounds[0].GetComponentInChildren<Button>().onClick.RemoveListener(EndTalkButton);
-        buttonBackgrounds[0].GetComponentInChildren<Button>().onClick.RemoveListener(NoteButton);
-        buttonBackgrounds[1].GetComponentInChildren<Button>().onClick.RemoveListener(ShopButton);
-        buttonBackgrounds[0].GetComponentInChildren<Button>().onClick.AddListener(NoteButton);
-        buttonBackgrounds[1].GetComponentInChildren<Button>().onClick.AddListener(ShopButton);
-        progress[1] = true;
-        textScript.text = "";
-        CoroutineStart(TextOutput(chooseSciript));
+        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.AddListener(targetFuntion);
     }
-
-    /// <summary> 여행수첩 대화지문 </summary>
-    void NoteTyping()
+    
+    public void SetTarget(Character wantPlayer, NPC wantNPC)
     {
-        SelectButtonOff();
-        buttonBackgrounds[0].SetActive(true);
-        buttonBackgrounds[0].GetComponentInChildren<Text>().text = "대화 끝내기";
-        buttonBackgrounds[0].GetComponentInChildren<Button>().onClick.AddListener(EndTalkButton);
-        note.SetActive(true);
-        textScript.text = "";
-        CoroutineStart(TextOutput(noteScript));
-    }
-
-    /// <summary> 상점 대화지문 </summary>
-    void ShopTyping()
-    {
-        SelectButtonOff();
-        buttonBackgrounds[0].SetActive(true);
-        buttonBackgrounds[0].GetComponentInChildren<Text>().text = "대화 끝내기";
-        buttonBackgrounds[0].GetComponentInChildren<Button>().onClick.AddListener(EndTalkButton);
-        textScript.text = "";
-        CoroutineStart(TextOutput(shopScript));
-    }
-    /// <summary> 대화 상대 NPC에게서 대화 지문들을 가져옴 </summary>
-    public void SetText(string first, string choose, string note, string shop, string[] personalStory)
-    {
-        firstScript = first;
-        chooseSciript = choose;
-        noteScript = note;
-        shopScript = shop;
-        personalstory = personalStory;
+        currentPlayer = wantPlayer;
+        currentNPC = wantNPC;
+        OpenTalkCanvas();
+        SetDialog(currentNPC.Appearance);
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
@@ -134,56 +127,41 @@ public class DialogTalk : MonoBehaviour
         SelectButtonOff();
         CloseTalkCanvas();
         UI_Canvas.SetActive(true);
-        progress[0] = false;
-        progress[1] = false;
+
     }
 
     /// <summary> 대화 캔버스의 구성요소들을 전부 끔 </summary>
     public void CloseTalkCanvas()
     {
-        portrait.SetActive(false);
+        portrait.gameObject.SetActive(false);
         note.SetActive(false);
         dark.SetActive(false);
         outline.SetActive(false);
     }
-
+    public void OpenTalkCanvas()
+    {
+        dark.SetActive(true);
+        outline.SetActive(true);
+        UI_Canvas.SetActive(false);
+    }
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
     {
-        ShopTyping();
+        //SetDialog(currentNPC.Appearance);
     }
 
     /// <summary> 여행수첩 대화지문으로 진입 </summary>
     public void NoteButton()
     {
-        NoteTyping();
+        //SetDialog(currentNPC.Appearance);
     }
 
     /// <summary> 여행수첩의 개인적인 이야기 실행 </summary>
     public void PersonalStoryButton()
     {
-        PersonalStory();
+        //SetDialog(currentNPC.Appearance);
     }
 
-    /// <summary> 개인적인 이야기 텍스트 출력 </summary>
-    void PersonalStory()
-    {
-        note.SetActive(false);
-        buttonBackgrounds[0].SetActive(false);
-        textScript.text = "";
-        CoroutineStart(TextOutput(personalstory[0]));
-        progress[2] = true;
-    }
-
-    /// <summary> 개인적인 이야기 이후 좋은 대화였던 것 같다 출력 </summary>
-    void PersonalStoryNext()
-    {
-        note.SetActive(true);
-        SelectButtonOff();
-        buttonBackgrounds[0].SetActive(true);
-        textScript.text = "";
-        CoroutineStart(TextOutput(personalstory[1]));
-    }
 
     /// <summary> 코루틴 실행 메서드 </summary>
     void CoroutineStart(IEnumerator cor)
