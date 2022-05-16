@@ -17,7 +17,6 @@ public class Player : Character
     private void Start()
     {
         Dialog = GameObject.FindGameObjectWithTag("Dialog");
-        Dialog.SetActive(false);
         anim = GetComponentInChildren<Animator>();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
@@ -36,6 +35,7 @@ public class Player : Character
         StartCoroutine(DropItem(Define.Item.Wool));
     }
 
+    /// <summary> 달걀 채집 </summary>
     public void Egg()
     {
         PlayAnim("Egg");
@@ -51,16 +51,17 @@ public class Player : Character
         GameManager.itemManager.DropItem(item, 1);
     }
 
+    /// <summary> NPC와 대화 시작 </summary>
     public void Talk(Interactable target)
     {
         if(target == (Interactable)this)
         {
             return;
         }
-        Dialog.SetActive(true);
         DialogTalk dialog = Dialog.GetComponent<DialogTalk>();
         CharacterTalkScripts scripts = target.gameObject.GetComponent<CharacterTalkScripts>();
-        dialog.SetText(scripts.firstScript, scripts.chooseSciript, scripts.noteScript, scripts.shopScript);
+        dialog.SetText(scripts.firstScript, scripts.chooseSciript, scripts.noteScript, scripts.shopScript, scripts.personalstory);
         dialog.name.text = target.GetComponent<Character>().characterName;
+        dialog.StartTalk();
     }
 }

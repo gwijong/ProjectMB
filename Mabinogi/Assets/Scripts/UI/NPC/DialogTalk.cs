@@ -8,19 +8,26 @@ public class DialogTalk : MonoBehaviour
     public string chooseSciript;
     public string noteScript;
     public string shopScript;
+    public string[] personalstory;
 
     public Text name;
     public Text textScript;
-
+    public GameObject portrait;
+    public GameObject dark;
+    public GameObject outline;
     public GameObject[] buttonBackgrounds;
     public GameObject note;
+    public GameObject UI_Canvas;
 
     bool[] progress = { false, false, false, false};
 
     IEnumerator Cor;
-
-    void OnEnable()
+    public void StartTalk()
     {
+        if (Cor != null)
+        {
+            StopCoroutine(Cor);
+        }
         Cor = FirstTyping();
         StartCoroutine(Cor);
     }
@@ -36,12 +43,26 @@ public class DialogTalk : MonoBehaviour
             Cor = ChooseTyping();
             StartCoroutine(Cor);
         }
+        if(progress[2] == true && Input.anyKeyDown)
+        {
+            progress[2] = false;
+            if (Cor != null)
+            {
+                StopCoroutine(Cor);
+            }
+            Cor = PersonalStoryNext();
+            StartCoroutine(Cor);
+        }
     }
 
     IEnumerator FirstTyping()
     {
+        portrait.SetActive(false);
+        dark.SetActive(true);
+        outline.SetActive(true);
         yield return null;
         textScript.text = "";
+        UI_Canvas.SetActive(false);
         for (int i = 0; i< firstScript.Length; i++)
         {
             textScript.text += firstScript[i];
@@ -52,6 +73,7 @@ public class DialogTalk : MonoBehaviour
 
     IEnumerator ChooseTyping()
     {
+        portrait.SetActive(true);
         buttonBackgrounds[0].SetActive(true);
         buttonBackgrounds[1].SetActive(true);
         buttonBackgrounds[0].GetComponentInChildren<Text>().text = "대화를 한다";
@@ -85,7 +107,6 @@ public class DialogTalk : MonoBehaviour
             textScript.text += noteScript[i];
             yield return new WaitForSeconds(0.05f);
         }
-        progress[0] = true;
     }
 
     IEnumerator ShopTyping()
@@ -101,34 +122,33 @@ public class DialogTalk : MonoBehaviour
             textScript.text += shopScript[i];
             yield return new WaitForSeconds(0.05f);
         }
-        progress[0] = true;
     }
 
 
 
-    public void SetText(string first, string choose, string note, string shop)
+    public void SetText(string first, string choose, string note, string shop, string[] personalStory)
     {
         firstScript = first;
         chooseSciript = choose;
         noteScript = note;
         shopScript = shop;
-}
-
-    public void StartTalk()
-    {
-
+        personalstory = personalStory;
     }
 
     public void EndTalkButton()
     {
+        UI_Canvas.SetActive(true);
         progress[0] = false;
         progress[1] = false;
         buttonBackgrounds[0].GetComponentInChildren<Text>().text = "대화를 한다";
         buttonBackgrounds[1].GetComponentInChildren<Text>().text = "거래를 한다";
         buttonBackgrounds[0].SetActive(false);
         buttonBackgrounds[1].SetActive(false);
+        portrait.SetActive(false);
         note.SetActive(false);
-        gameObject.SetActive(false);
+        dark.SetActive(false);
+        outline.SetActive(false);
+
     }
 
     public void ShopButton()
@@ -144,68 +164,37 @@ public class DialogTalk : MonoBehaviour
         Cor = NoteTyping();
         StartCoroutine(Cor);
     }
-}
 
-/*
- * [System.Serializable]
-public class Dialogue
-{
-    public List<string> sentences;
-}
-
-public class DialogueSystem : MonoBehaviour
-{
-    public Text txtSentence;
-    public Dialogue info;
-    Queue<string> sentences = new Queue<string>();
-
-    private void Start()
+    public void PersonalStoryButton()
     {
-        Begin(info);
+        StopCoroutine(Cor);
+        Cor = PersonalStory();
+        StartCoroutine(Cor);
     }
-    //대화 시작
-    public void Begin(Dialogue info)
-    {
-        sentences.Clear();
 
-        foreach(var sentence in info.sentences)
+    IEnumerator PersonalStory()
+    {
+        note.SetActive(false);
+        buttonBackgrounds[0].SetActive(false);
+        textScript.text = "";
+        for (int i = 0; i < personalstory[0].Length; i++)
         {
-            sentences.Enqueue(sentence);
+            textScript.text += personalstory[0][i];
+            yield return new WaitForSeconds(0.05f);
         }
+        progress[2] = true;
+    }
 
-        Next();
-    }
-    //버튼 클릭 시 다음 대화로 넘어감
-    public void Next()
+    IEnumerator PersonalStoryNext()
     {
-        if(sentences.Count == 0)
+        note.SetActive(true);
+        buttonBackgrounds[0].SetActive(true);
+        textScript.text = "";
+        for (int i = 0; i < personalstory[1].Length; i++)
         {
-            End();
-            return;
-        }
-
-        txtSentence.text = string.Empty;
-        StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentences.Dequeue()));
-    }
-    //타이핑 모션 함수
-    IEnumerator TypeSentence(string sentence)
-    {
-        foreach(var letter in sentence)
-        {
-            txtSentence.text += letter;
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-    //대화 끝
-    private void End()
-    {
-        if (sentences != null)
-        {
-            Debug.Log("end");
+            textScript.text += personalstory[1][i];
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }
 
- * 
- */
