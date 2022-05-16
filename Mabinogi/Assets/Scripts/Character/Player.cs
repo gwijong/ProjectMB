@@ -58,6 +58,10 @@ public class Player : Character
         {
             return;
         }
+        if (target.gameObject.GetComponent<CharacterTalkScripts>() == null)
+        {
+            return;
+        }
         DialogTalk dialog = Dialog.GetComponent<DialogTalk>();
         CharacterTalkScripts scripts = target.gameObject.GetComponent<CharacterTalkScripts>();
         dialog.SetText(scripts.firstScript, scripts.chooseSciript, scripts.noteScript, scripts.shopScript, scripts.personalstory);

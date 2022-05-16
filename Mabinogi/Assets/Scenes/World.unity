@@ -8843,7 +8843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1622436939
 Transform:
   m_ObjectHideFlags: 0
@@ -11412,6 +11412,14 @@ PrefabInstance:
     - target: {fileID: 5277366899507070984, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
       propertyPath: m_Name
       value: NPC_Nao
+      objectReference: {fileID: 0}
+    - target: {fileID: 5277366899507070986, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5277366899507070996, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}

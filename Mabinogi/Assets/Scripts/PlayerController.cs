@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
     /// <summary>레이어마스크</summary>
-    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
     private void Awake()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
@@ -67,6 +67,10 @@ public class PlayerController : MonoBehaviour
                 
                 if (target != null)
                 {
+                    if(target.gameObject.layer == (int)Define.Layer.NPC) //플레이어가 마을 NPC가 될 수는 없음
+                    {
+                        return;
+                    }
                     if(player.GetComponent<EnemyDummyAI>()!=null)
                         player.GetComponent<EnemyDummyAI>().enabled = true; //기존 플레이어 캐릭터의 인공지능 켜줌
                     if(player.tag == "Enemy")
