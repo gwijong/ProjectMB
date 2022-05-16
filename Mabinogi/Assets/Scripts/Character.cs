@@ -249,8 +249,11 @@ public class Character : Movable
                         };
                         Attack((Hitable)focusTarget); //공격한다
                         break;
-                    case Define.InteractType.Talk:  //상호작용 타입이 우호적이면
-                        //여기선 대화로 풀어나가기
+                    case Define.InteractType.Talk:  //상호작용 타입이 대화이면
+                        if (GetComponent<Player>() != null)
+                        {
+                            GetComponent<Player>().Talk(focusTarget);//플레이어의 대화 메서드 실행
+                        }
                         break;
                     case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
                         if (GetComponent<Player>() != null)

@@ -3985,11 +3985,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4789342429737538226}
   - component: {fileID: 5043346509174355291}
-  - component: {fileID: 7352387781245677107}
   - component: {fileID: 5277366899507070996}
   - component: {fileID: 5277366899507070987}
   - component: {fileID: 5277366899507070986}
-  - component: {fileID: 5277366899507070985}
+  - component: {fileID: 5204573649997806150}
+  - component: {fileID: 901716239}
   m_Layer: 12
   m_Name: NPC_Nao
   m_TagString: NPC
@@ -4004,7 +4004,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5277366899507070984}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 1.52, y: -6.5704637, z: 0.99683166}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children:
@@ -4038,21 +4038,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7352387781245677107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5277366899507070984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e7583b64d0f7ce44b5cabb803b9830a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  script:
-  - "\uAC80\uC815\uC0C9 \uB4DC\uB808\uC2A4\uAC00 \uD558\uB298\uD558\uB298 \uB0A0\uB9B0\uB2E4.
-    \uADF8\uC73D\uD55C \uB208\uBE5B\uC73C\uB85C \uB098\uB97C \uBC14\uB77C\uBCF4\uACE0\uC788\uB2E4."
 --- !u!54 &5277366899507070996
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4080,8 +4065,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.31779823, y: 2.0958345, z: 0.33366007}
+  m_Center: {x: 0.062267546, y: 0.5479172, z: -0.15811692}
 --- !u!195 &5277366899507070986
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4104,7 +4089,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5277366899507070985
+--- !u!114 &5204573649997806150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4113,38 +4098,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 5277366899507070984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254343de90dd8264b81f58140e3c4654, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c00f9d5f1b3d2a458021e56bc650049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 2
   runSpeed: 0
   walkSpeed: 0
-  characterName: "npc \uB098\uC624"
+  characterName: "\uB098\uC624"
   nameYpos: 2
   data: {fileID: 11400000, guid: 33208f0bda2c44a4d9b52328ab86eb88, type: 2}
   focusTarget: {fileID: 0}
-  maxPhysicalStrikingPower: 0
-  maxMagicStrikingPower: 0
-  minPhysicalStrikingPower: 0
-  minMagicStrikingPower: 0
-  wound: 0
-  woundAttack: 0
-  critical: 0
-  balance: 0
-  physicalDefensivePower: 0
-  magicDefensivePower: 0
-  physicalProtective: 0
-  magicProtective: 0
-  deadly: 0
-  downTime: 4
-  attackTime: 1
-  hitTime: 3
-  groggyTime: 6
-  attackFailTime: 3
-  waitCount: 0
   die: 0
   angularSpeed: 1000
   acceleration: 100
+--- !u!114 &901716239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5277366899507070984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3fc10d59ddc75498749dcf316dd734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstScript: 123123
+  chooseSciript: 456456
+  noteScript: 789789
+  shopScript: 123456
 --- !u!1 &5278133766003060140
 GameObject:
   m_ObjectHideFlags: 0
