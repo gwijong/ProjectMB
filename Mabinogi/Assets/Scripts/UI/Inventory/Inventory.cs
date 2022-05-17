@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary> 셀 정보 가지는 곳 </summary>
@@ -173,7 +174,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 사용 선택지문 프리팹 </summary>
     public GameObject useUI;
     /// <summary> 아이템 사용 선택지문 인스턴스</summary>
-    GameObject use;
+    public GameObject use;
 
     /// <summary> 인벤토리 창 UI 이미지</summary>
     public GameObject parent;
@@ -186,8 +187,9 @@ public class Inventory : MonoBehaviour
     /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
     public static RectTransform mouseItemPos;
 
+    /// <summary> 사용창 아이템</summary>
+    public static CellInfo useItem;
 
-    //ItemData bottle = Resources.Load<ItemData>("Data/ItemData/Bottle");
 
     void Start()
     {
@@ -308,10 +310,10 @@ public class Inventory : MonoBehaviour
                 GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
                 inpo.SetActive(false);
                 UseUI(overedCellLocation, true);
+                useItem = CheckItemRoot(overedCellLocation);
             }   
             if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
             {
-                UseUI(overedCellLocation, false);
                 LeftClick(overedCellLocation); // 마우스 좌클릭 메서드 실행
             }
             if(use.activeSelf != true)//사용창이 꺼져있으면
@@ -319,6 +321,13 @@ public class Inventory : MonoBehaviour
                 ItemInpo(overedCellLocation, true);//정보 UI 켜줌
             }
         };
+        if(Input.mousePosition.x > use.transform.position.x + 100
+            || Input.mousePosition.x < use.transform.position.x - 40
+            || Input.mousePosition.y > use.transform.position.y + 40
+            || Input.mousePosition.y < use.transform.position.y - 100)
+        {
+            use.SetActive(false);
+        }
     }
 
     void UseUI(Vector2Int position, bool active)
@@ -336,10 +345,64 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 아이템 버리기 </summary>
-    void DropItem()
+    public void DropItem()
     {
         GameManager.itemManager.DropItem(mouseItem.GetItemType(), mouseItem.amount);
         mouseItem.Clear();//마우스 아이템 비워줌
+        use.SetActive(false);//사용창 비활성화
+    }
+
+    /// <summary> 아이템 나누기 </summary>
+    public void Divide()
+    {
+        if (useItem.amount <=0)
+        {
+            use.SetActive(false);//사용창 비활성화
+            return;
+        }
+        if (useItem.amount == 1)
+        {
+            LeftClick(useItem.GetLocation());
+            return;
+        }
+        if (mouseItem.GetItemType() != Define.Item.None)
+        {
+            PutItem(overedCellLocation, mouseItem.GetItemType(), mouseItem.amount);
+            mouseItem.SetItem(Define.Item.None, 0);
+        }
+        mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
+        useItem.SetAmount(useItem.GetRoot().amount - 1);
+        if (useItem.GetRoot().amount <= 0)
+        {
+            use.SetActive(false);//사용창 비활성화
+        }
+    }
+
+    /// <summary> 아이템 사용 </summary>
+    public void Use()
+    {
+        useItem.SetAmount(useItem.amount-1);
+        useItem.amountText.text = useItem.amount.ToString();
+        Vector2Int rootLocation = useItem.GetLocation(); //루트 좌표는 해당 좌표 셀의 루트의 좌표이다
+        if (useItem.amount <= 0)
+        {
+            Vector2Int size = useItem.GetItemType().GetSize(); //해당 아이템 사이즈를 확장메서드에서 가져옴
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    infoArray[rootLocation.y + y, rootLocation.x + x].Clear(); //아이템 사이즈 범위만큼 비워줌
+                }
+            }
+        }
+        use.SetActive(false);//사용창 비활성화
+    }
+    /// <summary> 아이템 버리기 </summary>
+    public void Drop()
+    {
+        GameManager.itemManager.DropItem(useItem.GetItemType(), useItem.amount);
+        Define.Item currentItem = SubItem(useItem.GetLocation(), out useItem.amount);
+        use.SetActive(false);//사용창 비활성화
     }
 
     /// <summary> 해당 위치에 아이템을 밀어 넣는게 가능한지 체크 </summary>
@@ -391,22 +454,23 @@ public class Inventory : MonoBehaviour
         Define.Item currentItem = Define.Item.None; //현재 아이템을 일단 비워줌
 
         CellInfo currentCell = CheckItemRoot(pos); //현재 셀에 마우스 좌표의 루트 대입
-
         if (mouseItem.GetItemType() == Define.Item.None)// 마우스가 집고 있는 아이템이 없는 경우
         {
+
             currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
             mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
+
         }
         else //마우스가 뭔가를 집고 있는 경우
         {
-            if(CanPlace(pos, mouseItem.GetItemType().GetSize(), out overlapTime))//넣을 공간이 있는 경우
+            if (CanPlace(pos, mouseItem.GetItemType().GetSize(), out overlapTime))//넣을 공간이 있는 경우
             {
                 TryRemovePlace(pos,currentCell.GetLocation() , out currentItem, out currentAmount); //스왑 시도
             }
             else
             {
-                if(overlapTime <= 1)
+                if (overlapTime <= 1)
                 {
                     if(currentCell.GetItemType() == mouseItem.GetItemType()) //아이템 종류가 같으면 겹쳐주기 시도
                     {                       

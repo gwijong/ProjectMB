@@ -24,6 +24,7 @@ public class InvenOpen : MonoBehaviour
         if (isOpen) //소지품창이 열려있으면 닫기
         {
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.inventory_close);//닫기 효과음
+            inven.GetComponent<Inventory>().use.SetActive(false);
             inven.transform.position += new Vector3(2000, 0, 0);
             isOpen = false;
         }

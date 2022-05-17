@@ -136,7 +136,7 @@ public class Dialog
             dialogArray[i].next = dialogArray[i + 1];//현재 대화내용의 다음 대화내용 설정;
         }
 
-        //dialogArray의 마지막 번째 다이어로그에도 기본값들 대입. 그러나 next는 없음
+        //dialogArray의 마지막 번째 다이어로그에도 기본값들 대입. 마지막이므로 next는 없음
         if (dialogArray[i].portrait == null)
         {
             dialogArray[i].portrait = wantPortrait;
