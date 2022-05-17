@@ -532,7 +532,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1917607955}
         m_TargetAssemblyTypeName: DialogTalk, Assembly-CSharp
-        m_MethodName: SkillButton
+        m_MethodName: NoteKeywordButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4262,7 +4262,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1917607955}
         m_TargetAssemblyTypeName: DialogTalk, Assembly-CSharp
-        m_MethodName: RumorsNearbyButton
+        m_MethodName: NoteKeywordButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5456,7 +5456,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1917607955}
         m_TargetAssemblyTypeName: DialogTalk, Assembly-CSharp
-        m_MethodName: PartTimeJobButton
+        m_MethodName: NoteKeywordButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6385,6 +6385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1169330250}
+  talkCanvas: {fileID: 1041417415}
 --- !u!114 &1141139342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11408,7 +11409,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1917607955}
         m_TargetAssemblyTypeName: DialogTalk, Assembly-CSharp
-        m_MethodName: PersonalStoryButton
+        m_MethodName: NoteKeywordButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

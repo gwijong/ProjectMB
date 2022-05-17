@@ -98,6 +98,7 @@ public class Define
         character_levelup,
     }
 
+    /// <summary> NPC효과음 </summary>
     public enum NPCSoundEffect
     {
         dog01_natural_stand_offensive,
@@ -106,6 +107,7 @@ public class Define
         chicken_fly,
     }
 
+    /// <summary> NPC 대화 버튼 종류 </summary>
     public enum TalkButtonType
     {
         ToMain,
@@ -113,6 +115,5 @@ public class Define
         Next,
         Shop,
         Note,
-        Personal,
     }
 }

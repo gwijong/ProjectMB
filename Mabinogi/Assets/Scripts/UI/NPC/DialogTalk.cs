@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
+/// <summary> NPC 대화 캔버스에 달림 </summary>
 public class DialogTalk : MonoBehaviour
 {
+    /// <summary> 대화중인 플레이어 </summary>
     public Character currentPlayer;
+    /// <summary> 대화중인 NPC </summary>
     public NPC currentNPC;
+    /// <summary> 대화 한 장면 </summary>
     Dialog currentDialog;
 
     /// <summary> NPC 이름 텍스트 </summary>
@@ -31,12 +36,13 @@ public class DialogTalk : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown && outline.activeInHierarchy)
+        if (Input.anyKeyDown && outline.activeInHierarchy) //대화창이 활성화 된 중에 아무 키 입력이 있으면
         {
-            DialogNext();
+            DialogNext();// 다음 텍스트로 넘김
         }
     }
 
+    /// <summary> 다이어로그 세팅(스프라이트,대사)이후 대사 출력 코루틴 실행 </summary>
     public void SetDialog(Dialog wantDialog)
     {
         currentDialog = wantDialog;
@@ -45,107 +51,109 @@ public class DialogTalk : MonoBehaviour
         CoroutineStart(TextOutput(currentDialog));
     }
 
+    /// <summary> 현재 다이어로그에서 다음 다이어로그로 넘김 </summary>
     public void DialogNext()
     {
-        if(currentDialog.next == null)
+        if(currentDialog.next == null) //다음 다이어로그가 비어있으면 리턴
         {
             return;
         }
         else
         {
-            SetDialog(currentDialog.next);
+            SetDialog(currentDialog.next); //다음 다이어로그로 세팅
         }
     }
     /// <summary> 텍스트 한글자씩 출력 코루틴 </summary>
     IEnumerator TextOutput(Dialog wantDialog)
     {
-        SelectButtonOff();
-        textScript.text = "";
-        portrait.sprite = wantDialog.portrait;
-        portrait.gameObject.SetActive(wantDialog.portraitActive);
+        SelectButtonOff();//일단 버튼 싹 다 끔
+        textScript.text = ""; //대화 텍스트 비워줌
+        portrait.sprite = wantDialog.portrait; //NPC 초상인물사진 대입
+        portrait.gameObject.SetActive(wantDialog.portraitActive); //초상인물사진 활성화 여부
         int i = 0;
-        while (textScript.text.Length< wantDialog.currentText.Length)
+        while (textScript.text.Length< wantDialog.currentText.Length) //텍스트가 덜 출력되었으면
         {
-            textScript.text += wantDialog.currentText[i++];
+            textScript.text += wantDialog.currentText[i++]; //텍스트 출력
             yield return new WaitForSeconds(0.05f);          
         }
-        if(wantDialog.buttonArray.Length <= 0)
+        if(wantDialog.buttonArray.Length <= 0) //버튼을 따로 만들지 않았으면
         {
-            SetButton(0, "다음", Define.TalkButtonType.Next);
+            SetButton(0, "다음", Define.TalkButtonType.Next); //다음 대화로 넘기는 기본 버튼 세팅
         }
-        else
+        else//따로 준비한 버튼이 있으면
         {
-            for(int j = 0; j< wantDialog.buttonArray.Length; j++)
+            for(int j = 0; j< wantDialog.buttonArray.Length; j++)//버튼의 숫자만큼 반복
             {
+                //j번째 버튼의 버튼 이름, 버튼 타입 설정
                 SetButton(j, wantDialog.buttonArray[j].buttonName, wantDialog.buttonArray[j].type);
             }
         }
     }
-    
+
+    /// <summary> 해당 버튼 텍스트와 누를 시 실행되는 이벤트 세팅 </summary>
     public void SetButton(int current, string wantText, Define.TalkButtonType wantType)
     {
-        buttonBackgrounds[current].SetActive(true);
-        buttonBackgrounds[current].GetComponentInChildren<Text>().text = wantText;
-        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.RemoveAllListeners();
-        UnityEngine.Events.UnityAction targetFuntion;
+        buttonBackgrounds[current].SetActive(true); //current번째 버튼 활성화
+        buttonBackgrounds[current].GetComponentInChildren<Text>().text = wantText; //버튼 안의 텍스트 지정
+        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.RemoveAllListeners(); //버튼의 기존 이벤트들 지움
+        UnityEngine.Events.UnityAction targetFuntion;//현재 버튼에 새로 넣을 메서드를 담는 액션
         switch (wantType)
         {
             default:
-                targetFuntion = EndTalkButton;
+                targetFuntion = EndTalkButton; //대화 끝내기
                 break;
             case Define.TalkButtonType.Next:
-                targetFuntion = DialogNext;
+                targetFuntion = DialogNext;  //다음 대화로 넘기기
                 break;
             case Define.TalkButtonType.Note:
-                targetFuntion = NoteButton;
-                break;
-            case Define.TalkButtonType.Personal:
-                targetFuntion = PersonalStoryButton;
+                targetFuntion = NoteButton;  //여행수첩 대화
                 break;
             case Define.TalkButtonType.Shop:
-                targetFuntion = ShopButton;
+                targetFuntion = ShopButton;  //상점 대화
                 break;
             case Define.TalkButtonType.EndTalk:
-                targetFuntion = EndTalkButton;
+                targetFuntion = EndTalkButton;  //대화창 닫기
                 break;
-            case Define.TalkButtonType.ToMain:
-                targetFuntion = MainButton;
+            case Define.TalkButtonType.ToMain: // 메인 대화로
+                targetFuntion = MainButton;  //대화, 거래 등이 다 있는 처음 선택지로
                 break;
         }
 
-        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.AddListener(targetFuntion);
+        buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.AddListener(targetFuntion); //버튼에 targetFuntion 이벤트 추가
     }
-    
+
+    /// <summary> 플레이어 스크립트에서 실행하는, 대화를 할 플레이어와 NPC를 설정하는 메서드 </summary>
     public void SetTarget(Character wantPlayer, NPC wantNPC)
     {
-        currentPlayer = wantPlayer;
-        currentNPC = wantNPC;
-        OpenTalkCanvas();
-        SetDialog(currentNPC.AppearanceDialog);
+        currentPlayer = wantPlayer; //플레이어 대입
+        currentNPC = wantNPC; // NPC 대입
+        OpenTalkCanvas();//대화창 열기
+        SetDialog(currentNPC.AppearanceDialog);//NPC 최초 대화 시작
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
     public void EndTalkButton()
     {
-        SelectButtonOff();
-        CloseTalkCanvas();
-        UI_Canvas.SetActive(true);
+        SelectButtonOff(); //모든 버튼 꺼줌
+        CloseTalkCanvas(); //대화 캔버스 꺼줌
+        UI_Canvas.SetActive(true); //전투 UI 켜줌
 
     }
 
     /// <summary> 대화 캔버스의 구성요소들을 전부 끔 </summary>
     public void CloseTalkCanvas()
     {
-        portrait.gameObject.SetActive(false);
-        note.SetActive(false);
-        dark.SetActive(false);
-        outline.SetActive(false);
+        portrait.gameObject.SetActive(false); //초상인물사진 끔
+        note.SetActive(false); //여행수첩 끔
+        dark.SetActive(false); //암막 끔
+        outline.SetActive(false); //대화창 끔
     }
+    /// <summary> 대화 캔버스 열기 </summary>
     public void OpenTalkCanvas()
     {
-        dark.SetActive(true);
-        outline.SetActive(true);
-        UI_Canvas.SetActive(false);
+        dark.SetActive(true); //암막 켬
+        outline.SetActive(true); //대화창 켬
+        UI_Canvas.SetActive(false);  //전투 UI 끔
     }
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
@@ -153,6 +161,7 @@ public class DialogTalk : MonoBehaviour
         SetDialog(currentNPC.ShopDialog);
     }
 
+    /// <summary> 대화, 거래 등이 다 있는 처음 선택지 </summary>
     public void MainButton()
     {
         SetDialog(currentNPC.MainDialog);
@@ -161,34 +170,14 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 여행수첩 대화지문으로 진입 </summary>
     public void NoteButton()
     {
-        note.SetActive(true);
+        note.SetActive(true); //여행수첩 켜줌
         SetDialog(currentNPC.NoteDialog);
     }
 
-    /// <summary> 여행수첩의 개인적인 이야기 실행 </summary>
-    public void PersonalStoryButton()
-    {
-        SetDialog(currentNPC.PersonalStoryDialog);
-    }
-
-    /// <summary> 여행수첩의 근처의 소문 실행 </summary>
-    public void RumorsNearbyButton()
-    {
-        SetDialog(currentNPC.RumorsNearbyDialog);
-    }
-
-
-    /// <summary> 여행수첩의 스킬에 대하여 실행 </summary>
-    public void SkillButton()
-    {
-        SetDialog(currentNPC.SkillDialog);
-    }
-
-
-    /// <summary> 여행수첩의 아르바이트에 대하여 실행 </summary>
-    public void PartTimeJobButton()
-    {
-        SetDialog(currentNPC.PartTimeJobDialog);
+    /// <summary> 여행수첩의 각종 버튼들 누를때 </summary>
+    public void NoteKeywordButton()
+    {                                                               //방금 누른키워드 버튼의 텍스트 추출함 
+        SetDialog(currentNPC.NoteTalk(EventSystem.current.currentSelectedGameObject.GetComponent<Text>().text));
     }
 
 
@@ -204,7 +193,7 @@ public class DialogTalk : MonoBehaviour
     }
 
 
-    /// <summary> 선택지문용 버튼 전부 끔 </summary>
+    /// <summary> 선택지문용 버튼들 전부 끔 </summary>
     void SelectButtonOff()
     {
         for(int i =0; i< buttonBackgrounds.Length; i++)
