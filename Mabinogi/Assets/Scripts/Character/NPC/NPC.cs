@@ -6,15 +6,24 @@ delegate void DialogButtonFuntion(Character other);
 
 public class NPC : Character
 {
-    [SerializeField] Dialog[] AppearanceDialogArray;
-    [SerializeField] Dialog[] MainDialogArray;
-    [SerializeField] Dialog[] PersonalDialogArray;
-    [SerializeField] Dialog[] ShopDialogArray;
+    [SerializeField] Dialog[] appearanceDialogArray;
+    [SerializeField] Dialog[] mainDialogArray;
+    [SerializeField] Dialog[] noteDialogArray;
+    [SerializeField] Dialog[] shopDialogArray;
+    [SerializeField] Dialog[] personalStoryDialogArray;
+    [SerializeField] Dialog[] rumorsNearbyDialogArray;
+    [SerializeField] Dialog[] partTimeJobDialogArray;
+    [SerializeField] Dialog[] skillDialogArray;
     public Sprite portrait;
-    public Dialog Appearance { get; private set; }
+    public Dialog AppearanceDialog { get; private set; }
     public Dialog MainDialog { get; private set; }
-    public Dialog PersonalDialog { get; private set; }
+    public Dialog NoteDialog { get; private set; }
     public Dialog ShopDialog { get; private set; }
+
+    public Dialog PersonalStoryDialog { get; private set; }
+    public Dialog RumorsNearbyDialog { get; private set; }
+    public Dialog PartTimeJobDialog { get; private set; }
+    public Dialog SkillDialog { get; private set; }
 
     public override Define.InteractType Interact(Interactable other)
     {
@@ -23,12 +32,20 @@ public class NPC : Character
 
     private void Start()
     {
-        Appearance = Dialog.CreateDialogList(portrait, characterName, AppearanceDialogArray);
+        AppearanceDialog = Dialog.CreateDialogList(portrait, characterName, appearanceDialogArray);
+        MainDialog = Dialog.CreateDialogList(portrait, characterName, mainDialogArray);
+        NoteDialog = Dialog.CreateDialogList(portrait, characterName, noteDialogArray);
+        ShopDialog = Dialog.CreateDialogList(portrait, characterName, shopDialogArray);
+
+        PersonalStoryDialog = Dialog.CreateDialogList(portrait, characterName, personalStoryDialogArray);
+        RumorsNearbyDialog = Dialog.CreateDialogList(portrait, characterName, rumorsNearbyDialogArray);
+        PartTimeJobDialog = Dialog.CreateDialogList(portrait, characterName, partTimeJobDialogArray);
+        SkillDialog = Dialog.CreateDialogList(portrait, characterName, skillDialogArray);
     }
 
     public virtual void PersonalTalk(string wantText) //npc들마다 개인적인 이야기 근처의 소문 따로 가지고 있는거 wantText를 스위치 돌려서 본인만의 다이얼로그 켜게 함
     {
-        //
+
     }
 }
 [System.Serializable]

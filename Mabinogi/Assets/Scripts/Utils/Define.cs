@@ -112,6 +112,7 @@ public class Define
         EndTalk,
         Next,
         Shop,
+        Note,
         Personal,
     }
 }

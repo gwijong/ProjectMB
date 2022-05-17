@@ -10,17 +10,6 @@ public class DialogTalk : MonoBehaviour
     public NPC currentNPC;
     Dialog currentDialog;
 
-    /// <summary> 맨 처음 NPC 외형 설명하는 지문 </summary>
-    public string firstScript;
-    /// <summary> 대화, 거래 선택 지문 </summary>
-    public string chooseSciript;
-    /// <summary> 여행수첩 대화지문 </summary>
-    public string noteScript;
-    /// <summary> 상점 대화지문 </summary>
-    public string shopScript;
-    /// <summary> 개인적인 이야기 대화지문 </summary>
-    public string[] personalstory;
-
     /// <summary> NPC 이름 텍스트 </summary>
     public Text textName;
     /// <summary> 대화지문 텍스트 </summary>
@@ -107,7 +96,21 @@ public class DialogTalk : MonoBehaviour
             case Define.TalkButtonType.Next:
                 targetFuntion = DialogNext;
                 break;
-
+            case Define.TalkButtonType.Note:
+                targetFuntion = NoteButton;
+                break;
+            case Define.TalkButtonType.Personal:
+                targetFuntion = PersonalStoryButton;
+                break;
+            case Define.TalkButtonType.Shop:
+                targetFuntion = ShopButton;
+                break;
+            case Define.TalkButtonType.EndTalk:
+                targetFuntion = EndTalkButton;
+                break;
+            case Define.TalkButtonType.ToMain:
+                targetFuntion = MainButton;
+                break;
         }
 
         buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.AddListener(targetFuntion);
@@ -118,7 +121,7 @@ public class DialogTalk : MonoBehaviour
         currentPlayer = wantPlayer;
         currentNPC = wantNPC;
         OpenTalkCanvas();
-        SetDialog(currentNPC.Appearance);
+        SetDialog(currentNPC.AppearanceDialog);
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
@@ -147,19 +150,45 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
     {
-        //SetDialog(currentNPC.Appearance);
+        SetDialog(currentNPC.ShopDialog);
+    }
+
+    public void MainButton()
+    {
+        SetDialog(currentNPC.MainDialog);
     }
 
     /// <summary> 여행수첩 대화지문으로 진입 </summary>
     public void NoteButton()
     {
-        //SetDialog(currentNPC.Appearance);
+        note.SetActive(true);
+        SetDialog(currentNPC.NoteDialog);
     }
 
     /// <summary> 여행수첩의 개인적인 이야기 실행 </summary>
     public void PersonalStoryButton()
     {
-        //SetDialog(currentNPC.Appearance);
+        SetDialog(currentNPC.PersonalStoryDialog);
+    }
+
+    /// <summary> 여행수첩의 근처의 소문 실행 </summary>
+    public void RumorsNearbyButton()
+    {
+        SetDialog(currentNPC.RumorsNearbyDialog);
+    }
+
+
+    /// <summary> 여행수첩의 스킬에 대하여 실행 </summary>
+    public void SkillButton()
+    {
+        SetDialog(currentNPC.SkillDialog);
+    }
+
+
+    /// <summary> 여행수첩의 아르바이트에 대하여 실행 </summary>
+    public void PartTimeJobButton()
+    {
+        SetDialog(currentNPC.PartTimeJobDialog);
     }
 
 
