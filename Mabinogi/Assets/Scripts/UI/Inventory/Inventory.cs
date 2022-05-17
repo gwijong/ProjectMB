@@ -321,12 +321,17 @@ public class Inventory : MonoBehaviour
                 ItemInpo(overedCellLocation, true);//정보 UI 켜줌
             }
         };
-        if(Input.mousePosition.x > use.transform.position.x + 100
-            || Input.mousePosition.x < use.transform.position.x - 40
-            || Input.mousePosition.y > use.transform.position.y + 40
-            || Input.mousePosition.y < use.transform.position.y - 100)
+
+        //마우스 커서가 사용창을 벗어난 상태에서
+        if(Input.mousePosition.x > use.transform.position.x + 90
+            || Input.mousePosition.x < use.transform.position.x - 30
+            || Input.mousePosition.y > use.transform.position.y + 30
+            || Input.mousePosition.y < use.transform.position.y - 90)
         {
-            use.SetActive(false);
+            if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
+            {
+                use.SetActive(false); //사용창 닫기
+            }
         }
     }
 
@@ -372,10 +377,7 @@ public class Inventory : MonoBehaviour
         }
         mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
         useItem.SetAmount(useItem.GetRoot().amount - 1);
-        if (useItem.GetRoot().amount <= 0)
-        {
-            use.SetActive(false);//사용창 비활성화
-        }
+        use.SetActive(false);//사용창 비활성화
     }
 
     /// <summary> 아이템 사용 </summary>
@@ -448,6 +450,10 @@ public class Inventory : MonoBehaviour
         if (pos == null || pos.x < 0 || pos.y < 0 || pos.x >= width || pos.y >= height)
         {
             return; //탈출
+        }
+        if (use.activeSelf)
+        {
+            return;
         }
         int overlapTime = 0; //겹친 횟수
         int currentAmount = 0; //현재 갯수
