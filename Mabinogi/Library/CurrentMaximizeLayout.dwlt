@@ -23,7 +23,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 1
-  controlID: 14796
+  controlID: 16887
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -82,7 +82,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 14797
+  controlID: 16888
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 442}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 14798
+  controlID: 16889
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -228,9 +228,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1612.2853, y: 327.0733, z: -7.435974}
+    m_Target: {x: 3360.0002, y: 540, z: 0}
     speed: 2
-    m_Value: {x: 1612.2853, y: 327.0733, z: -7.435974}
+    m_Value: {x: 3360.0002, y: 540, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -279,11 +279,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.06026268, y: 0.018562982, z: -0.0011213449, w: -0.9980141}
     speed: 2
-    m_Value: {x: -0.060262393, y: 0.018562892, z: -0.0011213395, w: -0.9980093}
+    m_Value: {x: -0.06026268, y: 0.018562982, z: -0.0011213449, w: -0.9980141}
   m_Size:
-    m_Target: 181.72177
+    m_Target: 1183.3452
     speed: 2
-    m_Value: 181.72177
+    m_Value: 1183.3452
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -185662
+  m_LastSelectedObjectID: 16480
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 14739
+  controlID: 16946
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -612,8 +612,8 @@ MonoBehaviour:
     y: 0
     width: 461
     height: 450
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -647,9 +647,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: c42afdff5230fdff2878fdffe472feffb0a8010010aa01008eab0100bcab0100
+      m_SelectedIDs: 60400000
+      m_LastClickedID: 16480
+      m_ExpandedIDs: 52fbffff683e0000fc3f00002a410000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -737,22 +737,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/UI
+    - Assets/Scripts/UI/Inventory
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 68
   m_LastFolders:
-  - Assets/Resources/UI
+  - Assets/Scripts/UI/Inventory
   m_LastFoldersGridSize: 68
   m_LastProjectPath: D:\Unity\Github\Mabinogi\Mabinogi
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 396}
-    m_SelectedIDs: eabc0100
-    m_LastClickedID: 113898
-    m_ExpandedIDs: 0000000070bc010072bc010074bc010076bc010078bc01007abc01007cbc01007ebc010080bc010082bc010084bc010086bc010088bc01008abc01008cbc01008ebc010090bc010092bc010094bc010096bc010098bc01009abc01009cbc01009ebc0100a0bc0100a2bc0100a4bc0100a6bc0100
+    scrollPos: {x: 0, y: 76}
+    m_SelectedIDs: 065a0000
+    m_LastClickedID: 23046
+    m_ExpandedIDs: 00000000885900008a5900008c5900008e59000090590000925900009459000096590000985900009a5900009c5900009e590000a0590000a2590000a4590000a6590000a8590000aa590000ac590000ae590000b0590000b2590000b6590000f2590000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -780,7 +780,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000070bc010072bc010074bc010076bc010078bc01007abc01007cbc01007ebc010080bc010082bc010084bc010086bc010088bc01008abc01008cbc01008ebc010090bc010092bc010094bc010096bc010098bc01009abc01009cbc01009ebc0100a0bc0100a2bc0100a4bc0100a6bc0100
+    m_ExpandedIDs: 00000000885900008a5900008c5900008e59000090590000925900009459000096590000985900009a5900009c5900009e590000a0590000a2590000a4590000a6590000a8590000aa590000ac590000ae590000b0590000b2590000f2590000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -805,9 +805,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: ac36feff
-    m_LastClickedInstanceID: -117076
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 60400000
+    m_LastClickedInstanceID: 16480
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 763d00002e8a00002a8a0000923d0000943d00004a6d000078410000744100001647000056d9ffff20180200c6690000063e000038da01001ec10100fa8a0000103e0000fcc70100644b0000964b0000384b00004e8600001c9e00002a5b0000b6a10000f05f0000147c0000ac9500001c8800002c990000206800000c9e00006c31000000000000b0760000ee730000028100002e0b0500
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -860,7 +860,7 @@ MonoBehaviour:
   m_MinSize: {x: 276, y: 192}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 14674
+  controlID: 17008
 --- !u!114 &17
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -880,8 +880,8 @@ MonoBehaviour:
     y: 0
     width: 616
     height: 719
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -919,8 +919,8 @@ MonoBehaviour:
     m_CachedPref: 151
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -117076
-  m_LastVerticalScrollValue: 3562
+  m_LastInspectedObjectInstanceID: -1
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_LockTracker:
     m_IsLocked: 0

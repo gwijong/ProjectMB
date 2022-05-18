@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemUse : MonoBehaviour
+public class ItemUseButton : MonoBehaviour
 {
     /// <summary> 아이템 사용 버튼 </summary>
     public void Use()

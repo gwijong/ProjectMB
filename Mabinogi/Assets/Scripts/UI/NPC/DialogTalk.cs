@@ -71,6 +71,7 @@ public class DialogTalk : MonoBehaviour
         portrait.sprite = wantDialog.portrait; //NPC 초상인물사진 대입
         portrait.gameObject.SetActive(wantDialog.portraitActive); //초상인물사진 활성화 여부
         int i = 0;
+        wantDialog.currentText = wantDialog.currentText.Replace("@", "" + System.Environment.NewLine);//골뱅이 만나면 줄바꿈
         while (textScript.text.Length< wantDialog.currentText.Length) //텍스트가 덜 출력되었으면
         {
             textScript.text += wantDialog.currentText[i++]; //텍스트 출력

@@ -146,4 +146,19 @@ public static class Extension
             default: return null;
         }
     }
+    public static void Use(this Define.Item item)
+    {
+        switch (item)
+        {
+            case Define.Item.Fruit: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.Wool: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.Egg: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.Firewood: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.LifePotion: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.ManaPotion: GameObject.FindObjectOfType<Player>().manaPoint.Current += 10; break;
+            case Define.Item.Bottle: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.BottleWater: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            default: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+        }
+    }
 }

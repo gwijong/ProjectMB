@@ -265,7 +265,7 @@ public class Inventory : MonoBehaviour
 
     private void OnUpdate()
     {
-        if(mouseItemPos == null) //마우스 따라다니는 셀의 좌표가 null이면 리턴
+        if (mouseItemPos == null) //마우스 따라다니는 셀의 좌표가 null이면 리턴
         {
             return;
         }
@@ -285,17 +285,13 @@ public class Inventory : MonoBehaviour
 
         if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
             ||mousePosition.y < 0 || mousePosition.y > height * 48) // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
-        {
-            inpo.SetActive(false); //소지품창을 벗어났으므로 아이템 정보창 꺼줌
-
+        {        
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
-            if (Input.GetMouseButtonDown(0) && mouseItem!=null && mouseItem.GetItemType() != Define.Item.None) 
+            if (Input.GetMouseButtonDown(0) && mouseItem != null && mouseItem.GetItemType() != Define.Item.None)
             {
                 DropItem(); //아이템 버리기
             }
-             //overedCellLocation을 (-1,-1)로 바꿈
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
-
         }
         else //마우스 커서가 소지품 창 안에 있는 경우
         {
@@ -321,11 +317,10 @@ public class Inventory : MonoBehaviour
                 ItemInpo(overedCellLocation, true);//정보 UI 켜줌
             }
         };
-
         //마우스 커서가 사용창을 벗어난 상태에서
-        if(Input.mousePosition.x > use.transform.position.x + 90
-            || Input.mousePosition.x < use.transform.position.x - 30
-            || Input.mousePosition.y > use.transform.position.y + 30
+        if (Input.mousePosition.x > use.transform.position.x + 90
+            || Input.mousePosition.x < use.transform.position.x - 20
+            || Input.mousePosition.y > use.transform.position.y + 20
             || Input.mousePosition.y < use.transform.position.y - 90)
         {
             if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
@@ -397,6 +392,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+        useItem.GetItemType().Use();
         use.SetActive(false);//사용창 비활성화
     }
     /// <summary> 아이템 버리기 </summary>
@@ -461,12 +457,10 @@ public class Inventory : MonoBehaviour
 
         CellInfo currentCell = CheckItemRoot(pos); //현재 셀에 마우스 좌표의 루트 대입
         if (mouseItem.GetItemType() == Define.Item.None)// 마우스가 집고 있는 아이템이 없는 경우
-        {
-
-            currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
-            mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
-            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
-
+        {          
+             currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
+             mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
+             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         }
         else //마우스가 뭔가를 집고 있는 경우
         {
@@ -521,6 +515,7 @@ public class Inventory : MonoBehaviour
             mouseItem.SetItem(Define.Item.None, 0); //마우스가 쥐고있는 아이템 비워줌
         }
     }
+
 
     /// <summary> 아이템 스왑 시도 </summary>
     bool TryRemovePlace(Vector2Int pos, Vector2Int currentPos, out Define.Item currentItem, out int currentAmount)
@@ -596,6 +591,7 @@ public class Inventory : MonoBehaviour
         return result;
     }
 
+    /// <summary> 중복된 아이템 밀어넣고 남은 아이템 숫자 반환</summary>
     public int GetItem(Define.Item item, int amount)  
     {
         List<CellInfo> sameList = FindItemList(item);
