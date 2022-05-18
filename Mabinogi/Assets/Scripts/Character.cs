@@ -346,7 +346,7 @@ public class Character : Movable
     /// <summary> 지정한 타겟 바라봄 </summary>
     public void TargetLookAt(Interactable target)
     {
-        if (target != null && agent.velocity.magnitude <= 1.0f) //타겟이 존재하고 속도가 1 이하로 거의 멈춰있으면
+        if (target != null && agent.velocity.magnitude <= 1.0f && waitCount==0) //타겟이 존재하고 속도가 1 이하로 거의 멈춰있으면서 대기중이지 않으면
         {
             Vector3 look = target.transform.position; //look에 타겟의 좌표 대입
             look.y = transform.position.y; //y좌표는 무시함
@@ -510,7 +510,7 @@ public class Character : Movable
             this.hitPoint.Current -= damage;//현재 생명력에서 데미지만큼 빼줌
 
             if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
-            {
+            {                
                 Dead();
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
@@ -667,9 +667,10 @@ public class Character : Movable
     /// <summary> 사망 시 실행되는 메서드 </summary>
     public void Dead()
     {
+        waitCount = 1;
+        Blowaway();
         die = true;  //사망 상태로 전환
         PlayAnim("Die");  //사망 트리거 체크
-        rigid.velocity = new Vector3(0, 0, 0); //리지드바디의 속도를 0으로 초기화 
         StartCoroutine("Die");//사망 코루틴 실행
     }
 
@@ -745,6 +746,7 @@ public class Character : Movable
     /// <summary> 내가 그로기 상태에 들어감</summary>
     public void Groggy()
     {
+
         wait = Wait(groggyTime);
         StartCoroutine(wait);  //조작불가 코루틴 시작
         IEnumerator groggy = GroggyDown();
@@ -756,12 +758,20 @@ public class Character : Movable
     IEnumerator GroggyDown()
     {
         yield return new WaitForSeconds(1.0f); //1초간 그로기 애니메이션이 재생되도록 대기
-        Blowaway();
+        if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
+        {
+            Dead();
+        }
+        else
+        {
+            Blowaway();
+        }
     }
 
-    /// <summary> 캐릭터가 뒤로 밀려나고 날아감</summary>
+    ///<summary> 캐릭터가 뒤로 밀려나고 날아감</summary>
     void Blowaway()
     {
+        rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_blow);//날아가는 효과음
         rigid.AddForce(gameObject.transform.forward * -600);//뒤로 밀림
         agent.velocity = (Vector3.up * 500); //위로 날림
@@ -770,13 +780,10 @@ public class Character : Movable
     /// <summary> 사망 코루틴</summary>
     IEnumerator Die()
     {
-        Blowaway();
         yield return new WaitForSeconds(1f); //1초 대기
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
         yield return new WaitForSeconds(0.5f); //0.5초 대기
-        rigid.constraints = RigidbodyConstraints.FreezePosition; //리지드바디 고정시킴
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
-
         yield return new WaitForSeconds(5f);
         Respawn();
     }
@@ -784,15 +791,14 @@ public class Character : Movable
     /// <summary> 캐릭터 부활</summary>
     public void Respawn()
     {
+        waitCount = 0;
         die = false;
         hitPoint.Current = hitPoint.Max;
         PlayAnim("Reset");//애니메이션을 idle로 전환
         Vector3 spawnPosition = GetRandomPointOnNavMesh(transform.position, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
         spawnPosition += Vector3.up * 2;  //바닥에서 2만큼 y좌표 위로 올리기
         transform.position = spawnPosition;
-        rigid.constraints = RigidbodyConstraints.FreezePosition; //리지드바디 고정 해제
-        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬
-        NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
+        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬     
         MoveTo(spawnPosition);//내비메시 이동지점 초기화
         respawn = true; //인공지능 시작
     }

@@ -118,7 +118,8 @@ public class SkillList
     static CharacterSkill sheepSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/SheepSkill");
     /// <summary> 늑대의 스킬 정보</summary>
     static CharacterSkill wolfSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/WolfSkill");
-
+    /// <summary> 곰의 스킬 정보</summary>
+    static CharacterSkill bearSkill = Resources.Load<CharacterSkill>("Data/CharacterSkill/BearSkill");
     //    프로퍼티 이름이 본인 이름이다 그래서 그냥 배열처럼 해당 SkillInfo에 대괄호[] 붙여서 사용한다
     /// <summary> 스킬 정보 하나 인덱스로 사용</summary>
     public SkillInfo this[int index]
@@ -203,5 +204,13 @@ public class SkillList
         new SkillInfo(Define.SkillState.Counter, wolfSkill.CounterRank),
     });
 
+    /// <summary> 곰이 가진 스킬들을 스킬 리스트에 대입</summary>
+    public static SkillList bear = new SkillList(new SkillInfo[]
+    {
+        new SkillInfo(Define.SkillState.Combat, bearSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Smash, bearSkill.SmashRank),
+        new SkillInfo(Define.SkillState.Defense, bearSkill.DefenseRank),
+        new SkillInfo(Define.SkillState.Counter, bearSkill.CounterRank),
+    });
 }
 

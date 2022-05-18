@@ -70,7 +70,7 @@ public class EnemyDummyAI : AI
             return;
         }
 
-        character.TargetLookAt(enemyCharacter); // 보게 만듦
+        
     }
 
     /// <summary> 코루틴 중지 </summary>
@@ -143,8 +143,9 @@ public class EnemyDummyAI : AI
             if (enemyList.Count > 0) //적이 있으면
             {
                 enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함              
-            }         
-             yield return new WaitForSeconds(1f); //1초마다 반복 실행
+            }
+            character.TargetLookAt(enemyCharacter); // 보게 만듦
+            yield return new WaitForSeconds(1f); //1초마다 반복 실행            
         }
     }
 }
