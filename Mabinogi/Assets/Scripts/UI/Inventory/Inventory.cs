@@ -174,7 +174,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 사용 선택지문 프리팹 </summary>
     public GameObject useUI;
     /// <summary> 아이템 사용 선택지문 인스턴스</summary>
-    public GameObject use;
+    public static GameObject use;
 
     /// <summary> 인벤토리 창 UI 이미지</summary>
     public GameObject parent;
@@ -190,6 +190,19 @@ public class Inventory : MonoBehaviour
     /// <summary> 사용창 아이템</summary>
     public static CellInfo useItem;
 
+    static List<Inventory> inventoryList = new List<Inventory>();
+
+    /// <summary> 인벤토리 생성자 </summary>
+    public Inventory()
+    {
+        inventoryList.Add(this);
+    }
+
+    /// <summary> 인벤토리 소멸자 </summary>
+    ~Inventory() 
+    {
+        inventoryList.Remove(this);
+    }
 
     void Start()
     {
@@ -270,9 +283,7 @@ public class Inventory : MonoBehaviour
             return;
         }
         mouseItemPos.position = Input.mousePosition; //마우스 따라다니는 셀의 좌표를 마우스 좌표로 계속 대입 갱신
-        Vector3 mousePosition = Input.mousePosition; //마우스 좌표
-        mousePosition -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
-        mousePosition.y *= -1;//y값이 음수면 햇갈리기 때문에 음수 곱해서 양수로 바꿔줌
+        Vector3 mousePosition = GetMousePositionFromInventory(); //마우스 위치를 이 인벤토리 기준으로 확인함
 
         inpo.GetComponent<RectTransform>().position = Input.mousePosition; //아이템 정보창을 마우스 좌표를 항상 따라다니게 함
 
@@ -283,9 +294,9 @@ public class Inventory : MonoBehaviour
             CellHighlight(overedCellLocation, false); //기존 마우스 커서가 있는 아이템의 버튼 색상을 기본값으로 바꿔줌
         }
 
-        if (mousePosition.x < 0 || mousePosition.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
-            ||mousePosition.y < 0 || mousePosition.y > height * 48) // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
-        {        
+        if(CheckOutBoundary())
+        {
+            inpo.SetActive(false);
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
             if (Input.GetMouseButtonDown(0) && mouseItem != null && mouseItem.GetItemType() != Define.Item.None)
             {
@@ -293,20 +304,16 @@ public class Inventory : MonoBehaviour
             }
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
         }
-        else //마우스 커서가 소지품 창 안에 있는 경우
+        else if(CheckMouseInside()) //마우스 커서가 소지품 창 안에 있는 경우
         {
             overedCellLocation.x = (int)mousePosition.x / 48; //마우스 좌표에서 칸 넓이인 48로 나눠서 정수로 변환
             overedCellLocation.y = (int)mousePosition.y / 48; //마우스 좌표에서 칸 높이인 48로 나눠서 정수로 변환
-
             
             CellHighlight(overedCellLocation,true); //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
 
             if (Input.GetMouseButtonDown(1))//마우스 우클릭하면
             {
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
-                inpo.SetActive(false);
-                UseUI(overedCellLocation, true);
-                useItem = CheckItemRoot(overedCellLocation);
+                RightClick();
             }   
             if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
             {
@@ -329,6 +336,7 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    
 
     void UseUI(Vector2Int position, bool active)
     {
@@ -438,9 +446,15 @@ public class Inventory : MonoBehaviour
         OverlapTime = rootList.Count; //겹친 횟수는 루트 리스트의 갯수이다.
         return result; //현재 공간에 아이템 넣을 수 있으면 true 반환
     }
-
+    public virtual void RightClick()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
+        inpo.SetActive(false);
+        UseUI(overedCellLocation, true);
+        useItem = CheckItemRoot(overedCellLocation);
+    }
     /// <summary> 마우스 좌클릭 시 아이템 겹치기, 아이템 옮기기 실행 </summary>
-    void LeftClick(Vector2Int pos)
+    public virtual void LeftClick(Vector2Int pos)
     {
         //마우스 클릭한 좌표가 null이거나 소지품창의 범위를 벗어난 경우
         if (pos == null || pos.x < 0 || pos.y < 0 || pos.x >= width || pos.y >= height)
@@ -578,7 +592,16 @@ public class Inventory : MonoBehaviour
         }
         return result; //리스트 반환
     }
-    
+
+    Vector3 GetMousePositionFromInventory()
+    {
+        Vector3 result = Input.mousePosition; //마우스 좌표
+        result -= cellAnchor.position; //마우스 좌표에서 셀들의 시작 기준점을 빼줌
+        result.y *= -1;//y값이 음수면 햇갈리기 때문에 음수 곱해서 양수로 바꿔줌
+
+        return result;
+    }
+
     /// <summary> 리스트에서 지정한 아이템 개수 모두 더해서 리턴</summary>
     public int GetItemAmount(Define.Item item)
     {
@@ -647,6 +670,33 @@ public class Inventory : MonoBehaviour
         return result; //해당 셀의 아이템 타입 반환
     }
 
+    /// <summary> 인벤토리 바깥쪽인지 체크</summary>
+    static bool CheckOutBoundary()
+    {
+        foreach(Inventory current in inventoryList)
+        {
+            if(current.CheckMouseInside())
+            {
+                return false; //뭐 하나라도 인벤토리 안에 있다!
+            };
+        }
+
+        return true; //끝까지 갔는데 리턴이 한 번도 안 걸림!
+    }
+    /// <summary> 마우스 커서가 인벤토리 안에 있는지 체크</summary>
+    bool CheckMouseInside()
+    {
+        Vector3 position = GetMousePositionFromInventory();
+        return //벗어나면 false 안 벗어나면 true
+            (!
+                (
+                position.x < 0 || position.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
+                               ||
+                position.y < 0 || position.y > height * 48 // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
+                )
+            );
+    }
+
     /// <summary> 해당 좌표 셀의 아이템 타입 반환</summary>
     Define.Item CheckItem(Vector2Int position)
     {
@@ -654,7 +704,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 해당된 칸의 루트를 체크해서 나 자신 CellInfo나 기준점 CellInfo반환</summary>
-    CellInfo CheckItemRoot(Vector2Int position)
+    protected CellInfo CheckItemRoot(Vector2Int position)
     {
         return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
     }

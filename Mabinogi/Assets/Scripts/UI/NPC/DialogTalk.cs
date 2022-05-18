@@ -12,12 +12,12 @@ public class DialogTalk : MonoBehaviour
     public Character currentPlayer;
     /// <summary> 대화중인 NPC </summary>
     public NPC currentNPC;
-    /// <summary> 대화 한 장면 </summary>
+    /// <summary> 대화 한 장면 데이터 컨테이너 </summary>
     Dialog currentDialog;
 
     /// <summary> NPC 이름 텍스트 </summary>
     public Text textName;
-    /// <summary> 대화지문 텍스트 </summary>
+    /// <summary> 대화지문 UI 텍스트 </summary>
     public Text textScript;
     /// <summary> 초상인물사진 </summary>
     public Image portrait;
@@ -38,7 +38,18 @@ public class DialogTalk : MonoBehaviour
     {
         if (Input.anyKeyDown && outline.activeInHierarchy) //대화창이 활성화 된 중에 아무 키 입력이 있으면
         {
-            DialogNext();// 다음 텍스트로 넘김
+            if (currentDialog == null)
+            {
+                return;
+            }
+            if(textScript.text.Length < currentDialog.currentText.Length)
+            {
+                textScript.text = currentDialog.currentText;
+            }
+            else
+            {
+                DialogNext();// 다음 텍스트로 넘김
+            }
         }
     }
 

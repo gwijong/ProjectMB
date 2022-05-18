@@ -24,7 +24,7 @@ public class InvenOpen : MonoBehaviour
         if (isOpen) //¼ÒÁöÇ°Ã¢ÀÌ ¿­·ÁÀÖÀ¸¸é ´Ý±â
         {
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.inventory_close);//´Ý±â È¿°úÀ½
-            inven.GetComponent<Inventory>().use.SetActive(false);//»ç¿ëÃ¢ ´Ý±â
+            Inventory.use.SetActive(false);//»ç¿ëÃ¢ ´Ý±â
             inven.transform.position += new Vector3(2000, 0, 0);
             isOpen = false;
         }
