@@ -36,16 +36,16 @@ public class NPCSoundManager : MonoBehaviour
         switch (audioClipName)
         {
             case Define.NPCSoundEffect.dog01_natural_stand_offensive:
-                npcEffectPlayer.clip = dog01_natural_stand_offensive;
+                npcEffectPlayer.clip = dog01_natural_stand_offensive;  //°³ Â¢±â
                 break;
             case Define.NPCSoundEffect.wolf01_natural_stand_offensive:
-                npcEffectPlayer.clip = wolf01_natural_stand_offensive;
+                npcEffectPlayer.clip = wolf01_natural_stand_offensive; //´Á´ë Â¢±â
                 break;
             case Define.NPCSoundEffect.sheep:
-                npcEffectPlayer.clip = sheep;
+                npcEffectPlayer.clip = sheep; //¾ç ¿ï±â
                 break;
             case Define.NPCSoundEffect.chicken_fly:
-                npcEffectPlayer.clip = chicken_fly;
+                npcEffectPlayer.clip = chicken_fly; //´ß ³¯±â
                 break;
         }
 

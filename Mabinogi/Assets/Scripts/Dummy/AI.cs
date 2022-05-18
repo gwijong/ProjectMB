@@ -9,7 +9,7 @@ public class AI : MonoBehaviour
 
     protected virtual void Start()
     {
-        character = GetComponent<Character>();
+        character = GetComponent<Character>();//이 게임오브젝트의 캐릭터 스크립트 가져옴
     }
 
     /// <summary> 범위 안의 캐릭터 가져오기</summary>
