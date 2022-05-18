@@ -121,6 +121,8 @@ public class Character : Movable
     [Tooltip("내비게이션 가속도")]
     /// <summary> 내비게이션 가속도 </summary>
     protected float acceleration = 100f;
+    /// <summary> 부활했는지 체크 </summary>
+    public bool respawn = false;
     #endregion
 
     protected override void Awake()
@@ -149,7 +151,7 @@ public class Character : Movable
         staminaPoint.Max = data.StaminaPoint; //최대 스태미나
         staminaPoint.FillableRate = 1.0f;  //허기
         staminaPoint.Current = data.StaminaPoint;  //현재 스태미나
-        
+
         downGauge.Max = 100; //다운 게이지
         downGauge.FillableRate = 1.0f;//다운게이지 최대 비율
         downGauge.Current = 0;  //현재 누적된 다운게이지
@@ -192,7 +194,7 @@ public class Character : Movable
         MovableCheck(); //waitCount를 이용한 이동 가능 체크
 
         TargetCheck(); //지정한 타겟 체크
-        
+
     }
 
     /// <summary> 게이지들 업데이트 </summary>
@@ -221,7 +223,7 @@ public class Character : Movable
             if (distance > InteractableDistance(focusTarget.Interact(this))) //거리가 상호작용 가능 거리보다 먼 경우
             {
                 MoveTo(focusTarget.transform.position);  //다가가도록 이동
-                if(focusTarget.Interact(this)== Define.InteractType.Attack)//대상이 적이면 전투모드로 이동
+                if (focusTarget.Interact(this) == Define.InteractType.Attack)//대상이 적이면 전투모드로 이동
                 {
                     SetOffensive(true); //전투모드로 전환
                 }
@@ -240,7 +242,7 @@ public class Character : Movable
                 };
                 switch (focusTarget.Interact(this))//대상과 자신의 상호작용 타입
                 {
-                           case Define.InteractType.Attack: //상호작용 타입이 공격이면
+                    case Define.InteractType.Attack: //상호작용 타입이 공격이면
                         if (skillCastingTimeLeft > 0 //스킬 시전 시간이 남았거나
                             || loadedSkill.cannotAttack //선공 불가 스킬을 시전했거나
                             || (focusAsCharacter != null && focusAsCharacter.die == true)) //지정된 대상이 있으면서 지정된 대상이 사망했으면
@@ -252,7 +254,7 @@ public class Character : Movable
                     case Define.InteractType.Talk:  //상호작용 타입이 대화이면
                         if (GetType().IsClassOf(typeof(Player)) && focusTarget.GetType().IsClassOf(typeof(NPC)))
                         {
-                             ((Player)this).Talk((NPC)focusTarget);//플레이어의 대화 메서드 실행
+                            ((Player)this).Talk((NPC)focusTarget);//플레이어의 대화 메서드 실행
                         }
                         break;
                     case Define.InteractType.Sheeping:  //상호작용 타입이 양털 채집이면
@@ -274,7 +276,8 @@ public class Character : Movable
                             itemInpo.GetItem(); //아이템 정보 스크립트의 아이템 줍기 메서드 실행
                         }
                         break;
-                    default: Debug.Log("타겟과의 상호작용에서 오류가 발생함");//이상한 값 들어오면 디버그
+                    default:
+                        Debug.Log("타겟과의 상호작용에서 오류가 발생함");//이상한 값 들어오면 디버그
 
                         break;
                 };
@@ -306,7 +309,7 @@ public class Character : Movable
 
     /// <summary> 스킬 준비, 완료 </summary>
     void SkillReady()
-    {       
+    {
         if (skillCastingTimeLeft >= 0 && reservedSkill != null) //스킬 시전 시간이 남았고 시전중인 스킬이 있을 경우
         {
             skillCastingTimeLeft -= Time.deltaTime;  //남은 스킬 시전 시간을 지속적으로 줄여줌
@@ -316,7 +319,7 @@ public class Character : Movable
         {
             loadedSkill = reservedSkill;  //준비된 스킬 장전
             reservedSkill = null;  // 준비중인 스킬 null로 전환
-            if(loadedSkill.type != Define.SkillState.Combat)
+            if (loadedSkill.type != Define.SkillState.Combat)
             {
                 GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
             }
@@ -364,10 +367,10 @@ public class Character : Movable
     /// <summary> 상호작용 가능 거리 </summary>
     public virtual float InteractableDistance(Define.InteractType wantType)
     {
-        switch(wantType)
+        switch (wantType)
         {
             case Define.InteractType.Attack://공격 거리
-                {                   
+                {
                     return 4; //무기 사거리가 늘어날 경우 여기서 조정한다.
                 }
             case Define.InteractType.Get: return 1; //아이템 줍기 가능 거리
@@ -384,7 +387,7 @@ public class Character : Movable
         this.transform.LookAt(enemyTarget.transform); //타겟을 바라본다.
 
         //동작 불가 상태이거나 컴벳인데 스태미나가 2 미만이면 공격을 못 하므로
-        if (waitCount != 0 ||(loadedSkill.type==Define.SkillState.Combat && staminaPoint.Current<combatData.CastCost)) 
+        if (waitCount != 0 || (loadedSkill.type == Define.SkillState.Combat && staminaPoint.Current < combatData.CastCost))
         {
             return;  //바로 이 메서드를 나간다
         }
@@ -393,26 +396,27 @@ public class Character : Movable
 
         //TakeDamage함수로 들어가면 스킬이 풀리기 때문에 스킬을 임시 저장
         Character asCharacter = null;
-        if(enemyTarget.GetType().IsSubclassOf(typeof(Character))) //enemyTarget의 클래스나 상속받은 클래스가 Character 클래스의 자식클래스이거나 Character 클래스이면
+        if (enemyTarget.GetType().IsSubclassOf(typeof(Character))) //enemyTarget의 클래스나 상속받은 클래스가 Character 클래스의 자식클래스이거나 Character 클래스이면
         {
             asCharacter = (Character)enemyTarget;  //상대방 캐릭터를 취급함
         };
-        
+
         Define.SkillState otherSkill = Define.SkillState.Combat;  //상대방 스킬은 기본값 기본공격
         if (asCharacter != null) otherSkill = asCharacter.GetSkillType();//상대방 캐릭터가 있는 경우 상대방 스킬 가져옴
-        
+
 
         if (enemyTarget.TakeDamage(this) == true)//공격에 성공한 경우
-        {        
+        {
             PlayAnim(loadedSkill.AnimName); //해당 스킬에 맞는 애니메이터 트리거 설정
             float waitTime = 0.0f;//공격 대기 시간
-            switch(loadedSkill.type)
+            switch (loadedSkill.type)
             {
                 case Define.SkillState.Combat: //근접공격이면 1초 대기
                     waitTime = 1.0f; //공격 대기 시간
                     staminaPoint.Current -= combatData.CastCost; //근접 공격에 성공한 경우 스태미나를 2 차감                   
                     break;
-                case Define.SkillState.Smash: waitTime = 4.0f; //스매시면 4초 대기
+                case Define.SkillState.Smash:
+                    waitTime = 4.0f; //스매시면 4초 대기
                     break;
             };
 
@@ -423,7 +427,7 @@ public class Character : Movable
         }
         else//공격에 실패한 경우
         {
-            if(asCharacter != null) //타겟이 존재하는경우
+            if (asCharacter != null) //타겟이 존재하는경우
             {
                 switch (otherSkill)
                 {
@@ -455,7 +459,7 @@ public class Character : Movable
     //focusTarget.Interact(this)는 매개변수 other에 나 자신 this가 들어가면 focusTarget의 타입을 리턴한다.
     public override Define.InteractType Interact(Interactable other)
     {
-        if(IsEnemy(this, other)) //상대방과 내가 적인지 체크
+        if (IsEnemy(this, other)) //상대방과 내가 적인지 체크
         {
             return Define.InteractType.Attack; //상호작용 타입을 공격으로 리턴
         }
@@ -482,13 +486,13 @@ public class Character : Movable
         agent.speed = runSpeed; //이동속도 초기화
         walk = false;
         //서로 마주보고 싸우는 경우 또는 디펜스.카운터 같은, 공격이 들어오면 무조건 스킬 사용 가능한지 체크해야 하는 경우
-        if (Attacker.loadedSkill != null && this.focusTarget == Attacker || (this.loadedSkill != null && this.loadedSkill.mustCheck) )
+        if (Attacker.loadedSkill != null && this.focusTarget == Attacker || (this.loadedSkill != null && this.loadedSkill.mustCheck))
         {
             result = Attacker.loadedSkill.WinnerCheck(this.loadedSkill); //상대방 스킬과 내 스킬의 우선순위 비교
         };
 
-        
-        if(result == true) //상대방의 공격이 성공한 경우
+
+        if (result == true) //상대방의 공격이 성공한 경우
         {
             float damage = 0.0f;
             switch (Attacker.loadedSkill.type)//상대방 스킬에 따라 내가 피해를 입음
@@ -504,7 +508,7 @@ public class Character : Movable
                     break;
             }
             this.hitPoint.Current -= damage;//현재 생명력에서 데미지만큼 빼줌
-            
+
             if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
             {
                 Dead();
@@ -512,7 +516,7 @@ public class Character : Movable
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
             {
                 //그로기 상태거나 날아가는 상태가 아니면
-                if(anim.GetCurrentAnimatorClipInfo(0)[0].clip.name!="Groggy"|| anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Blowaway_Ground")
+                if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Groggy" || anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Blowaway_Ground")
                 {
                     PlayAnim("HitA");  //피격 애니메이션 재생
                     GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit);//펀치 효과음
@@ -563,14 +567,14 @@ public class Character : Movable
     /// <summary> 대미지 계산하는 구간 </summary>
     public float CalculateDamage(Define.SkillState type)
     {
-        switch(type)
+        switch (type)
         {
             case Define.SkillState.Smash://스매시 데미지 계산
                 return maxPhysicalStrikingPower * smashData.Coefficient * skillList[Define.SkillState.Smash].rank;
             case Define.SkillState.Combat://근접 공격 데미지 계산
-                return maxPhysicalStrikingPower* combatData.Coefficient* skillList[Define.SkillState.Combat].rank;
+                return maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank;
             case Define.SkillState.Counter://카운터 데미지 계산
-                return maxPhysicalStrikingPower* counterData.Coefficient* skillList[Define.SkillState.Counter].rank;
+                return maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank;
         };
         return 0; //이상한거 들어오면 0 리턴
     }
@@ -611,7 +615,7 @@ public class Character : Movable
         };
         focusTarget = target;
         return true;
-    
+
     }
 
     /// <summary> 스페이스바 입력으로 일상, 전투모드 전환 </summary>
@@ -670,9 +674,9 @@ public class Character : Movable
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
-    protected void PlayAnim(string wantName)  
+    protected void PlayAnim(string wantName)
     {
-        if(wantName == "Combat") //애니메이션 스킬이 컴벳일 경우 
+        if (wantName == "Combat") //애니메이션 스킬이 컴벳일 경우 
         {
             anim.SetInteger("CombatNumber", Random.Range(0, 3));//3가지 랜덤한 애니메이션 실행
         }
@@ -701,7 +705,7 @@ public class Character : Movable
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴
         switch (currentSkill.skill.type)//상대방 스킬에 따라 내가 피해를 입음
-        {          
+        {
             case Define.SkillState.Defense:
                 if (staminaPoint.Current < defenseData.CastCost)  //현재 스킬 시전에 필요한 스태미나보다 적은 경우
                 {
@@ -743,7 +747,7 @@ public class Character : Movable
     {
         wait = Wait(groggyTime);
         StartCoroutine(wait);  //조작불가 코루틴 시작
-        IEnumerator groggy = GroggyDown(); 
+        IEnumerator groggy = GroggyDown();
         StartCoroutine(groggy); //그로기 다운 코루틴 시작
         PlayAnim("Groggy"); //그로기 애니메이션 시작
         downGauge.Current = 0; //다운게이지 초기화
@@ -770,12 +774,24 @@ public class Character : Movable
         yield return new WaitForSeconds(1f); //1초 대기
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
         yield return new WaitForSeconds(0.5f); //0.5초 대기
-        rigid.constraints = RigidbodyConstraints.FreezeAll; //리지드바디 고정시킴
+        rigid.constraints = RigidbodyConstraints.FreezePosition; //리지드바디 고정시킴
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
-        NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
-        nav.speed = 0; //내비 이동속도 0 대입
-        nav.angularSpeed = 0; //내비 회전속도 0 대입
-        nav.radius = 0.01f; //내비 반지름 범위 0 대입
+
+        yield return new WaitForSeconds(2f);
+        Respawn();
     }
 
+    /// <summary> 캐릭터 부활</summary>
+    public void Respawn()
+    {
+        die = false;
+        hitPoint.Current = hitPoint.Max;
+        PlayAnim("Reset");
+        gameObject.transform.position = new Vector3(0, 2, 0);
+        rigid.constraints = RigidbodyConstraints.FreezePosition; //리지드바디 고정 해제
+        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬
+        NavMeshAgent nav = gameObject.GetComponent<NavMeshAgent>();
+        MoveTo(new Vector3(0, 2, 0));
+        respawn = true;
+    }
 }

@@ -34,7 +34,32 @@ public class EnemyDummyAI : AI
     }
     void OnUpdate()
     {
-        if(enemyCharacter == null) //적이 없으면 탈출
+        if (character.respawn == true)
+        {
+            Reset();
+            character.respawn = false;
+            aiStart = false;
+            StartCoroutine(searchCoroutine);
+
+        }
+
+        if (character.die == true)//내가 죽으면
+        {
+            aiStart = true;  //인공지능 코루틴이 실행되지 않도록 인공지능 코루틴이 시작했다고 설정
+            stopCoroutine(); //인공지능 코루틴 중지
+            Reset();
+            return;
+        }
+  
+        if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
+        {
+            aiStart = true; //인공지능 시작 bool값 true로 변경
+            dummyAICoroutine = null;
+            dummyAICoroutine = DummyAI(); //인공지능 코루틴 할당
+            StartCoroutine(dummyAICoroutine); //인공지능 코루틴 시작
+        }
+
+        if (enemyCharacter == null) //적이 없으면 탈출
         {
             return;
         }
@@ -43,21 +68,6 @@ public class EnemyDummyAI : AI
         {
             Reset();
             return;
-        }
-        //자신 캐릭터 사망하면 동작하지 않음
-        if (character.die == true)//내가 죽으면
-        {
-            aiStart = true;  //인공지능 코루틴이 실행되지 않도록 인공지능 코루틴이 시작했다고 설정
-            stopCoroutine(); //인공지능 코루틴 중지
-            Reset();
-            return;
-        }
-        
-        if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
-        {
-            aiStart = true; //인공지능 시작 bool값 true로 변경
-            dummyAICoroutine = DummyAI(); //인공지능 코루틴 할당
-            StartCoroutine(dummyAICoroutine); //인공지능 코루틴 시작
         }
 
         character.TargetLookAt(enemyCharacter); // 보게 만듦
@@ -121,8 +131,8 @@ public class EnemyDummyAI : AI
 
     /// <summary> 5초마다 반복실행되는 플레이어를 찾는 코루틴 </summary>
     private IEnumerator UpdatePath()
-    {
-        while(!character.die)//이 캐릭터(Enemy)가 살아 있으면
+    {      
+        while (!character.die)//이 캐릭터(Enemy)가 살아 있으면
         {
             //플레이어가 너무 멀리 도망가면
             if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 30)) 
