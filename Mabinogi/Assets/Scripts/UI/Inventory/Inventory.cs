@@ -169,7 +169,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 마우스 커서 따라다니는 아이템 정보 UI</summary>
     public GameObject information;
     /// <summary> 아이템 정보 UI</summary>
-    GameObject inpo;
+    protected GameObject inpo;
 
     /// <summary> 아이템 사용 선택지문 프리팹 </summary>
     public GameObject useUI;
@@ -179,7 +179,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 인벤토리 창 UI 이미지</summary>
     public GameObject parent;
     /// <summary> 마우스가 올려진 셀 위치</summary>
-    Vector2Int overedCellLocation = new Vector2Int(-1, -1);
+    public Vector2Int overedCellLocation = new Vector2Int(-1, -1);
     /// <summary> [?,?] 칸의 정보</summary>
     CellInfo[,] infoArray;
     /// <summary> 마우스가 집고있는 아이템</summary>
@@ -204,7 +204,7 @@ public class Inventory : MonoBehaviour
         inventoryList.Remove(this);
     }
 
-    void Start()
+    protected virtual void Start()
     {
         if (mouseItem == null) //마우스가 집고있는 아이템이 없으면 아래에서 할당해줌
         {
@@ -271,12 +271,11 @@ public class Inventory : MonoBehaviour
             current.amountText.transform.SetParent(parent.transform);//아이템 텍스트를 인벤토리 창의 하위 오브젝트로 지정
             current.SetItem(Define.Item.None,0); //인벤토리 창 칸들을 비워줌
         }
-        PutItem(Vector2Int.one, Define.Item.Wool, 3); //인벤토리 실험용 기본 아이템1
-        PutItem(Vector2Int.zero, Define.Item.Fruit, 1); //인벤토리 실험용 기본 아이템2
-        PutItem(Vector2Int.one * 3, Define.Item.Firewood, 1); //인벤토리 실험용 기본 아이템2
+
+        
     }
 
-    private void OnUpdate()
+    protected virtual void OnUpdate()
     {
         if (mouseItemPos == null) //마우스 따라다니는 셀의 좌표가 null이면 리턴
         {
@@ -300,7 +299,11 @@ public class Inventory : MonoBehaviour
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
             if (Input.GetMouseButtonDown(0) && mouseItem != null && mouseItem.GetItemType() != Define.Item.None)
             {
-                DropItem(); //아이템 버리기
+                StoreInventory store = FindObjectOfType<StoreInventory>();
+                if (!store.sell.activeSelf)
+                {
+                    DropItem(); //아이템 버리기
+                }
             }
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
         }
@@ -313,7 +316,7 @@ public class Inventory : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1))//마우스 우클릭하면
             {
-                RightClick();
+                RightClick(overedCellLocation);
             }   
             if (Input.GetMouseButtonDown(0)) //마우스 좌클릭하면
             {
@@ -446,12 +449,12 @@ public class Inventory : MonoBehaviour
         OverlapTime = rootList.Count; //겹친 횟수는 루트 리스트의 갯수이다.
         return result; //현재 공간에 아이템 넣을 수 있으면 true 반환
     }
-    public virtual void RightClick()
+    public virtual void RightClick(Vector2Int pos)
     {
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         inpo.SetActive(false);
-        UseUI(overedCellLocation, true);
-        useItem = CheckItemRoot(overedCellLocation);
+        UseUI(pos, true);
+        useItem = CheckItemRoot(pos);
     }
     /// <summary> 마우스 좌클릭 시 아이템 겹치기, 아이템 옮기기 실행 </summary>
     public virtual void LeftClick(Vector2Int pos)
@@ -548,7 +551,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 아이템 밀어넣기 시도 </summary>
-    int PutItem(Vector2Int position, Define.Item item, int amount)
+    public int PutItem(Vector2Int position, Define.Item item, int amount)
     {
         amount = Mathf.Min(amount, item.GetMaxStack());
 
@@ -704,7 +707,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 해당된 칸의 루트를 체크해서 나 자신 CellInfo나 기준점 CellInfo반환</summary>
-    protected CellInfo CheckItemRoot(Vector2Int position)
+    public CellInfo CheckItemRoot(Vector2Int position)
     {
         return infoArray[position.y, position.x].GetRoot(); //나 자신 반환하거나, 기준점 반환하거나
     }

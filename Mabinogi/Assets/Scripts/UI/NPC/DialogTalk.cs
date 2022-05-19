@@ -33,6 +33,14 @@ public class DialogTalk : MonoBehaviour
     public GameObject UI_Canvas;
     /// <summary> 현재 실행중인 코루틴 </summary>
     IEnumerator Cor;
+    /// <summary> 상점 인벤토리 </summary>
+    public GameObject Shop;
+
+    InvenOpen inven;
+    private void Start()
+    {
+        inven = GameObject.FindGameObjectWithTag("Inventory").gameObject.GetComponent<InvenOpen>();
+    }
 
     private void Update()
     {
@@ -149,7 +157,7 @@ public class DialogTalk : MonoBehaviour
         SelectButtonOff(); //모든 버튼 꺼줌
         CloseTalkCanvas(); //대화 캔버스 꺼줌
         UI_Canvas.SetActive(true); //전투 UI 켜줌
-
+        Shop.transform.position = new Vector3(Shop.transform.position.x+2000, Shop.transform.position.y, Shop.transform.position.z); //상점 인벤토리 끔
     }
 
     /// <summary> 대화 캔버스의 구성요소들을 전부 끔 </summary>
@@ -170,6 +178,11 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
     {
+        Shop.transform.position = new Vector3(Shop.transform.position.x-2000, Shop.transform.position.y, Shop.transform.position.z); //상점 인벤토리 끔
+        if (inven.isOpen == false)
+        {
+            inven.Open();
+        }
         SetDialog(currentNPC.ShopDialog);
     }
 

@@ -8,7 +8,7 @@ public class InvenOpen : MonoBehaviour
     /// <summary> 인벤토리 창</summary>
     public GameObject inven;
     /// <summary> 인벤토리 창이 열려있는지 체크</summary>
-    bool isOpen = false;
+    public bool isOpen = false;
     // Update is called once per frame
     void Update()
     {
