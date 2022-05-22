@@ -33,7 +33,8 @@ public class Character : Movable
     protected Interactable focusTarget;
     /// <summary> 지정한 타겟의 타입 enum</summary>
     protected Define.InteractType focusType;
-
+    /// <summary> 이동 타입 enum</summary>
+    protected Define.MoveType movetype;
     /// <summary> 준비 완료된 현재 스킬</summary>
     [SerializeField]
     [Tooltip("준비 완료된 현재 스킬")]
@@ -123,8 +124,9 @@ public class Character : Movable
     protected float acceleration = 100f;
     /// <summary> 부활했는지 체크 </summary>
     public bool respawn = false;
-    #endregion
 
+    #endregion
+    
     protected override void Awake()
     {
         base.Awake();
@@ -195,6 +197,8 @@ public class Character : Movable
 
         TargetCheck(); //지정한 타겟 체크
 
+        DestinationCheck();
+
     }
 
     /// <summary> 게이지들 업데이트 </summary>
@@ -209,6 +213,22 @@ public class Character : Movable
         if (loadedSkill.type == Define.SkillState.Counter) //시전된 스킬이 카운터이면
         {
             staminaPoint.Current -= 1 * Time.deltaTime; //초당 1씩 스태미나 감소
+        }
+    }
+
+    void DestinationCheck()
+    {
+        if(movetype == Define.MoveType.DropItem)
+        {
+            Vector3 positionDiff = (agent.destination - transform.position);//상대 좌표에서 내 좌표 뺌
+            positionDiff.y = 0;//높이 y는 배제함
+            float distance = positionDiff.magnitude;  //타겟과 나의 거리
+            if (distance < 1) //거리가 상호작용 가능 거리보다 먼 경우
+            {
+                Inventory.DropItem();
+                movetype = Define.MoveType.Move;
+                MoveStop(true);
+            }
         }
     }
 
@@ -376,6 +396,7 @@ public class Character : Movable
             case Define.InteractType.Get: return 1; //아이템 줍기 가능 거리
             case Define.InteractType.Sheeping: return 2; //양털 채집 가능 거리
             case Define.InteractType.Talk: return 6;  //대화 가능 거리
+            
             default: return 2;  //기본값은 2이다.
         };
     }
@@ -472,6 +493,12 @@ public class Character : Movable
     public override void MoveTo(Vector3 goalPosition, bool isWalk = false)  //내비게이션 이동 메서드
     {
         base.MoveTo(goalPosition, isWalk);
+    }
+
+    public void MoveTo(Vector3 goalPosition, Define.MoveType currentMoveType ,bool isWalk = false)  //내비게이션 이동 메서드
+    {
+        base.MoveTo(goalPosition, isWalk);
+        movetype = currentMoveType;
     }
 
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>

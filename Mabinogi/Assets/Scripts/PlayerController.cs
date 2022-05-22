@@ -108,7 +108,15 @@ public class PlayerController : MonoBehaviour
                 //캐릭터 대상 할당 실패            충돌한 대상이 땅이면
                 if(!playerCharacter.SetTarget(target) && hit.collider.gameObject.layer == (int)Define.Layer.Ground)
                 {
-                    playerCharacter.MoveTo(hit.point);  //충돌한 좌표로 플레이어 캐릭터 이동
+                    if(Inventory.mouseItem.GetItemType()!= Define.Item.None && Inventory.OutAllInvenBoundaryCheck())
+                    {
+                        playerCharacter.MoveTo(hit.point,Define.MoveType.DropItem);  //충돌한 좌표로 플레이어 캐릭터 이동
+                    }
+                    else
+                    {
+                        playerCharacter.MoveTo(hit.point);  //충돌한 좌표로 플레이어 캐릭터 이동
+                    }
+                    
                 };
             };
         };

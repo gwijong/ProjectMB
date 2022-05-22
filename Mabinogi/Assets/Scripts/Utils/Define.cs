@@ -18,6 +18,12 @@ public class Define
         Sheeping,
         Egg,
     }
+
+    public enum MoveType
+    {
+        Move,
+        DropItem,
+    }
     /// <summary> 캐릭터의 상태</summary>
     public enum State
     {

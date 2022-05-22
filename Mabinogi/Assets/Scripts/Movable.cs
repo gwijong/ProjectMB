@@ -40,4 +40,6 @@ public class Movable : Hitable
         agent.isStopped = value;
         if(value) agent.SetDestination(agent.transform.position);//목적지를 내 자신 위치로 갱신
     }
+
+
 }

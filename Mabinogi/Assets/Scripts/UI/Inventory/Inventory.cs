@@ -28,6 +28,8 @@ public class CellInfo
     /// <summary> 마우스 커서가 위치한 칸 밝게 강조하는 컬러 </summary>
     public static Color highlightColor = new Color(1, 1, 1);
 
+
+
     /// <summary> 소지품창 안에서의 아이템 좌표와 나 자신을 루트로 지정하는 생성자 </summary>
     public CellInfo(Vector2Int wantLocation)
     {
@@ -190,6 +192,9 @@ public class Inventory : MonoBehaviour
     /// <summary> 사용창 아이템</summary>
     public static CellInfo useItem;
 
+    public RectTransform leftUp;
+    public RectTransform rightDown;
+
     static List<Inventory> inventoryList = new List<Inventory>();
 
     /// <summary> 인벤토리 생성자 </summary>
@@ -297,14 +302,7 @@ public class Inventory : MonoBehaviour
         {
             inpo.SetActive(false);
             //마우스 커서가 소지품창을 벗어난 상황에서 마우스 좌클릭을 누르면
-            if (Input.GetMouseButtonDown(0) && mouseItem != null && mouseItem.GetItemType() != Define.Item.None)
-            {
-                StoreInventory store = FindObjectOfType<StoreInventory>();
-                if (!store.sell.activeSelf)
-                {
-                    DropItem(); //아이템 버리기
-                }
-            }
+
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
         }
         else if(CheckMouseInside()) //마우스 커서가 소지품 창 안에 있는 경우
@@ -340,6 +338,32 @@ public class Inventory : MonoBehaviour
         }
     }
     
+    //인벤 밖이다.
+    public static bool OutAllInvenBoundaryCheck()
+    {
+        foreach (Inventory current in inventoryList)
+        {
+            if (current.InMousePosBoundaryCheck()) //마우스 커서가 인벤토리 안에 있다.
+            {
+                return false; 
+            };
+        }
+        return true;
+    }
+    //안에 있는 경우
+    bool InMousePosBoundaryCheck()
+    {
+        if(Input.mousePosition.x > leftUp.position.x  
+            && Input.mousePosition.y < leftUp.position.y 
+            && Input.mousePosition.x < rightDown.position.x
+            && Input.mousePosition.y > rightDown.position.y
+            )
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     void UseUI(Vector2Int position, bool active)
     {
@@ -356,7 +380,7 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 아이템 버리기 </summary>
-    public void DropItem()
+    public static void DropItem()
     {
         GameManager.itemManager.DropItem(mouseItem.GetItemType(), mouseItem.amount);
         mouseItem.Clear();//마우스 아이템 비워줌
