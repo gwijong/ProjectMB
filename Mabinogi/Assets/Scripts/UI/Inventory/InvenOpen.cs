@@ -41,4 +41,15 @@ public class InvenOpen : MonoBehaviour
             isOpen = true;
         }
     }
+
+    public void Close()
+    {
+        if (isOpen) //소지품창이 열려있으면 닫기
+        {
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.inventory_close);//닫기 효과음
+            Inventory.use.SetActive(false);//사용창 닫기
+            inven.transform.position += new Vector3(2000, 0, 0); //오른쪽으로 2000만큼 이동해서 화면 밖에 배치
+            isOpen = false;
+        }
+    }
 }

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
-    public GameObject talkCanvas;//대화 캔버스
+    public GameObject talkCanvasOutline;//대화 캔버스 아웃라인(대화중인지 체크용)
     private void Awake()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
         PlayerSetting();
@@ -29,15 +29,14 @@ public class PlayerController : MonoBehaviour
 
     void OnUpdate()
     {
-        if(playerCharacter.die == true) //캐릭터 사망시 리턴
+        if (playerCharacter.die == true) //캐릭터 사망시 리턴
         {
             return;
         }
-        if (talkCanvas.activeSelf) //대화중이면 리턴
+        if (talkCanvasOutline.activeSelf) //대화중이면 리턴
         {
             return;
-        }
-        
+        }    
         SkillInput();
         MouseInput();        
         KeyMove();

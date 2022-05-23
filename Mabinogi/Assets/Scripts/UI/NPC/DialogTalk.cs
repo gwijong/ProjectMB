@@ -157,7 +157,8 @@ public class DialogTalk : MonoBehaviour
         SelectButtonOff(); //모든 버튼 꺼줌
         CloseTalkCanvas(); //대화 캔버스 꺼줌
         UI_Canvas.SetActive(true); //전투 UI 켜줌
-        Shop.transform.position = new Vector3(Shop.transform.position.x+2000, Shop.transform.position.y, Shop.transform.position.z); //상점 인벤토리 끔
+        Shop.transform.position = new Vector3(Shop.transform.position.x + 2000, Shop.transform.position.y, Shop.transform.position.z); //상점 인벤토리 끔
+        inven.Close();
     }
 
     /// <summary> 대화 캔버스의 구성요소들을 전부 끔 </summary>
