@@ -8,6 +8,8 @@ public class PlayerInventory : Inventory
     protected override void Start()
     {
         base.Start();
-        GetItem(Define.Item.Wool, 10); //상점 인벤토리 실험용 기본 아이템
+        GetItem(Define.Item.LifePotion, 10); //상점 인벤토리 실험용 기본 아이템
+        GetItem(Define.Item.ManaPotion, 10); //상점 인벤토리 실험용 기본 아이템
     }
+
 }

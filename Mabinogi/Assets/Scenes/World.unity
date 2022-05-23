@@ -469,11 +469,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 747850374489410152, guid: 71e3055989225db419c1e73de323e04c, type: 3}
   m_PrefabInstance: {fileID: 55169700}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &64796729 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3949068689212714994, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
-  m_PrefabInstance: {fileID: 7391283644171084276}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &70658565
 GameObject:
   m_ObjectHideFlags: 0
@@ -11478,11 +11473,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194322683}
   m_CullTransparentMesh: 1
---- !u!224 &1236001049 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 656635547151246307, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
-  m_PrefabInstance: {fileID: 7391283644171084276}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1236896745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15783,7 +15773,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -19818,14 +19808,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579923008}
     m_Modifications:
-    - target: {fileID: 261662411, guid: acd66cecfd8b8e3449fec35c6110700f, type: 3}
-      propertyPath: leftUp
-      value: 
-      objectReference: {fileID: 64796729}
-    - target: {fileID: 261662411, guid: acd66cecfd8b8e3449fec35c6110700f, type: 3}
-      propertyPath: rightDown
-      value: 
-      objectReference: {fileID: 1236001049}
     - target: {fileID: 183718674750874457, guid: acd66cecfd8b8e3449fec35c6110700f, type: 3}
       propertyPath: m_Name
       value: Inven
