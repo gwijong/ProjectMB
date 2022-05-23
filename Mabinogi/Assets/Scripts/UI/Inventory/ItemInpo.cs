@@ -11,8 +11,7 @@ public class ItemInpo : MonoBehaviour
     public int amount = 1;
     public void GetItem()
     {
-        if (GameObject.FindGameObjectWithTag("Inventory").GetComponentInChildren<PlayerInventory>().
-                      GetItem(item, amount) == 0) //소지품창을 돌면서 인벤토리에 밀어넣기 시도
+        if (Inventory.GetItem(item, amount) == 0) //소지품창을 돌면서 인벤토리에 밀어넣기 시도
         {  //아이템을 소지품창에 밀어넣는데 성공했으면
             Destroy(transform.parent.gameObject);//주워 먹었으므로 바닥에 떨어진 아이템 삭제
         }

@@ -122,11 +122,15 @@ public class Character : Movable
     [Tooltip("내비게이션 가속도")]
     /// <summary> 내비게이션 가속도 </summary>
     protected float acceleration = 100f;
+    /// <summary> 소지한 골드 </summary>
+    public int gold;
     /// <summary> 부활했는지 체크 </summary>
     public bool respawn = false;
+    
+
 
     #endregion
-    
+
     protected override void Awake()
     {
         base.Awake();

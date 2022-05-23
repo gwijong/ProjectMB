@@ -7,9 +7,10 @@ using UnityEngine.UI;
 /// <summary> 입력값 받아서 플레이어 이동시키는 스크립트</summary>
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController controller;
     /// <summary>플레이어 캐릭터 딱 하나</summary>
     public GameObject player;
-    Character playerCharacter;
+    public Character playerCharacter { get; private set; }
     /// <summary>마우스로 클릭한 타겟</summary>
     Interactable target;
     /// <summary>레이어마스크</summary>
@@ -19,12 +20,11 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
         PlayerSetting();
-    }
-    private void Start()
-    {       
+        controller = this;
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
+        FindObjectOfType<PlayerInventory>().owner = playerCharacter;
     }
 
     void OnUpdate()

@@ -204,18 +204,16 @@ public class Inventory : MonoBehaviour
     /// <summary> 소지품창의 우측 아래 </summary>
     public RectTransform rightDown;
     /// <summary> 게임 내 모든 소지품창 리스트 </summary>
-    static List<Inventory> inventoryList = new List<Inventory>();
-
-    /// <summary> 인벤토리 생성자 </summary>
-    public Inventory()
-    {
-        inventoryList.Add(this);
-    }
+    public static List<Inventory> inventoryList = new List<Inventory>();
+    public static List<Inventory> playerInventoryList = new List<Inventory>();
+    public static StoreInventory store { get; protected set; }
+    public Character owner;
 
     /// <summary> 인벤토리 소멸자 </summary>
-    ~Inventory()
+    void OnDestroy()
     {
         inventoryList.Remove(this);
+        playerInventoryList.Remove(this);
     }
     protected virtual void Start()
     {
@@ -244,7 +242,7 @@ public class Inventory : MonoBehaviour
             inpo.SetActive(false);//일단 끄고 필요할때 켜줌
         }
 
-        if(use == null)
+        if (use == null)
         {
             use = Instantiate(useUI); //사용창 생성
             use.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //사용창을 인벤토리의 자식오브젝트로 옮김
@@ -252,6 +250,9 @@ public class Inventory : MonoBehaviour
             useImage.rectTransform.pivot = new Vector2(0, 1); // 정보창 중심점을 0,1로 맞춤
             use.SetActive(false);//일단 끄고 필요할때 켜줌
         }
+
+        inventoryList.Add(this);
+        playerInventoryList.Add(this);
 
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
@@ -286,7 +287,7 @@ public class Inventory : MonoBehaviour
             current.SetItem(Define.Item.None, 0); //인벤토리 창 칸들을 비워줌
         }    
     }
-
+    
     /// <summary> 반복 실행 </summary>
     protected virtual void OnUpdate()
     {
@@ -611,6 +612,7 @@ public class Inventory : MonoBehaviour
     public List<CellInfo> FindItemList(Define.Item item) //아이템 찾는중
     {
         List<CellInfo> result = new List<CellInfo>(); //해당 아이템을 가지고 있는 모든 셀 리턴
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++) //소지품창 넓이만큼 순회
@@ -651,7 +653,16 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 중복된 아이템 밀어넣고 남은 아이템 숫자 반환</summary>
-    public int GetItem(Define.Item item, int amount)  
+    public static int GetItem(Define.Item item, int amount)
+    {
+        for(int i =0; i< playerInventoryList.Count; i++)
+        {
+            amount = playerInventoryList[i].AddItem(item, amount);
+        }
+        return amount;
+    }  
+
+    public int AddItem(Define.Item item, int amount)
     {
         List<CellInfo> sameList = FindItemList(item);
         for(int i = 0; i < sameList.Count; i++)

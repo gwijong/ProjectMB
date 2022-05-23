@@ -17,20 +17,28 @@ public class StoreInventory : Inventory
     public Define.Item item;
 
     ItemData[] itemData; //아이템 데이터들 가져옴
+
+    void OnDestroy()
+    {
+        inventoryList.Remove(this);
+    }
+
     protected override void Start()
     {
         base.Start();
+        store = this;
+        playerInventoryList.Remove(this);
         buyInstance = CreateUI(buyInstance, buyUI); //구매창 인스턴스 생성
         sellInstance = CreateUI(sellInstance, sellUI); //판매창 인스턴스 생성
         itemData = GameManager.itemManager.data; //아이템 데이터들 가져옴
-        GetItem(Define.Item.Wool, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.Fruit, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.Bottle, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.BottleWater, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.Egg, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.Firewood, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.LifePotion, 1); //상점 인벤토리 실험용 기본 아이템
-        GetItem(Define.Item.ManaPotion, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.Wool, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.Fruit, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.Bottle, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.BottleWater, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.Egg, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.Firewood, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.LifePotion, 1); //상점 인벤토리 실험용 기본 아이템
+        AddItem(Define.Item.ManaPotion, 1); //상점 인벤토리 실험용 기본 아이템
     }
 
     /// <summary> 구매, 판매 UI 게임오브젝트 생성 </summary>
@@ -91,19 +99,27 @@ public class StoreInventory : Inventory
             if ((rootCellInfo.GetItemType() != Define.Item.None)) //마우스 커서가 위치한 셀에 아이템이 존재하면
             {
                 item = rootCellInfo.GetItemType();
-                buyInstance.SetActive(true);
-                buyInstance.transform.position = Input.mousePosition; //UI를 마우스 커서 좌표로 이동
 
-                Text[] text = buyInstance.GetComponentsInChildren<Text>(); //자식 오브젝트의 텍스트 컴포넌트들을 가져온다
-
-                for (int i = 0; i < itemData.Length; i++) //스크립터블오브젝트 길이만큼 반복
+                if(Input.GetKey(KeyCode.LeftControl))
                 {
-                    if (i == (int)rootCellInfo.GetItemType() - 1) //아이템 데이터의 번호와 마우스 커서의 아이템타입과 같으면 찾기 성공
-                    {
-                        text[0].text = itemData[i].ItemName; //0번 텍스트컴포넌트의 텍스트를 아이템 이름으로 바꾼다
-                        text[1].text = "가격 : " + itemData[i].SalePrice.ToString() + "Gold";//1번 텍스트컴포넌트의 텍스트를 가격으로 바꾼다
-                    }
+                    Buy();
                 }
+                else
+                {
+                    buyInstance.SetActive(true);
+                    buyInstance.transform.position = Input.mousePosition; //UI를 마우스 커서 좌표로 이동
+
+                    Text[] text = buyInstance.GetComponentsInChildren<Text>(); //자식 오브젝트의 텍스트 컴포넌트들을 가져온다
+
+                    for (int i = 0; i < itemData.Length; i++) //스크립터블오브젝트 길이만큼 반복
+                    {
+                        if (i == (int)rootCellInfo.GetItemType() - 1) //아이템 데이터의 번호와 마우스 커서의 아이템타입과 같으면 찾기 성공
+                        {
+                            text[0].text = itemData[i].ItemName; //0번 텍스트컴포넌트의 텍스트를 아이템 이름으로 바꾼다
+                            text[1].text = "가격 : " + itemData[i].SalePrice.ToString() + "Gold";//1번 텍스트컴포넌트의 텍스트를 가격으로 바꾼다
+                        }
+                    }
+                };
             }
 
         }
@@ -129,6 +145,22 @@ public class StoreInventory : Inventory
     public override void RightClick(Vector2Int pos)
     {
         LeftClick(pos); //좌클릭 메서드 실행
+    }
+
+    public void Buy()
+    {
+        if (PlayerController.controller.playerCharacter.gold >= item.GetItemData().SalePrice)//남은 돈이 물품 가격보다 크면
+        {
+            PlayerController.controller.playerCharacter.gold -= item.GetItemData().SalePrice;//물품 가격만큼 빼주기
+            //invenList에는 상점 인벤토리를 제외한 개인 소지품창만 남음
+            GetItem(item, 1); //상점에서 마지막으로 마우스 클릭한 아이템 생성해서 인벤토리에 추가
+        }
+    }
+
+    public void Sell()
+    {
+        PlayerController.controller.playerCharacter.gold += mouseItem.GetItemType().GetItemData().SalePrice * mouseItem.amount;//남은 돈에 판매가격 더함
+        mouseItem.Clear(); //마우스가 집고있는 아이템 비움
     }
 
     /// <summary> 구매, 판매창 활성화하고 아이템데이터에서 정보 뽑아와 설정 </summary>

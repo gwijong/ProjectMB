@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : Character
 {
     GameObject Dialog;
-
+    
     protected override void Awake()
     {
         base.Awake();

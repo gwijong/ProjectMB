@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 1739714833}
   - component: {fileID: 1739714836}
   - component: {fileID: 1739714835}
-  - component: {fileID: 1739714834}
   m_Layer: 5
   m_Name: GoldText
   m_TagString: Untagged
@@ -156,20 +155,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1000 G
---- !u!114 &1739714834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739714832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb21b4c1155c7514dbba1911467f8362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gold: 1000
-  text: {fileID: 0}
 --- !u!1 &183718674008621489
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +390,8 @@ MonoBehaviour:
   overedCellLocation: {x: -1, y: -1}
   leftUp: {fileID: 7198296058114885271}
   rightDown: {fileID: 945607732077463129}
+  owner: {fileID: 0}
+  goldText: {fileID: 1739714835}
 --- !u!1 &183718675359036328
 GameObject:
   m_ObjectHideFlags: 0
