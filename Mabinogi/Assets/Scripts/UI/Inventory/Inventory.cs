@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary> 셀 정보 가지는 곳 </summary>
+/// <summary> 셀 정보 데이터 컨테이너 </summary>
 public class CellInfo
 {
     /// <summary> 아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이거나 나 자신 셀이면 이놈이 시작지점이다 </summary>
@@ -46,20 +46,20 @@ public class CellInfo
     /// <summary> 셀의 아이템 변경과 칸의 색상 세팅 </summary>
     public void SetItem(Define.Item wantItem, int wantAmount)
     {
-        Vector2Int itemSize = wantItem.GetSize();
-        itemType = wantItem;
-        itemImage.sprite = wantItem.GetItemImage();
-        if (itemImage.sprite == null) //스프라이트가 없으면
+        Vector2Int itemSize = wantItem.GetSize(); //아이템의 사이즈 가져옴 ex)2*2
+        itemType = wantItem; //셀의 아이템 타입을 원하는 아이템 타입으로 바꿈
+        itemImage.sprite = wantItem.GetItemImage(); //셀의 아이템 이미지를 원하는 아이템 이미지로 바꿈
+        if (itemImage.sprite == null) //이미지 스프라이트가 없으면
         {
-            itemImage.color = Color.clear; //투명하게 설정
+            itemImage.color = Color.clear; //이미지를 투명하게 설정
         }
-        else //스프라이트가 있으면
+        else //이미지 스프라이트가 있으면
         {
             itemImage.color = Color.white; //온전한 색상 표시
         }
-        itemImage.transform.localScale = new Vector3(itemSize.x, itemSize.y, 1);
-        CalculateColor();
-        SetAmount(wantAmount);
+        itemImage.transform.localScale = new Vector3(itemSize.x, itemSize.y, 1);//아이템 이미지를 아이템 사이즈만큼 키움
+        CalculateColor(); //아이템이 들어간 칸의 배경 색상 지정
+        SetAmount(wantAmount); //셀의 아이템 개수를 원하는 아이템 개수 지정
     }
 
 
@@ -119,7 +119,15 @@ public class CellInfo
     public void SetAmount(int wantAmount)
     {
         amount = wantAmount;
-        amountText.text = wantAmount > 0 ? wantAmount.ToString() : "";
+        //amountText.text = wantAmount > 0 ? wantAmount.ToString() : ""
+        if (wantAmount > 0)
+        {
+            amountText.text = wantAmount.ToString();
+        }
+        else
+        {
+            amountText.text = "";
+        }
     }
 
     /// <summary> 개수를 더해서 남은 걸 리턴 </summary>
@@ -191,10 +199,11 @@ public class Inventory : MonoBehaviour
 
     /// <summary> 사용창 아이템</summary>
     public static CellInfo useItem;
-
-    public RectTransform leftUp;
+    /// <summary> 소지품창의 좌측 위 </summary>
+    public RectTransform leftUp; 
+    /// <summary> 소지품창의 우측 아래 </summary>
     public RectTransform rightDown;
-
+    /// <summary> 게임 내 모든 소지품창 리스트 </summary>
     static List<Inventory> inventoryList = new List<Inventory>();
 
     /// <summary> 인벤토리 생성자 </summary>
@@ -204,11 +213,10 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary> 인벤토리 소멸자 </summary>
-    ~Inventory() 
+    ~Inventory()
     {
         inventoryList.Remove(this);
     }
-
     protected virtual void Start()
     {
         if (mouseItem == null) //마우스가 집고있는 아이템이 없으면 아래에서 할당해줌
@@ -230,24 +238,25 @@ public class Inventory : MonoBehaviour
         if(inpo == null)
         {
             inpo = Instantiate(information); //마우스 계속 따라다니는 정보창 지정
-            inpo.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 정보창의 부모를 인벤토리로 지정
+            inpo.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //정보창을 인벤토리의 자식오브젝트로 옮김
             Image inpoImage = inpo.GetComponent<Image>();//정보창 이미지 컴포넌트 가져오기
             inpoImage.rectTransform.pivot = new Vector2(0,1); // 정보창 중심점을 0,1로 맞춤
-            inpo.SetActive(false);
+            inpo.SetActive(false);//일단 끄고 필요할때 켜줌
         }
 
         if(use == null)
         {
-            use = Instantiate(useUI);
-            use.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform);
+            use = Instantiate(useUI); //사용창 생성
+            use.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //사용창을 인벤토리의 자식오브젝트로 옮김
             Image useImage = use.GetComponent<Image>();//아이템 사용창 이미지 컴포넌트 가져오기
             useImage.rectTransform.pivot = new Vector2(0, 1); // 정보창 중심점을 0,1로 맞춤
-            use.SetActive(false);
+            use.SetActive(false);//일단 끄고 필요할때 켜줌
         }
 
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
 
+        // 인벤토리 칸 만들기
         infoArray = new CellInfo[height, width]; //2차원 배열의 크기를 소지품창 크기로 설정
 
         for (int y = 0; y < height; y++)
@@ -274,12 +283,11 @@ public class Inventory : MonoBehaviour
         {
             current.itemImage.transform.SetParent(parent.transform); //아이템 이미지를 인벤토리 창의 하위 오브젝트로 지정
             current.amountText.transform.SetParent(parent.transform);//아이템 텍스트를 인벤토리 창의 하위 오브젝트로 지정
-            current.SetItem(Define.Item.None,0); //인벤토리 창 칸들을 비워줌
-        }
-
-        
+            current.SetItem(Define.Item.None, 0); //인벤토리 창 칸들을 비워줌
+        }    
     }
 
+    /// <summary> 반복 실행 </summary>
     protected virtual void OnUpdate()
     {
         if (mouseItemPos == null) //마우스 따라다니는 셀의 좌표가 null이면 리턴
@@ -293,8 +301,6 @@ public class Inventory : MonoBehaviour
 
         if (overedCellLocation.x >= 0 && overedCellLocation.y >= 0) //마우스 커서가 0,0 이상이면
         {
-            //해당 좌표 셀의 버튼 이미지의 컬러를 회색으로 바꿈
-            //infoArray[overedCellLocation.y, overedCellLocation.x].CalculateColor();
             CellHighlight(overedCellLocation, false); //기존 마우스 커서가 있는 아이템의 버튼 색상을 기본값으로 바꿔줌
         }
 
@@ -337,8 +343,8 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-    
-    //인벤 밖이다.
+
+    /// <summary> 인벤 밖이면 true, 인벤 안이면 false </summary>
     public static bool OutAllInvenBoundaryCheck()
     {
         foreach (Inventory current in inventoryList)
@@ -350,7 +356,7 @@ public class Inventory : MonoBehaviour
         }
         return true;
     }
-    //안에 있는 경우
+    /// <summary> 마우스 좌표가 인벤토리 안에 있으면 true </summary>
     bool InMousePosBoundaryCheck()
     {
         if(Input.mousePosition.x > leftUp.position.x  
@@ -364,7 +370,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-
+    /// <summary> 사용창 켜기 </summary>
     void UseUI(Vector2Int position, bool active)
     {
         use.transform.position = Input.mousePosition; //사용 UI를 마우스 커서 좌표로 이동
@@ -382,7 +388,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 버리기 </summary>
     public static void DropItem()
     {
-        GameManager.itemManager.DropItem(mouseItem.GetItemType(), mouseItem.amount);
+        GameManager.itemManager.DropItem(mouseItem.GetItemType(), mouseItem.amount);//바닥에 버릴 아이템 생성
         mouseItem.Clear();//마우스 아이템 비워줌
         use.SetActive(false);//사용창 비활성화
     }
@@ -390,33 +396,33 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 나누기 </summary>
     public void Divide()
     {
-        if (useItem.amount <=0)
+        if (useItem.amount <=0) //나눌 아이템이 없으면
         {
             use.SetActive(false);//사용창 비활성화
             return;
         }
-        if (useItem.amount == 1)
+        if (useItem.amount == 1) //나눌 아이템이 딱 1개면
         {
-            LeftClick(useItem.GetLocation());
+            LeftClick(useItem.GetLocation()); //좌클릭
             return;
         }
-        if (mouseItem.GetItemType() != Define.Item.None)
+        if (mouseItem.GetItemType() != Define.Item.None) //마우스 아이템이 존재하면
         {
-            PutItem(overedCellLocation, mouseItem.GetItemType(), mouseItem.amount);
-            mouseItem.SetItem(Define.Item.None, 0);
+            PutItem(overedCellLocation, mouseItem.GetItemType(), mouseItem.amount); //해당 셀에 아이템 밀어넣기 시도
+            mouseItem.SetItem(Define.Item.None, 0); //마우스 아이템 비워줌
         }
-        mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
-        useItem.SetAmount(useItem.GetRoot().amount - 1);
+        useItem.SetAmount(useItem.GetRoot().amount - 1); //사용창 아이템의 개수를 한개 빼준다
+        mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 사용창 아이템 한개로 설정한다.
         use.SetActive(false);//사용창 비활성화
     }
 
     /// <summary> 아이템 사용 </summary>
     public void Use()
     {
-        useItem.SetAmount(useItem.amount-1);
+        useItem.SetAmount(useItem.amount-1); //아이템 개수를 한개 줄임
         useItem.amountText.text = useItem.amount.ToString();
         Vector2Int rootLocation = useItem.GetLocation(); //루트 좌표는 해당 좌표 셀의 루트의 좌표이다
-        if (useItem.amount <= 0)
+        if (useItem.amount <= 0) //사용한 아이템 개수가 0개가 되면 비워줌
         {
             Vector2Int size = useItem.GetItemType().GetSize(); //해당 아이템 사이즈를 확장메서드에서 가져옴
             for (int x = 0; x < size.x; x++)
@@ -427,14 +433,14 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        useItem.GetItemType().Use();
+        useItem.GetItemType().Use(); //아이템 사용효과 실행
         use.SetActive(false);//사용창 비활성화
     }
     /// <summary> 아이템 버리기 </summary>
     public void Drop()
     {
-        GameManager.itemManager.DropItem(useItem.GetItemType(), useItem.amount);
-        Define.Item currentItem = SubItem(useItem.GetLocation(), out useItem.amount);
+        GameManager.itemManager.DropItem(useItem.GetItemType(), useItem.amount); //바닥에 아이템 생성
+        Define.Item currentItem = SubItem(useItem.GetLocation(), out useItem.amount); //소지품창에서 버린 아이템 개수만큼 빼서 지움
         use.SetActive(false);//사용창 비활성화
     }
 
@@ -473,10 +479,12 @@ public class Inventory : MonoBehaviour
         OverlapTime = rootList.Count; //겹친 횟수는 루트 리스트의 갯수이다.
         return result; //현재 공간에 아이템 넣을 수 있으면 true 반환
     }
+
+    /// <summary> 마우스 우클릭시 정보창 끄고 사용창 켜줌 </summary>
     public virtual void RightClick(Vector2Int pos)
     {
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
-        inpo.SetActive(false);
+        inpo.SetActive(false); 
         UseUI(pos, true);
         useItem = CheckItemRoot(pos);
     }
@@ -488,7 +496,7 @@ public class Inventory : MonoBehaviour
         {
             return; //탈출
         }
-        if (use.activeSelf)
+        if (use.activeSelf)//사용창이 켜져있으면 실행안함
         {
             return;
         }
@@ -620,6 +628,7 @@ public class Inventory : MonoBehaviour
         return result; //리스트 반환
     }
 
+    /// <summary> 인벤토리 내의 마우스 좌표</summary>
     Vector3 GetMousePositionFromInventory()
     {
         Vector3 result = Input.mousePosition; //마우스 좌표
