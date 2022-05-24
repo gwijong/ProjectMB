@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Dungeon : MonoBehaviour
 {
-    public int progress = -1;
+    public int progress = 0;
     public GameObject[] gate;
     public GameObject[] leftDoor;
     public GameObject[] rightDoor;
@@ -22,17 +21,17 @@ public class Dungeon : MonoBehaviour
     {
         if(enemy!=null && enemy.GetComponent<Character>().die == true)
         {
-            Debug.Log("¡¯¿‘");
-            gate[progress].GetComponent<BoxCollider>().enabled = false;
-            leftDoor[progress].SetActive(false);
-            rightDoor[progress].SetActive(false);
+            gate[progress - 1].GetComponent<BoxCollider>().enabled = false;
+            leftDoor[progress - 1].SetActive(false);
+            rightDoor[progress - 1].SetActive(false);
         }
     }
 
     public void Spawn()
     {
+        Vector3 pos = spawnPos[progress].position;
         enemy = Instantiate(enemys[progress]);
-        enemy.transform.position = spawnPos[progress].position;        
+        enemy.transform.position = pos;
         progress++;
     }
 }

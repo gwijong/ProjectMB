@@ -3320,7 +3320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8061976618965584168}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 6.0790315, y: -6.5104637, z: -3.0731683}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.4999998, y: 2.5, z: 2.4999998}
   m_Children:
   - {fileID: 5359178682476532092}
@@ -3398,6 +3398,8 @@ MonoBehaviour:
   die: 0
   angularSpeed: 1000
   acceleration: 100
+  gold: 0
+  respawn: 0
 --- !u!114 &8061976618965584171
 MonoBehaviour:
   m_ObjectHideFlags: 0
