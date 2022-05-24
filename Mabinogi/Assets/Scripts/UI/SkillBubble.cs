@@ -29,6 +29,14 @@ public class SkillBubble : MonoBehaviour
 
     void OnUpdate()
     {
+        if (character.die == true) //캐릭터가 죽으면 스킬 말풍선 비활성화
+        {
+            Reset();
+            skillImage.sprite = skillSprites[(int)character.GetloadedSkill().type]; //스킬 스프라이트 설정
+            backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
+            skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
+        }
+
         if (character.GetreservedSkill() == null) //준비중인 스킬이 없으면
         {
             Reset();

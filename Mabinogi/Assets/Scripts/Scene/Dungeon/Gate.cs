@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 던전 최초 진입 시 한번 실행되는 자동문 </summary>
 public class Gate : MonoBehaviour
 {
     public BoxCollider gateCollider;
