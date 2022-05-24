@@ -121,5 +121,6 @@ public class Define
         Next,
         Shop,
         Note,
+        Farewell,
     }
 }

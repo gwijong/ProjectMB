@@ -39,6 +39,8 @@ public class DialogTalk : MonoBehaviour
 
     InvenOpen inven;
 
+    public string nextScene;
+
     private void Start()
     {
         inven = GameObject.FindGameObjectWithTag("Inventory").gameObject.GetComponent<InvenOpen>();
@@ -140,6 +142,9 @@ public class DialogTalk : MonoBehaviour
             case Define.TalkButtonType.ToMain: // 메인 대화로
                 targetFuntion = MainButton;  //대화, 거래 등이 다 있는 처음 선택지로
                 break;
+            case Define.TalkButtonType.Farewell: // 메인 대화로
+                targetFuntion = FarewellButton;  //대화, 거래 등이 다 있는 처음 선택지로
+                break;
         }
 
         buttonBackgrounds[current].GetComponentInChildren<Button>().onClick.AddListener(targetFuntion); //버튼에 targetFuntion 이벤트 추가
@@ -162,6 +167,10 @@ public class DialogTalk : MonoBehaviour
         UI_Canvas.SetActive(true); //전투 UI 켜줌
         shopPos.anchoredPosition = new Vector2(2000, shopPos.anchoredPosition.y); //상점 인벤토리 끔
         inven.Close();
+        if (FindObjectOfType<Soulstream>() != null)
+        {
+            StartCoroutine(FindObjectOfType<Soulstream>().NaoDisappear());
+        }      
     }
 
     /// <summary> 대화 캔버스의 구성요소들을 전부 끔 </summary>
@@ -221,6 +230,12 @@ public class DialogTalk : MonoBehaviour
         StartCoroutine(Cor);
     }
 
+    /// <summary> 작별인사 </summary>
+    public void FarewellButton()
+    {
+        note.SetActive(false);
+        SetDialog(currentNPC.FarewellDialog);
+    }
 
     /// <summary> 선택지문용 버튼들 전부 끔 </summary>
     void SelectButtonOff()

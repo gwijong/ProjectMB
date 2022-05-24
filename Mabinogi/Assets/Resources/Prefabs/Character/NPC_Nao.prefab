@@ -4103,13 +4103,15 @@ MonoBehaviour:
   state: 2
   runSpeed: 0
   walkSpeed: 0
-  characterName: "\uB098\uC624"
+  characterName: "npc \uB098\uC624"
   nameYpos: 2
   data: {fileID: 11400000, guid: 33208f0bda2c44a4d9b52328ab86eb88, type: 2}
   focusTarget: {fileID: 0}
   die: 0
   angularSpeed: 1000
   acceleration: 100
+  gold: 0
+  respawn: 0
   appearanceDialogArray:
   - portrait: {fileID: 0}
     npcName: 
@@ -4136,7 +4138,7 @@ MonoBehaviour:
     - buttonName: "\uAC70\uB798\uB97C \uD55C\uB2E4"
       type: 3
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   mainDialogArray:
   - portrait: {fileID: 0}
@@ -4148,7 +4150,7 @@ MonoBehaviour:
     - buttonName: "\uAC70\uB798\uB97C \uD55C\uB2E4"
       type: 3
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   noteDialogArray:
   - portrait: {fileID: 0}
@@ -4157,7 +4159,7 @@ MonoBehaviour:
       \uAC8C \uC788\uC73C\uBA74 \uBB3C\uC5B4 \uC8FC\uC138\uC694."
     buttonArray:
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   shopDialogArray:
   - portrait: {fileID: 0}
@@ -4165,7 +4167,7 @@ MonoBehaviour:
     currentText: "\uBB3C\uAC74\uC774 \uB9CE\uB2F5\uB2C8\uB2E4."
     buttonArray:
     - buttonName: "\uAC70\uB798 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   personalStoryDialogArray:
   - portrait: {fileID: 0}
@@ -4195,7 +4197,7 @@ MonoBehaviour:
     currentText: "(\uC88B\uC740 \uB300\uD654 \uC600\uB358 \uAC83 \uAC19\uB2E4.)"
     buttonArray:
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   rumorsNearbyDialogArray:
   - portrait: {fileID: 0}
@@ -4230,7 +4232,7 @@ MonoBehaviour:
     currentText: "(\uC88B\uC740 \uB300\uD654 \uC600\uB358 \uAC83 \uAC19\uB2E4.)"
     buttonArray:
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   partTimeJobDialogArray:
   - portrait: {fileID: 0}
@@ -4282,7 +4284,7 @@ MonoBehaviour:
     currentText: "(\uC88B\uC740 \uB300\uD654 \uC600\uB358 \uAC83 \uAC19\uB2E4.)"
     buttonArray:
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
-      type: 1
+      type: 5
     portraitActive: 1
   skillDialogArray:
   - portrait: {fileID: 0}
@@ -4324,6 +4326,22 @@ MonoBehaviour:
   - portrait: {fileID: 0}
     npcName: 
     currentText: "(\uC88B\uC740 \uB300\uD654 \uC600\uB358 \uAC83 \uAC19\uB2E4.)"
+    buttonArray:
+    - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
+      type: 5
+    portraitActive: 1
+  farewellDialogArray:
+  - portrait: {fileID: 0}
+    npcName: 
+    currentText: "\uC5D0\uB9B0 \uC138\uC0C1\uC5D0\uC11C \uB2E4\uC2DC \uB9CC\uB0A0
+      \uC218 \uC788\uC744 \uAC83 \uAC19\uC544\uC694."
+    buttonArray:
+    - buttonName: "\uACC4\uC18D"
+      type: 2
+    portraitActive: 1
+  - portrait: {fileID: 0}
+    npcName: 
+    currentText: "\uADF8\uB7FC \uC548\uB155\uD788..."
     buttonArray:
     - buttonName: "\uB300\uD654 \uB05D\uB0B4\uAE30"
       type: 1

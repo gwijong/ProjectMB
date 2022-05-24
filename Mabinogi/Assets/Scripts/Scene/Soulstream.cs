@@ -33,8 +33,11 @@ public class Soulstream : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         whiteImage.color = new Color(1, 1, 1, 0);
+    }
 
-        yield return new WaitForSeconds(40.0f);
+    public IEnumerator NaoDisappear()
+    {
+        //yield return new WaitForSeconds(0f);
         for (int i = 0; i < 100; i++)
         {
             whiteImage.color = new Color(1, 1, 1, 0f + (float)i / 100);

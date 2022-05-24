@@ -22,6 +22,8 @@ public class NPC : Character
     [SerializeField] Dialog[] partTimeJobDialogArray;
     /// <summary> 스킬에 대하여(여행수첩) 대화 </summary>
     [SerializeField] Dialog[] skillDialogArray;
+    /// <summary> 작별 대화 </summary>
+    [SerializeField] Dialog[] farewellDialogArray;
     /// <summary> NPC 초상인물사진 </summary>
     public Sprite portrait;
 
@@ -44,6 +46,8 @@ public class NPC : Character
     public Dialog PartTimeJobDialog { get; private set; }
     /// <summary> 스킬에 대하여(여행수첩) 대화 </summary>
     public Dialog SkillDialog { get; private set; }
+    /// <summary> 작별 대화 </summary>
+    public Dialog FarewellDialog { get; private set; }
 
     public override Define.InteractType Interact(Interactable other)
     {
@@ -61,6 +65,7 @@ public class NPC : Character
         RumorsNearbyDialog = Dialog.CreateDialogList(portrait, characterName, rumorsNearbyDialogArray);  //근처의 소문
         PartTimeJobDialog = Dialog.CreateDialogList(portrait, characterName, partTimeJobDialogArray);  //아르바이트에 대해
         SkillDialog = Dialog.CreateDialogList(portrait, characterName, skillDialogArray); //스킬에 대해
+        FarewellDialog = Dialog.CreateDialogList(portrait, characterName, farewellDialogArray); //작별 인사
     }
 
     /// <summary> npc들마다 개인적인 이야기 근처의 소문 따로 가지고 있는거 wantText를 스위치 돌려서 본인만의 다이얼로그 켜게 함 </summary>

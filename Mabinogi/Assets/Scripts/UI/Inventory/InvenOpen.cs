@@ -16,7 +16,7 @@ public class InvenOpen : MonoBehaviour
         invenPos = inven.GetComponent<RectTransform>();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
-        //Close();
+        StartCoroutine(InvenClose());
     }
     void OnUpdate()
     {
@@ -50,5 +50,11 @@ public class InvenOpen : MonoBehaviour
         inven.SetActive(false);
         isOpen = false;
 
+    }
+
+    IEnumerator InvenClose()
+    {
+        yield return null;
+        Close();
     }
 }
