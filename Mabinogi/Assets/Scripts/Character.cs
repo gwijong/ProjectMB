@@ -816,7 +816,7 @@ public class Character : Movable
         yield return new WaitForSeconds(0.5f); //0.5초 대기
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         yield return new WaitForSeconds(5f);
-        Respawn();
+        //Respawn();
     }
 
     /// <summary> 캐릭터 부활</summary>
