@@ -56,7 +56,7 @@ public class Dungeon : MonoBehaviour
             Vector3 pos = spawnPos[progress].position;
             enemy = Instantiate(enemys[progress], spawnPos[progress]);
             //지정한 좌표에서 살짝 랜덤한 위치에 몬스터 생성함
-            enemy.transform.position = new Vector3(pos.x+Random.Range(-spawnAmount[progress], spawnAmount[progress]), pos.y, pos.z + Random.Range(-spawnAmount[progress], spawnAmount[progress]));
+            enemy.transform.position = new Vector3(pos.x+Random.Range(-spawnAmount[progress], spawnAmount[progress])*2, pos.y, pos.z + Random.Range(-spawnAmount[progress], spawnAmount[progress])*2);
             enemyList.Add(enemy); //전멸했는지 체크하는 리스트에 추가
         }
         progress++;//던전 진행도 더하기
