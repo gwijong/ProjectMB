@@ -836,6 +836,7 @@ public class Character : Movable
     /// <summary> 캐릭터 부활</summary>
     public void Respawn()
     {
+        isRespawnAIStart = true;
         waitCount = 0;
         die = false;
         hitPoint.Current = hitPoint.Max;
