@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 1955190141864609441}
   - component: {fileID: 1955190141864609470}
   - component: {fileID: 1955190141864609440}
+  - component: {fileID: 1732739392}
   m_Layer: 0
   m_Name: '@Manager'
   m_TagString: Untagged
@@ -410,6 +411,18 @@ MonoBehaviour:
   bear01_natural_attack_counter: {fileID: 8300000, guid: 07bdef21977b7494b8b1310c131343e2, type: 3}
   bear01_natural_blowaway: {fileID: 8300000, guid: 6607740447471af4898369942c5941e3, type: 3}
   bear01_natural_hit: {fileID: 8300000, guid: 39608999363415940a0e897cf7525657, type: 3}
+--- !u!114 &1732739392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955190141864609445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6807ef2ad8c9d7e4387a2b8a3799cf38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1955190141881838367
 GameObject:
   m_ObjectHideFlags: 0
