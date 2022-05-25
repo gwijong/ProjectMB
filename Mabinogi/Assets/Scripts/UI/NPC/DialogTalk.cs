@@ -34,7 +34,6 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 현재 실행중인 코루틴 </summary>
     IEnumerator Cor;
     /// <summary> 상점 인벤토리 </summary>
-
     InvenOpen inven;
 
     public string nextScene;

@@ -26,6 +26,13 @@ public class StoreInventory : Inventory
             SellList sellList;
             if (FindObjectOfType<PlayerController>().target.TryGetComponent(out sellList) == true && isSet == false)
             {
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+                        infoArray[j, i].Clear();
+                    }
+                }
                 sellList = FindObjectOfType<PlayerController>().target.GetComponent<SellList>();
                 for (int i = 0; i < sellList.sellItemList.Count; i++)
                 {

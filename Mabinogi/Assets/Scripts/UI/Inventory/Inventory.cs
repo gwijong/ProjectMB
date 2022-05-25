@@ -191,7 +191,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 마우스가 올려진 셀 위치</summary>
     public Vector2Int overedCellLocation = new Vector2Int(-1, -1);
     /// <summary> [?,?] 칸의 정보</summary>
-    protected CellInfo[,] infoArray;
+    public CellInfo[,] infoArray;
     /// <summary> 마우스가 집고있는 아이템</summary>
     public static CellInfo mouseItem { get; private set; }
     /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
@@ -208,6 +208,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 게임 내 모든 플레이어의 소지품창 리스트 </summary>
     public static List<Inventory> playerInventoryList = new List<Inventory>();
     public static StoreInventory store { get; protected set; }
+    /// <summary> 소지품창 주인 플레이어 </summary>
     public Character owner;
 
     /// <summary> 인벤토리 소멸자 </summary>
