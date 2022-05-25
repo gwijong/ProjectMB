@@ -57,7 +57,10 @@ public class Define
     /// <summary> 씬 정의</summary>
     public enum Scene
     {
+        Soulstream,
+        Intro,
         World,
+        Dungeon,
     }
 
     /// <summary> 이동 상태 </summary>
@@ -86,6 +89,8 @@ public class Define
     {
         None,
         Nao,
+        Goro,
+        Tarlach,
     }
     /// <summary> 효과음 </summary>
     public enum SoundEffect 

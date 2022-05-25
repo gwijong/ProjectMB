@@ -25,7 +25,7 @@ public class Soulstream : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         sfxPlayer.GetComponent<AudioSource>().clip = naoStage;
         sfxPlayer.GetComponent<AudioSource>().Play();
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(7.0f);
         bgmPlayer.GetComponent<AudioSource>().clip = naoAppear;
         bgmPlayer.GetComponent<AudioSource>().Play();
         for (int i = 0; i < 20; i++)

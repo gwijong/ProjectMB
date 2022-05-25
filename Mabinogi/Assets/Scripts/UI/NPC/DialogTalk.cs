@@ -154,13 +154,15 @@ public class DialogTalk : MonoBehaviour
         currentNPC = wantNPC; // NPC 대입
         OpenTalkCanvas();//대화창 열기
         SetDialog(currentNPC.AppearanceDialog);//NPC 최초 대화 시작
-        GameManager.soundManager.PlayBgmPlayer(currentNPC.npc);//나오 배경음악;
+        GameManager.soundManager.PlayBgmPlayer(currentNPC.npc);//NPC 배경음악;
+        GameManager.soundManager.effectPlayer.volume = 0.15f;
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
     public void EndTalkButton()
     {
-        GameManager.soundManager.PlayBgmPlayer(Define.NPC.None);
+        GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        GameManager.soundManager.effectPlayer.volume = 0.5f;
         SelectButtonOff(); //모든 버튼 꺼줌
         CloseTalkCanvas(); //대화 캔버스 꺼줌
         UI_Canvas.SetActive(true); //전투 UI 켜줌

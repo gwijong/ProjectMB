@@ -7,16 +7,46 @@ public class SoundManager : MonoBehaviour
 {
     [SerializeField]
     /// <summary> 배경음 오디오소스 </summary>
-    AudioSource bgmPlayer;
+    public AudioSource bgmPlayer;
 
     [SerializeField]
     /// <summary> 효과음 오디오소스 </summary>
-    AudioSource effectPlayer;
+    public AudioSource effectPlayer;
 
     [Tooltip("나오 배경음악")]
     [SerializeField]
     /// <summary> 나오 배경음악 </summary>
-    AudioClip NaoBgm;
+    AudioClip naoBgm;
+
+    [Tooltip("고로 배경음악")]
+    [SerializeField]
+    /// <summary> 고로 배경음악 </summary>
+    AudioClip goroBgm;
+
+    [Tooltip("타르라크 배경음악")]
+    [SerializeField]
+    /// <summary> 타르라크 배경음악 </summary>
+    AudioClip tarlachBgm;
+
+    [Tooltip("소울스트림 배경음악")]
+    [SerializeField]
+    /// <summary> 소울스트림 배경음악 </summary>
+    AudioClip soulstreamBgm;
+
+    [Tooltip("인트로 배경음악")]
+    [SerializeField]
+    /// <summary> 인트로 배경음악 </summary>
+    AudioClip introBgm;
+
+    [Tooltip("월드 배경음악")]
+    [SerializeField]
+    /// <summary> 월드 배경음악 </summary>
+    AudioClip worldBgm;
+
+    [Tooltip("던전 배경음악")]
+    [SerializeField]
+    /// <summary> 던전 배경음악 </summary>
+    AudioClip dungeonBgm;
 
     [Tooltip("주먹 평타")]
     [SerializeField]
@@ -97,13 +127,45 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     /// <summary> 레벨업 </summary>
     AudioClip character_levelup;
-
+    private void Start()
+    {
+        GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
     public void PlayBgmPlayer(Define.NPC audioClipName)
     {
         switch (audioClipName)
         {
             case Define.NPC.Nao:
-                bgmPlayer.clip = NaoBgm;
+                bgmPlayer.clip = naoBgm;
+                break;
+            case Define.NPC.Goro:
+                bgmPlayer.clip = goroBgm;
+                break;
+            case Define.NPC.Tarlach:
+                bgmPlayer.clip = tarlachBgm;
+                break;
+            default:
+                bgmPlayer.clip = null;
+                break;
+        }
+        bgmPlayer.Play();
+    }
+
+    public void PlayBgmPlayer(Define.Scene audioClipName)
+    {
+        switch (audioClipName)
+        {
+            case Define.Scene.Soulstream:
+                bgmPlayer.clip = null;
+                break;
+            case Define.Scene.Intro:
+                bgmPlayer.clip = introBgm;
+                break;
+            case Define.Scene.World:
+                bgmPlayer.clip = worldBgm;
+                break;
+            case Define.Scene.Dungeon:
+                bgmPlayer.clip = dungeonBgm;
                 break;
             default:
                 bgmPlayer.clip = null;

@@ -827,7 +827,7 @@ public class Character : Movable
         }
         else
         {
-            gameObject.transform.position = new Vector3(500, 500, 500);
+            //gameObject.transform.position = new Vector3(500, 500, 500);
             yield return null;
             MoveStop(true);
         }

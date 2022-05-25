@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Tarlach : NPC
 {
-
+    protected override void Start()
+    {
+        base.Start();
+        npc = Define.NPC.Tarlach;
+    }
 }
