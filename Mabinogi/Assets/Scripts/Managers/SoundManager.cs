@@ -12,7 +12,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     /// <summary> 효과음 오디오소스 </summary>
     AudioSource effectPlayer;
-    
+
+    [Tooltip("나오 배경음악")]
+    [SerializeField]
+    /// <summary> 나오 배경음악 </summary>
+    AudioClip NaoBgm;
+
     [Tooltip("주먹 평타")]
     [SerializeField]
     /// <summary> 주먹 평타 </summary>
@@ -93,7 +98,19 @@ public class SoundManager : MonoBehaviour
     /// <summary> 레벨업 </summary>
     AudioClip character_levelup;
 
-
+    public void PlayBgmPlayer(Define.NPC audioClipName)
+    {
+        switch (audioClipName)
+        {
+            case Define.NPC.Nao:
+                bgmPlayer.clip = NaoBgm;
+                break;
+            default:
+                bgmPlayer.clip = null;
+                break;
+        }
+        bgmPlayer.Play();
+    }
     //예시: GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
     /// <summary> 사운드 이펙트 재생</summary>
     public void PlaySfxPlayer(Define.SoundEffect audioClipName)
@@ -147,6 +164,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case Define.SoundEffect.character_levelup:
                 effectPlayer.clip = character_levelup;
+                break;
+            default:
+                effectPlayer.clip = null;
                 break;
         }
         effectPlayer.Play();

@@ -124,10 +124,11 @@ public class Character : Movable
     protected float acceleration = 100f;
     /// <summary> 소지한 골드 </summary>
     public int gold;
-    /// <summary> 부활했는지 체크 </summary>
+    /// <summary> 인공지능 재시작용 부활 체크 </summary>
+    public bool isRespawnAIStart = false;
+    /// <summary> 계속 부활시킬건지 체크 </summary>
+    [Tooltip("체크하면 계속 부활함")]
     public bool respawn = false;
-    
-
 
     #endregion
 
@@ -816,7 +817,20 @@ public class Character : Movable
         yield return new WaitForSeconds(0.5f); //0.5초 대기
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         yield return new WaitForSeconds(5f);
-        //Respawn();
+        if(gameObject.layer== (int)Define.Layer.Player)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("World");
+        }
+        else if(respawn == true)
+        {           
+            Respawn();
+        }
+        else
+        {
+            gameObject.transform.position = new Vector3(500, 500, 500);
+            yield return null;
+            MoveStop(true);
+        }
     }
 
     /// <summary> 캐릭터 부활</summary>
@@ -829,9 +843,8 @@ public class Character : Movable
         Vector3 spawnPosition = GetRandomPointOnNavMesh(transform.position, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
         spawnPosition += Vector3.up * 2;  //바닥에서 2만큼 y좌표 위로 올리기
         transform.position = spawnPosition;
-        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬     
-        MoveTo(spawnPosition);//내비메시 이동지점 초기화
-        respawn = true; //인공지능 시작
+        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬
+        MoveStop(true);
     }
 
     //내비메시 위의 랜덤한 위치를 반환하는 메서드

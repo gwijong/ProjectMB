@@ -7,16 +7,18 @@ public class InvenOpen : MonoBehaviour
 {
     /// <summary> 인벤토리 창</summary>
     public GameObject inven;
+    /// <summary> 상점 창</summary>
+    public GameObject store;
     /// <summary> 인벤토리 창이 열려있는지 체크</summary>
     public bool isOpen = false;
-    // Update is called once per frame
-    RectTransform invenPos;
+    /// <summary> 상점창이 열려있는지 체크</summary>
+    public bool isStoreOpen = false;
+
     private void Start()
     {
-        invenPos = inven.GetComponent<RectTransform>();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
-        StartCoroutine(InvenClose());
+        StartCoroutine(SetInven());
     }
     void OnUpdate()
     {
@@ -42,6 +44,14 @@ public class InvenOpen : MonoBehaviour
         inven.SetActive(isOpen);
     }
 
+    /// <summary> 상점 열기</summary>
+    public void StoreOpen()
+    {
+        isStoreOpen = !isStoreOpen;
+        store.SetActive(isStoreOpen);
+    }
+
+    /// <summary> 인벤토리 닫기</summary>
     public void Close()
     {
 
@@ -49,12 +59,22 @@ public class InvenOpen : MonoBehaviour
         Inventory.use.SetActive(false);//사용창 닫기
         inven.SetActive(false);
         isOpen = false;
-
     }
-
-    IEnumerator InvenClose()
+    /// <summary> 상점 닫기</summary>
+    public void StoreClose()
     {
+        store.SetActive(false);
+        isStoreOpen = false;
+    }
+    /// <summary> 시작할때 인벤토리, 상점 인벤토리 위치 세팅</summary>
+    IEnumerator SetInven()
+    {
+        inven.transform.position = new Vector3(inven.transform.position.x-1000, inven.transform.position.y, inven.transform.position.z);
+        store.transform.position = new Vector3(store.transform.position.x-1000, store.transform.position.y, store.transform.position.z);
         yield return null;
-        Close();
+        Inventory.use.SetActive(false);//사용창 닫기
+        inven.SetActive(false);
+        isOpen = false;
+        StoreClose();
     }
 }

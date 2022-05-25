@@ -833,6 +833,7 @@ GameObject:
   - component: {fileID: 2894505646312710799}
   - component: {fileID: 2894505646312710800}
   - component: {fileID: 2894505646312710801}
+  - component: {fileID: 318429634}
   m_Layer: 12
   m_Name: Goro
   m_TagString: NPC
@@ -1010,7 +1011,7 @@ MonoBehaviour:
     portraitActive: 1
   noteDialogArray:
   - portrait: {fileID: 0}
-    npcName: "\uACE0"
+    npcName: "\uACE0\uB85C"
     currentText: "\uC800\uC640 \uC774\uC57C\uAE30\uB97C \uB098\uB204\uACE0 \uC2F6\uB2E4\uAD6C\uC694?
       \uAD81\uAE08\uD558\uC2E0 \uB0B4\uC6A9\uC774 \uC788\uC73C\uC2DC\uBA74 \uBB3C\uC5B4\uBCF4\uC138\uC694."
     buttonArray:
@@ -1099,6 +1100,19 @@ MonoBehaviour:
     portraitActive: 1
   farewellDialogArray: []
   portrait: {fileID: 21300000, guid: 6486c4b44ad141c45bc2eb8a98694605, type: 3}
+--- !u!114 &318429634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2894505646312710802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6626f0a02a0f0e488559fbd2f71f641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellItemList: 0500000006000000
 --- !u!1 &3025272818964980106
 GameObject:
   m_ObjectHideFlags: 0

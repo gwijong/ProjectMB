@@ -82,7 +82,11 @@ public class Define
         Wool,
         Firewood,
     }
-
+    public enum NPC
+    {
+        None,
+        Nao,
+    }
     /// <summary> È¿°úÀ½ </summary>
     public enum SoundEffect 
     {

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject player;
     public Character playerCharacter { get; private set; }
     /// <summary>마우스로 클릭한 타겟</summary>
-    Interactable target;
+    public Interactable target { get;private set; }
     /// <summary>레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 

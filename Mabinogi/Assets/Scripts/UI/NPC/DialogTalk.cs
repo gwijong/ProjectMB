@@ -34,8 +34,6 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 현재 실행중인 코루틴 </summary>
     IEnumerator Cor;
     /// <summary> 상점 인벤토리 </summary>
-    public GameObject Shop;
-    RectTransform shopPos;
 
     InvenOpen inven;
 
@@ -44,7 +42,6 @@ public class DialogTalk : MonoBehaviour
     private void Start()
     {
         inven = GameObject.FindGameObjectWithTag("Inventory").gameObject.GetComponent<InvenOpen>();
-        shopPos = Shop.GetComponent<RectTransform>();
     }
 
     private void Update()
@@ -157,15 +154,17 @@ public class DialogTalk : MonoBehaviour
         currentNPC = wantNPC; // NPC 대입
         OpenTalkCanvas();//대화창 열기
         SetDialog(currentNPC.AppearanceDialog);//NPC 최초 대화 시작
+        GameManager.soundManager.PlayBgmPlayer(currentNPC.npc);//나오 배경음악;
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
     public void EndTalkButton()
     {
+        GameManager.soundManager.PlayBgmPlayer(Define.NPC.None);
         SelectButtonOff(); //모든 버튼 꺼줌
         CloseTalkCanvas(); //대화 캔버스 꺼줌
         UI_Canvas.SetActive(true); //전투 UI 켜줌
-        shopPos.anchoredPosition = new Vector2(2000, shopPos.anchoredPosition.y); //상점 인벤토리 끔
+        inven.StoreClose();
         inven.Close();
         if (FindObjectOfType<Soulstream>() != null)
         {
@@ -191,10 +190,13 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
     {
-        shopPos.anchoredPosition = new Vector2(0, shopPos.anchoredPosition.y); 
         if (inven.isOpen == false)
         {
             inven.Open();
+        }
+        if (inven.isStoreOpen == false)
+        {
+            inven.StoreOpen();
         }
         SetDialog(currentNPC.ShopDialog);
     }

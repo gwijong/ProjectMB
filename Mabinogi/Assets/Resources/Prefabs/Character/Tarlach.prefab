@@ -1354,6 +1354,7 @@ GameObject:
   - component: {fileID: 3963469460014528726}
   - component: {fileID: 3963469460014528721}
   - component: {fileID: 3963469460014528751}
+  - component: {fileID: 3564406480970616529}
   m_Layer: 12
   m_Name: Tarlach
   m_TagString: NPC
@@ -1577,6 +1578,19 @@ MonoBehaviour:
     portraitActive: 1
   farewellDialogArray: []
   portrait: {fileID: 21300000, guid: 20ccda947380df8449853772bcb012eb, type: 3}
+--- !u!114 &3564406480970616529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963469460014528720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6626f0a02a0f0e488559fbd2f71f641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellItemList: 0100000004000000
 --- !u!1 &4074889401566027548
 GameObject:
   m_ObjectHideFlags: 0

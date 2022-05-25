@@ -3989,6 +3989,7 @@ GameObject:
   - component: {fileID: 5277366899507070987}
   - component: {fileID: 5277366899507070986}
   - component: {fileID: 5204573649997806150}
+  - component: {fileID: 3659099879559519274}
   m_Layer: 12
   m_Name: NPC_Nao
   m_TagString: NPC
@@ -4347,6 +4348,19 @@ MonoBehaviour:
       type: 1
     portraitActive: 1
   portrait: {fileID: 21300000, guid: b62ffed5817cad0479c179f3ba6a1b73, type: 3}
+--- !u!114 &3659099879559519274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5277366899507070984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6626f0a02a0f0e488559fbd2f71f641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellItemList: 02000000030000000700000008000000
 --- !u!1 &5278133766003060140
 GameObject:
   m_ObjectHideFlags: 0

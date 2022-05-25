@@ -26,7 +26,8 @@ public class NPC : Character
     [SerializeField] Dialog[] farewellDialogArray;
     /// <summary> NPC 초상인물사진 </summary>
     public Sprite portrait;
-
+    /// <summary> NPC 타입 </summary>
+    public Define.NPC npc;
 
     /// <summary> 대화 처음 시작 시 외형묘사 대화 </summary>
     public Dialog AppearanceDialog { get; private set; }
@@ -54,7 +55,7 @@ public class NPC : Character
         return Define.InteractType.Talk; //대화 리턴
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         AppearanceDialog = Dialog.CreateDialogList(portrait, characterName, appearanceDialogArray);//외형 묘사 대사
         MainDialog = Dialog.CreateDialogList(portrait, characterName, mainDialogArray); //메인 선택지 대사

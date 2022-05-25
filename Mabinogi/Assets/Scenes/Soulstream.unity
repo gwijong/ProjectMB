@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: f79cd5e4286c84c4398ee119f4cd9be5, type: 2}
+--- !u!1 &53647779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1955190141731041782, guid: c527109b577374548a90695a0d6f7746, type: 3}
+  m_PrefabInstance: {fileID: 2063646156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &74944224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -313,11 +318,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &523451808 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3428006642359393456, guid: 4572ae44ec989914b968a3979a5fe751, type: 3}
-  m_PrefabInstance: {fileID: 74944224}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &551122701
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,6 +630,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1096980494 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1955190141881838367, guid: c527109b577374548a90695a0d6f7746, type: 3}
+  m_PrefabInstance: {fileID: 2063646156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1250790549
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,6 +710,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nao: {fileID: 5277366899507070984, guid: ed540777af5dfe749a4a28f25e3a6513, type: 3}
   whiteImage: {fileID: 598675585}
+  bgmPlayer: {fileID: 53647779}
+  sfxPlayer: {fileID: 1096980494}
+  naoAppear: {fileID: 8300000, guid: 03bf221fd5570ee439633721d253ed42, type: 3}
+  naoStage: {fileID: 8300000, guid: 0ec762a50a9c0ec4bbef568b7c05c034, type: 3}
 --- !u!4 &1765116029
 Transform:
   m_ObjectHideFlags: 0
@@ -914,10 +923,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 173347882}
     - target: {fileID: 1955190141864609443, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: talkCanvas
-      value: 
-      objectReference: {fileID: 523451808}
-    - target: {fileID: 1955190141864609443, guid: c527109b577374548a90695a0d6f7746, type: 3}
       propertyPath: talkCanvasOutline
       value: 
       objectReference: {fileID: 74944225}
@@ -1006,62 +1011,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1955190141864609468, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142461618221, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.8207547
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.8207547
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.8207547
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646206, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9659258
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646206, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.2588191
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646206, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646206, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646206, guid: c527109b577374548a90695a0d6f7746, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}

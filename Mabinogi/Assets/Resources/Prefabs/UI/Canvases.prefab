@@ -4230,7 +4230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inven: {fileID: 3428006640466592251}
+  store: {fileID: 3428006640750443722}
   isOpen: 0
+  isStoreOpen: 0
 --- !u!1 &3428006641822023160
 GameObject:
   m_ObjectHideFlags: 0
@@ -4970,7 +4972,6 @@ MonoBehaviour:
   - {fileID: 3428006642268000472}
   note: {fileID: 3428006640620869729}
   UI_Canvas: {fileID: 3428006642401135363}
-  Shop: {fileID: 3428006640750443722}
   nextScene: 
 --- !u!1 &3428006642228373008
 GameObject:
@@ -5740,7 +5741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 183718674750874458, guid: acd66cecfd8b8e3449fec35c6110700f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 183718674750874458, guid: acd66cecfd8b8e3449fec35c6110700f, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5779,7 +5780,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7391283644260514316, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
       propertyPath: m_Name
-      value: Shop
+      value: Store
       objectReference: {fileID: 0}
     - target: {fileID: 7391283644260514317, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
       propertyPath: m_Pivot.x
@@ -5847,7 +5848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7391283644260514317, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 2000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 7391283644260514317, guid: ce591096205dc9540bba7f0aeb1dabb2, type: 3}
       propertyPath: m_AnchoredPosition.y

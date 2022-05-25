@@ -34,10 +34,10 @@ public class EnemyDummyAI : AI
     }
     void OnUpdate()
     {
-        if (character.respawn == true) //캐릭터가 리스폰했으면
+        if (character.isRespawnAIStart == true) //캐릭터가 리스폰했으면
         {
             Reset();
-            character.respawn = false;
+            character.isRespawnAIStart = false;
             aiStart = false; //인공지능 시작
             StartCoroutine(searchCoroutine); //추적 시작
 

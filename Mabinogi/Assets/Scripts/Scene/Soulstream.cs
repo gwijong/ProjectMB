@@ -7,6 +7,10 @@ public class Soulstream : MonoBehaviour
 {
     public GameObject nao;
     public Image whiteImage;
+    public GameObject bgmPlayer;
+    public GameObject sfxPlayer;
+    public AudioClip naoAppear;
+    public AudioClip naoStage;
     void Start()
     {
         StartCoroutine(NaoAppear());
@@ -18,7 +22,12 @@ public class Soulstream : MonoBehaviour
     }
     IEnumerator NaoAppear()
     {
+        yield return new WaitForSeconds(0.5f);
+        sfxPlayer.GetComponent<AudioSource>().clip = naoStage;
+        sfxPlayer.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(4.0f);
+        bgmPlayer.GetComponent<AudioSource>().clip = naoAppear;
+        bgmPlayer.GetComponent<AudioSource>().Play();
         for (int i = 0; i < 20; i++)
         {
             whiteImage.color = new Color(1, 1, 1, 0f + (float)i / 20);

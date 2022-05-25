@@ -18,10 +18,39 @@ public class StoreInventory : Inventory
 
     ItemData[] itemData; //아이템 데이터들 가져옴
 
+    bool isSet = false;
+    private void OnEnable()
+    {
+        if (FindObjectOfType<PlayerController>().target != null)
+        {
+            SellList sellList;
+            if (FindObjectOfType<PlayerController>().target.TryGetComponent(out sellList) == true && isSet == false)
+            {
+                sellList = FindObjectOfType<PlayerController>().target.GetComponent<SellList>();
+                for (int i = 0; i < sellList.sellItemList.Count; i++)
+                {
+                    AddItem(sellList.sellItemList[i], 1);
+                }
+                isSet = true;
+            }
+        }
+    }
+    private void OnDisable()
+    {
+        isSet = false;
+        for (int i = 0; i<width; i++)
+        {
+            for(int j = 0; j<height; j++)
+            {
+                infoArray[j, i].SetItem(Define.Item.None, 0);
+            }
+        }
+    }
+
     void OnDestroy()
     {
         inventoryList.Remove(this);
-    }
+    }  
 
     protected override void Start()
     {
@@ -31,14 +60,6 @@ public class StoreInventory : Inventory
         buyInstance = CreateUI(buyInstance, buyUI); //구매창 인스턴스 생성
         sellInstance = CreateUI(sellInstance, sellUI); //판매창 인스턴스 생성
         itemData = GameManager.itemManager.data; //아이템 데이터들 가져옴
-        AddItem(Define.Item.Wool, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.Fruit, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.Bottle, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.BottleWater, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.Egg, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.Firewood, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.LifePotion, 1); //상점 인벤토리 실험용 기본 아이템
-        AddItem(Define.Item.ManaPotion, 1); //상점 인벤토리 실험용 기본 아이템
     }
 
     /// <summary> 구매, 판매 UI 게임오브젝트 생성 </summary>
