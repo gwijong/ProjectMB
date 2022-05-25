@@ -21,4 +21,14 @@ public class Fox : Character
     {
         base.OnUpdate();
     }
+
+    public void Blowaway()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.none);// 효과음
+    }
+    /// <summary> 맞기 효과음 </summary>
+    public void Hit()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.none);// 효과음
+    }
 }

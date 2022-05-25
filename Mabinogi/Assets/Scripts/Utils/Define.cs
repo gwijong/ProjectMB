@@ -116,10 +116,20 @@ public class Define
     /// <summary> NPC효과음 </summary>
     public enum NPCSoundEffect
     {
+        none,
         dog01_natural_stand_offensive,
+        dog01_natural_blowaway,
+        dog01_natural_hit,
         wolf01_natural_stand_offensive,
         sheep,
         chicken_fly,
+        chicken_hit,
+        chicken_down,
+        bear01_natural_attack_smash,
+        bear01_natural_hit,
+        bear01_natural_blowaway,
+        bear01_natural_attack_counter,
+        bear01_natural_stand_offensive,
     }
 
     /// <summary> NPC 대화 버튼 종류 </summary>

@@ -22,9 +22,30 @@ public class Bear : Character
     {
         base.OnUpdate();
     }
-
-    public void Bark()
+    /// <summary> 전투모드 효과음 </summary>
+    public void StandOffensive()
     {
-        //GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.wolf01_natural_stand_offensive);// 효과음
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_stand_offensive);// 효과음
     }
+    /// <summary> 스매시 효과음 </summary>
+    public void Samsh()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_attack_smash);// 효과음
+    }
+    /// <summary> 카운터 효과음 </summary>
+    public void Counter()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_attack_counter);// 효과음
+    }
+    /// <summary> 다운 효과음 </summary>
+    public void Blowaway()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_blowaway);// 효과음
+    }
+    /// <summary> 맞기 효과음 </summary>
+    public void Hit()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_hit);// 효과음
+    }
+
 }

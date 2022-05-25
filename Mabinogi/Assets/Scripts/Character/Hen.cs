@@ -36,4 +36,15 @@ public class Hen : Character
     {
         GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.chicken_fly);//닭 나는 효과음
     }
+
+    /// <summary> 다운 효과음 </summary>
+    public void Blowaway()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.chicken_down);// 효과음
+    }
+    /// <summary> 맞기 효과음 </summary>
+    public void Hit()
+    {
+        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.chicken_hit);// 효과음
+    }
 }
