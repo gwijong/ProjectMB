@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using System.IO;
-
+using UnityEngine.SceneManagement;
 [Serializable]
 public class InvenData
 {
@@ -17,20 +17,44 @@ public class SaveData : MonoBehaviour
     InvenData invendata;
     /// <summary> 플레이어 인벤토리</summary>
     PlayerInventory playerInventory;
+
+    string readJson;
+    InvenData saveFile;
     void Start()
     {
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
         playerInventory = FindObjectOfType<PlayerInventory>();
 
-        string readJson = File.ReadAllText(Application.streamingAssetsPath + "/savefile.txt");
-        InvenData saveFile = JsonUtility.FromJson<InvenData>(readJson);
+        readJson = File.ReadAllText(Application.streamingAssetsPath + "/savefile.txt");
+        saveFile = JsonUtility.FromJson<InvenData>(readJson);
 
+        //LoadData();
+
+    }
+    /// <summary> 씬 시작 시 실행</summary>
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Invoke("LoadData", 0.1f);
+    }
+
+    private void LoadData()
+    {
         for (int i = 0; i < System.Enum.GetValues(typeof(Define.Item)).Length; i++)//아이템 종류만큼 반복
         {
-            PlayerInventory.GetItem((Define.Item)(i+1), saveFile.itemAmount[i]);//각 아이템 종류마다 저장된 개수만큼 소지품창에 추가
+            PlayerInventory.GetItem((Define.Item)(i + 1), saveFile.itemAmount[i]);//각 아이템 종류마다 저장된 개수만큼 소지품창에 추가
         }
         playerInventory.owner.gold = saveFile.gold; //저장한 골드 불러옴
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     /// <summary> 저장 반복</summary>

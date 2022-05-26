@@ -36,6 +36,7 @@ public class StoreInventory : Inventory
                 }
             }
         }
+
     }
 
     //상점 아이템을 비움

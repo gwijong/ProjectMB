@@ -193,7 +193,7 @@ public class Inventory : MonoBehaviour
     /// <summary> [?,?] 칸의 정보</summary>
     public CellInfo[,] infoArray;
     /// <summary> 마우스가 집고있는 아이템</summary>
-    public static CellInfo mouseItem { get; private set; }
+    public static CellInfo mouseItem;
     /// <summary> 마우스가 집고있는 아이템 좌표 </summary>
     public static RectTransform mouseItemPos;
 
@@ -217,23 +217,23 @@ public class Inventory : MonoBehaviour
         inventoryList.Remove(this);
         playerInventoryList.Remove(this);
     }
+
     protected virtual void Start()
     {
-        if (mouseItem == null) //마우스가 집고있는 아이템이 없으면 아래에서 할당해줌
-        {
-            GameObject currentCell = Instantiate(mouseCell); //마우스 계속 따라다니는 빈 셀 지정
-            currentCell.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 셀의 부모를 인벤토리로 지정
-            currentCell.tag = "MouseCell"; //마우스 셀의 태그를 지정
-            mouseItemPos = currentCell.GetComponent<RectTransform>(); //마우스 셀의 RectTransform 대입
-            mouseItem = new CellInfo(new Vector2Int(0,0)); //마우스아이템 인스턴스 생성
-            mouseItem.amountText = currentCell.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
-            mouseItem.buttonImage = currentCell.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
-            mouseItem.itemImage = currentCell.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
-            mouseItem.itemImage.rectTransform.pivot = Vector2.zero; // 마우스따라다니는 아이템 이미지 중심점을 0,0로 맞춤
-            mouseItem.SetItem(Define.Item.None,0);//마우스가 쥐고 있는 아이템을 비워주고 0개로 설정
-            mouseItem.buttonImage.enabled = false; //버튼 이미지(아이템 칸) 끔
-            currentCell.GetComponent<Button>().enabled = false; //버튼 컴포넌트 끔
-        }
+ 
+        GameObject currentCellGameObject = Instantiate(mouseCell); //마우스 계속 따라다니는 빈 셀 지정
+        currentCellGameObject.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 셀의 부모를 인벤토리로 지정
+        currentCellGameObject.tag = "MouseCell"; //마우스 셀의 태그를 지정
+        mouseItemPos = currentCellGameObject.GetComponent<RectTransform>(); //마우스 셀의 RectTransform 대입
+        mouseItem = new CellInfo(new Vector2Int(0,0)); //마우스아이템 인스턴스 생성
+        mouseItem.amountText = currentCellGameObject.GetComponentInChildren<Text>();//셀에서 텍스트 컴포넌트 가져오기
+        mouseItem.buttonImage = currentCellGameObject.GetComponent<Image>(); //셀에서 버튼 이미지 컴포넌트 가져오기
+        mouseItem.itemImage = currentCellGameObject.transform.GetChild(0).GetComponent<Image>();//셀에서 아이템 이미지 컴포넌트 가져오기
+        mouseItem.itemImage.rectTransform.pivot = Vector2.zero; // 마우스따라다니는 아이템 이미지 중심점을 0,0로 맞춤
+        mouseItem.SetItem(Define.Item.None,0);//마우스가 쥐고 있는 아이템을 비워주고 0개로 설정
+        mouseItem.buttonImage.enabled = false; //버튼 이미지(아이템 칸) 끔
+        currentCellGameObject.GetComponent<Button>().enabled = false; //버튼 컴포넌트 끔
+        
 
         if(inpo == null)
         {
@@ -287,7 +287,7 @@ public class Inventory : MonoBehaviour
             current.itemImage.transform.SetParent(parent.transform); //아이템 이미지를 인벤토리 창의 하위 오브젝트로 지정
             current.amountText.transform.SetParent(parent.transform);//아이템 텍스트를 인벤토리 창의 하위 오브젝트로 지정
             current.SetItem(Define.Item.None, 0); //인벤토리 창 칸들을 비워줌
-        }    
+        }
     }
     
     /// <summary> 반복 실행 </summary>
