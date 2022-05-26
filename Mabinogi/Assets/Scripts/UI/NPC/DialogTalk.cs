@@ -160,6 +160,7 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 대화 끝내기 버튼 </summary>
     public void EndTalkButton()
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         GameManager.soundManager.effectPlayer.volume = 0.5f;
         SelectButtonOff(); //모든 버튼 꺼줌
@@ -197,6 +198,7 @@ public class DialogTalk : MonoBehaviour
         }
         if (inven.isStoreOpen == false)
         {
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
             inven.StoreOpen();
         }
         SetDialog(currentNPC.ShopDialog);
@@ -211,6 +213,7 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 여행수첩 대화지문으로 진입 </summary>
     public void NoteButton()
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         note.SetActive(true); //여행수첩 켜줌
         SetDialog(currentNPC.NoteDialog);
     }
@@ -219,6 +222,7 @@ public class DialogTalk : MonoBehaviour
     public void NoteKeywordButton()
     {                                                               //방금 누른키워드 버튼의 텍스트 추출함 
         SetDialog(currentNPC.NoteTalk(EventSystem.current.currentSelectedGameObject.GetComponent<Text>().text));
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
     }
 
 
@@ -238,6 +242,7 @@ public class DialogTalk : MonoBehaviour
     {
         note.SetActive(false);
         SetDialog(currentNPC.FarewellDialog);
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
     }
 
     /// <summary> 선택지문용 버튼들 전부 끔 </summary>

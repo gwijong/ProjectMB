@@ -45,13 +45,14 @@ public class Dungeon : MonoBehaviour
         gate[progress - 1].GetComponent<BoxCollider>().enabled = false;
         leftDoor[progress - 1].SetActive(false);
         rightDoor[progress - 1].SetActive(false);
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.dungeon_door);
         enemyList.Clear();
     }
 
     /// <summary> 몬스터 스폰 </summary>
     public void Spawn()
-    {
-        for(int i = 0; i< spawnAmount[progress]; i++)
+    {      
+        for (int i = 0; i< spawnAmount[progress]; i++)
         {
             Vector3 pos = spawnPos[progress].position;
             enemy = Instantiate(enemys[progress], spawnPos[progress]);

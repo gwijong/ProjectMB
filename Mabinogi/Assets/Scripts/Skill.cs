@@ -212,5 +212,13 @@ public class SkillList
         new SkillInfo(Define.SkillState.Defense, bearSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, bearSkill.CounterRank),
     });
+
+    /// <summary> 골렘이 가진 스킬들을 스킬 리스트에 대입</summary>
+    public static SkillList golem = new SkillList(new SkillInfo[]
+    {
+        new SkillInfo(Define.SkillState.Combat, bearSkill.CombatRank),
+        new SkillInfo(Define.SkillState.Smash, bearSkill.SmashRank),
+        new SkillInfo(Define.SkillState.Defense, bearSkill.DefenseRank),
+    });
 }
 

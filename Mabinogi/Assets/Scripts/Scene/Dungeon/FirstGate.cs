@@ -11,6 +11,7 @@ public class FirstGate : MonoBehaviour
     {
         if(other.gameObject.layer == (int)Define.Layer.Player)
         {
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.dungeon_door);
             doors[0].SetActive(false);
             doors[1].SetActive(false);
             gateCollider.enabled = false;

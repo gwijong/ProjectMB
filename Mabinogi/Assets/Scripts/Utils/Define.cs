@@ -61,6 +61,7 @@ public class Define
         Intro,
         World,
         Dungeon,
+        Boss,
     }
 
     /// <summary> 이동 상태 </summary>
@@ -111,6 +112,7 @@ public class Define
         inventory_close,
         gen_button_down,
         character_levelup,
+        dungeon_door,
     }
 
     /// <summary> NPC효과음 </summary>
@@ -130,6 +132,7 @@ public class Define
         bear01_natural_blowaway,
         bear01_natural_attack_counter,
         bear01_natural_stand_offensive,
+        golem01_woo,
     }
 
     /// <summary> NPC 대화 버튼 종류 </summary>

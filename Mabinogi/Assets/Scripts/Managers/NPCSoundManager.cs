@@ -74,6 +74,11 @@ public class NPCSoundManager : MonoBehaviour
     /// <summary> 곰 맞기 </summary>
     AudioClip bear01_natural_hit;
 
+    [Tooltip("골렘 전투모드")]
+    [SerializeField]
+    /// <summary> 골렘 전투모드 </summary>
+    AudioClip golem01_woo;
+    
     //예시:GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.dog01_natural_stand_offensive);//개 짖는 효과음
     /// <summary> 사운드 이펙트 재생</summary>
     public void PlaySfxPlayer(Define.NPCSoundEffect audioClipName)
@@ -126,8 +131,11 @@ public class NPCSoundManager : MonoBehaviour
             case Define.NPCSoundEffect.bear01_natural_hit:
                 npcEffectPlayer.clip = bear01_natural_hit; 
                 break;
+            case Define.NPCSoundEffect.golem01_woo:
+                npcEffectPlayer.clip = golem01_woo;
+                break;
         }
-
+        
         npcEffectPlayer.Play();
     }
 }

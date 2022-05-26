@@ -226,18 +226,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.13207549
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.13207549
-      objectReference: {fileID: 0}
-    - target: {fileID: 1955190142828646205, guid: c527109b577374548a90695a0d6f7746, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.13207549
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c527109b577374548a90695a0d6f7746, type: 3}
 --- !u!1 &30610340
@@ -346,13 +334,13 @@ MonoBehaviour:
   - {fileID: 3792939802897206075, guid: c24dfdf041ed4db4fb9a7814279d0f5a, type: 3}
   - {fileID: 6427488982904297582, guid: a9ef700bb7ecf4d429c63aea7a5e1bbf, type: 3}
   - {fileID: 757791238811091916, guid: 46461dcec8185cc4ea131c70a2d06513, type: 3}
-  - {fileID: 6427488982904297582, guid: a9ef700bb7ecf4d429c63aea7a5e1bbf, type: 3}
+  - {fileID: 4423688395616696923, guid: 787e12d428d34b244838753b352ed170, type: 3}
   spawnPos:
   - {fileID: 1360948447}
   - {fileID: 1054766002}
   - {fileID: 905526016}
   - {fileID: 2037659777}
-  spawnAmount: 02000000020000000100000004000000
+  spawnAmount: 02000000030000000200000001000000
 --- !u!4 &54417490
 Transform:
   m_ObjectHideFlags: 0
@@ -1504,6 +1492,7 @@ GameObject:
   - component: {fileID: 679356211}
   - component: {fileID: 679356213}
   - component: {fileID: 679356212}
+  - component: {fileID: 679356214}
   m_Layer: 0
   m_Name: SpawnCollider (3)
   m_TagString: Untagged
@@ -1550,6 +1539,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 5, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &679356214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679356210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3a16f1be6ca08459c3a3e631f1a379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &745129699
 BoxCollider:
   m_ObjectHideFlags: 0

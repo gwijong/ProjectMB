@@ -346,6 +346,7 @@ MonoBehaviour:
   introBgm: {fileID: 8300000, guid: 1d8305b9adf03574d8de5fcee87e6ccd, type: 3}
   worldBgm: {fileID: 8300000, guid: 1b2601c298d98aa489b229cbb2ba6057, type: 3}
   dungeonBgm: {fileID: 8300000, guid: 436e07e319a534b4bb5436e627e0709d, type: 3}
+  bossBgm: {fileID: 8300000, guid: 84e738593963d4f4bacbe1da15c6d862, type: 3}
   punch_hit: {fileID: 8300000, guid: 90440cbc7ccabc248babca2317fc873f, type: 3}
   punch_blow: {fileID: 8300000, guid: a0e26e0901fd8ec4fbeec3dfdd3fc3eb, type: 3}
   guard: {fileID: 8300000, guid: 77f3b9291afeb894aa8742381073bb5c, type: 3}
@@ -362,6 +363,7 @@ MonoBehaviour:
   inventory_close: {fileID: 8300000, guid: 6407d9af6870a9e4f93572f0356c65c8, type: 3}
   gen_button_down: {fileID: 8300000, guid: f80ae69005d05ca488ce735745aec4c1, type: 3}
   character_levelup: {fileID: 8300000, guid: deb72deb45542374a9d2a1e4857fce33, type: 3}
+  dungeon_door: {fileID: 8300000, guid: da5fe6963ead3de4b8dac5e2fc90f82a, type: 3}
 --- !u!114 &1955190141864609470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,7 +642,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 0}
+  m_BackGroundColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

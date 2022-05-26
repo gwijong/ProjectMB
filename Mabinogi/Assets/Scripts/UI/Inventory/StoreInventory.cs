@@ -18,42 +18,40 @@ public class StoreInventory : Inventory
 
     ItemData[] itemData; //아이템 데이터들 가져옴
 
-    bool isSet = false;
+ 
+    //상점이 활성화될때 판매할 아이템들 가져옴
     private void OnEnable()
     {
         if (FindObjectOfType<PlayerController>().target != null)
         {
             SellList sellList;
-            if (FindObjectOfType<PlayerController>().target.TryGetComponent(out sellList) == true && isSet == false)
+            //상점에 아이템을 채워넣기 전에 
+            if (FindObjectOfType<PlayerController>().target.TryGetComponent(out sellList) == true)
             {
-                for (int i = 0; i < width; i++)
-                {
-                    for (int j = 0; j < height; j++)
-                    {
-                        infoArray[j, i].Clear();
-                    }
-                }
+                //판매 목록 가져옴
                 sellList = FindObjectOfType<PlayerController>().target.GetComponent<SellList>();
                 for (int i = 0; i < sellList.sellItemList.Count; i++)
                 {
-                    AddItem(sellList.sellItemList[i], 1);
+                    AddItem(sellList.sellItemList[i], 1);//상점에 판매 아이템 추가
                 }
-                isSet = true;
-            }
-        }
-    }
-    private void OnDisable()
-    {
-        isSet = false;
-        for (int i = 0; i<width; i++)
-        {
-            for(int j = 0; j<height; j++)
-            {
-                infoArray[j, i].SetItem(Define.Item.None, 0);
             }
         }
     }
 
+    //상점 아이템을 비움
+    private void OnDisable()
+    {
+        for (int i = 0; i<width; i++)
+        {
+            for(int j = 0; j<height; j++)
+            {
+                infoArray[j, i].SetItem(Define.Item.None, 0);//상점의 아이템을 비움
+                infoArray[j, i].Clear();//상점 초기화
+            }
+        }
+    }
+
+    /// <summary> 인벤토리 리스트에서 이 인벤토리를 뺌 </summary>
     void OnDestroy()
     {
         inventoryList.Remove(this);
@@ -121,6 +119,7 @@ public class StoreInventory : Inventory
     /// <summary> 마우스 좌클릭 </summary>
     public override void LeftClick(Vector2Int pos)
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         if (mouseItem.GetItemType() == Define.Item.None)//마우스 커서가 집고있는 아이템이 없으면
         {
             CellInfo rootCellInfo = CheckItemRoot(pos);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도

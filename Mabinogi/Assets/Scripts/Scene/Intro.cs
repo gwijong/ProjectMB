@@ -15,6 +15,11 @@ public class Intro : MonoBehaviour
     private void Update()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z+(0.7f*Time.deltaTime));
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("World");
+        }
     }
 
     IEnumerator Progress()

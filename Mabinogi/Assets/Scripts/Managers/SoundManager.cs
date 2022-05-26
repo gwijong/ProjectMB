@@ -48,6 +48,11 @@ public class SoundManager : MonoBehaviour
     /// <summary> 던전 배경음악 </summary>
     AudioClip dungeonBgm;
 
+    [Tooltip("보스 배경음악")]
+    [SerializeField]
+    /// <summary> 보스 배경음악 </summary>
+    AudioClip bossBgm;
+ 
     [Tooltip("주먹 평타")]
     [SerializeField]
     /// <summary> 주먹 평타 </summary>
@@ -127,6 +132,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     /// <summary> 레벨업 </summary>
     AudioClip character_levelup;
+
+    [Tooltip("던전 문 열림")]
+    [SerializeField]
+    /// <summary> 던전 문 열림 </summary>
+    AudioClip dungeon_door;
+    
     private void Start()
     {
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -166,6 +177,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case Define.Scene.Dungeon:
                 bgmPlayer.clip = dungeonBgm;
+                break;
+            case Define.Scene.Boss:
+                bgmPlayer.clip = bossBgm;
                 break;
             default:
                 bgmPlayer.clip = null;
@@ -226,6 +240,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case Define.SoundEffect.character_levelup:
                 effectPlayer.clip = character_levelup;
+                break;
+            case Define.SoundEffect.dungeon_door:
+                effectPlayer.clip = dungeon_door;
                 break;
             default:
                 effectPlayer.clip = null;
