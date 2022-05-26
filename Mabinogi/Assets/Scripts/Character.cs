@@ -113,6 +113,8 @@ public class Character : Movable
     protected SkillData smashData;
     /// <summary> 카운터 어택 스킬 데이터 </summary>
     protected SkillData counterData;
+    /// <summary> 윈드밀 스킬 데이터 </summary>
+    protected SkillData windmillData;
 
     [SerializeField]
     [Tooltip("내비게이션 회전값")]
@@ -141,6 +143,7 @@ public class Character : Movable
         defenseData = Define.SkillState.Defense.GetSkillData();
         smashData = Define.SkillState.Smash.GetSkillData();
         counterData = Define.SkillState.Counter.GetSkillData();
+        windmillData = Define.SkillState.Windmill.GetSkillData();
 
         rigid = GetComponent<Rigidbody>();//리지드바디 할당
         anim = GetComponent<Animator>();//애니메이터 할당
@@ -203,7 +206,6 @@ public class Character : Movable
         TargetCheck(); //지정한 타겟 체크
 
         DestinationCheck();
-
     }
 
     /// <summary> 게이지들 업데이트 </summary>
@@ -223,7 +225,7 @@ public class Character : Movable
 
     void DestinationCheck()
     {
-        if(movetype == Define.MoveType.DropItem)
+        if (movetype == Define.MoveType.DropItem)
         {
             Vector3 positionDiff = (agent.destination - transform.position);//상대 좌표에서 내 좌표 뺌
             positionDiff.y = 0;//높이 y는 배제함
@@ -272,7 +274,10 @@ public class Character : Movable
                             || loadedSkill.cannotAttack //선공 불가 스킬을 시전했거나
                             || (focusAsCharacter != null && focusAsCharacter.die == true)) //지정된 대상이 있으면서 지정된 대상이 사망했으면
                         {
-                            break;//케이스문 탈출
+                            if (loadedSkill != Skill.windmill)
+                            {
+                                break;//케이스문 탈출
+                            }
                         };
                         Attack((Hitable)focusTarget); //공격한다
                         break;
@@ -363,6 +368,9 @@ public class Character : Movable
             case Define.SkillState.Counter:
                 result = 0;  //카운터면 이동 멈춤
                 break;
+            case Define.SkillState.Windmill:
+                result = 0;  //윈드밀이면 이동 멈춤
+                break;
         };
         if (walk && result > walkSpeed) result = walkSpeed;
         agent.speed = result;
@@ -371,7 +379,7 @@ public class Character : Movable
     /// <summary> 지정한 타겟 바라봄 </summary>
     public void TargetLookAt(Interactable target)
     {
-        if (target != null && agent.velocity.magnitude <= 1.0f && waitCount==0) //타겟이 존재하고 속도가 1 이하로 거의 멈춰있으면서 대기중이지 않으면
+        if (target != null && agent.velocity.magnitude <= 1.0f && waitCount == 0) //타겟이 존재하고 속도가 1 이하로 거의 멈춰있으면서 대기중이지 않으면
         {
             Vector3 look = target.transform.position; //look에 타겟의 좌표 대입
             look.y = transform.position.y; //y좌표는 무시함
@@ -401,7 +409,7 @@ public class Character : Movable
             case Define.InteractType.Get: return 1; //아이템 줍기 가능 거리
             case Define.InteractType.Sheeping: return 2; //양털 채집 가능 거리
             case Define.InteractType.Talk: return 6;  //대화 가능 거리
-            
+
             default: return 2;  //기본값은 2이다.
         };
     }
@@ -444,6 +452,10 @@ public class Character : Movable
                 case Define.SkillState.Smash:
                     waitTime = 4.0f; //스매시면 4초 대기
                     break;
+                case Define.SkillState.Windmill:
+                    waitTime = 4.0f; //윈드밀이면 4초 대기
+                    hitPoint.Current -= windmillData.CastCost; //윈드밀은 생명력을 깎음
+                    break;
             };
 
             wait = Wait(waitTime); //공격 스킬 딜레이 만큼 대기
@@ -460,7 +472,13 @@ public class Character : Movable
                     //공격이 실패한 경우에는 공격 대상자가 리턴값을 받아서 경직에 스스로 걸리게 해야함
                     //디펜스 쓸때 공격자는 공격 모션은 유지하지만 락걸림
                     case Define.SkillState.Defense:
-                        PlayAnim("Combat");//공격에 실패했지만 공격 애니메이션은 재생한다
+                        if (loadedSkill == skillList[Define.SkillState.Combat].skill)//근접 공격이면
+                        {
+                            PlayAnim("Combat");//공격에 실패했지만 공격 애니메이션은 재생한다
+                        }else if(loadedSkill == skillList[Define.SkillState.Windmill].skill)
+                        {
+                            PlayAnim("Windmill");//공격에 실패했지만 공격 애니메이션은 재생한다
+                        }
                         wait = Wait(attackFailTime); //공격 실패로 3초간 경직
                         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.guard);//닫기 효과음
                         StartCoroutine(wait);
@@ -500,7 +518,7 @@ public class Character : Movable
         base.MoveTo(goalPosition, isWalk);
     }
 
-    public void MoveTo(Vector3 goalPosition, Define.MoveType currentMoveType ,bool isWalk = false)  //내비게이션 이동 메서드
+    public void MoveTo(Vector3 goalPosition, Define.MoveType currentMoveType, bool isWalk = false)  //내비게이션 이동 메서드
     {
         base.MoveTo(goalPosition, isWalk);
         movetype = currentMoveType;
@@ -538,11 +556,15 @@ public class Character : Movable
                     groggy = true; //그로기 상태로 전환
                     this.downGauge.Current += smashData.DownGauge; //다운게이지를 100 채워줌
                     break;
+                case Define.SkillState.Windmill: //윈드밀일 경우
+                    damage = Attacker.CalculateDamage(Define.SkillState.Windmill); //데미지 계산
+                    this.downGauge.Current += windmillData.DownGauge; //다운게이지를 100 채워줌
+                    break;
             }
             this.hitPoint.Current -= damage;//현재 생명력에서 데미지만큼 빼줌
 
             if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
-            {                
+            {
                 Dead();
             }
             else if (this.downGauge.Current < 100) //다운게이지가 100 이하일 경우
@@ -607,6 +629,8 @@ public class Character : Movable
                 return maxPhysicalStrikingPower * combatData.Coefficient * skillList[Define.SkillState.Combat].rank;
             case Define.SkillState.Counter://카운터 데미지 계산
                 return maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank;
+            case Define.SkillState.Windmill://윈드밀 데미지 계산
+                return maxPhysicalStrikingPower * windmillData.Coefficient * skillList[Define.SkillState.Windmill].rank;
         };
         return 0; //이상한거 들어오면 0 리턴
     }
@@ -763,6 +787,14 @@ public class Character : Movable
                 GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= counterData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
+            case Define.SkillState.Windmill:
+                if (staminaPoint.Current < windmillData.CastCost) //현재 스킬 시전에 필요한 스태미나보다 적은 경우
+                {
+                    return; // 리턴하고 스킬 시전 안함
+                }
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
+                staminaPoint.Current -= windmillData.CastCost; // 시전비용만큼 스태미나 차감
+                break;
         }
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
@@ -817,12 +849,12 @@ public class Character : Movable
         yield return new WaitForSeconds(0.5f); //0.5초 대기
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         yield return new WaitForSeconds(5f);
-        if(gameObject.layer== (int)Define.Layer.Player)
+        if (gameObject.layer == (int)Define.Layer.Player)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("World");
         }
-        else if(respawn == true)
-        {           
+        else if (respawn == true)
+        {
             Respawn();
         }
         else
@@ -862,5 +894,57 @@ public class Character : Movable
         NavMesh.SamplePosition(randomPos, out hit, distance, NavMesh.AllAreas);//out = 출력전용 매개변수
         //찾은 점 반환
         return hit.position;
+    }
+
+    public void Windmill()
+    {
+        List<Character> enemyList = GetEnemyInRange(8.0f);
+        if (GetloadedSkill().type == Define.SkillState.Windmill)
+        {         
+            if(enemyList.Count <= 0)
+            {
+                return;
+            }
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                Attack(enemyList[i]);
+                loadedSkill = Skill.windmill;
+                StopAllCoroutines();
+                waitCount = 0;
+            }
+            StartCoroutine(Wait(3));
+            loadedSkill = Skill.combatMastery;
+            setMoveSpeed(Define.SkillState.Combat);
+        }
+    }
+
+    /// <summary> 범위 안의 캐릭터 가져오기</summary>
+    public List<Character> GetCharactersInRange(float range)
+    {
+        List<Character> result = new List<Character>();//범위 안의 캐릭터 리스트
+        //반지름 range짜리 동그란 콜라이더 만들어서 충돌하는 콜라이더들 colliders 배열에 다 넣는다.
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
+        foreach (Collider current in colliders) //colliders배열 크기만큼 반복하면서 모든 콜라이더들 검사한다.
+        {
+            Character currentCharacter = current.GetComponent<Character>(); //현재 콜라이더의 Character스크립트 컴포넌트 할당 시도
+            if (currentCharacter != null) result.Add(currentCharacter);//현재 캐릭터에 Character컴포넌트가 있으면 result리스트에 추가
+        }
+        return result; //캐릭터 리스트 반환
+    }
+
+    /// <summary> 범위 안의 적 리스트 리턴</summary>
+    public List<Character> GetEnemyInRange(float range)
+    {
+        List<Character> result = new List<Character>(); //이 리스트엔 적(Enemy) 캐릭터만 추가됨
+        List<Character> from = GetCharactersInRange(range);//범위 안의 모든 캐릭터
+
+        foreach (Character current in from)//범위 안의 모든 캐릭터 숫자만큼 반복
+        {
+            if (IsEnemy(this, current)) //내 캐릭터 자신과 상대방의 상호작용이 적이면(IsEnemy가 true면)
+            {
+                result.Add(current);//적 리스트에 추가
+            };
+        };
+        return result;
     }
 }

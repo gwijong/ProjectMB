@@ -98,6 +98,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick))  //마우스 좌클릭 입력되면
         {
+            if(playerCharacter.GetloadedSkill() == Skill.windmill)
+            {
+                playerCharacter.Windmill();
+                return;
+            }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨
             RaycastHit hit;  //충돌 물체 정보 받아올 데이터 컨테이너
 
@@ -187,6 +192,10 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             playerCharacter.Casting(Define.SkillState.Counter);//카운터 시전
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            playerCharacter.Casting(Define.SkillState.Windmill);//윈드밀 시전
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {

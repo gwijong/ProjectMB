@@ -15,6 +15,7 @@ public static class Extension
     {
         switch(from)
         {
+            case Define.SkillState.Windmill: return Skill.windmill; //윈드밀
             case Define.SkillState.Counter: return Skill.counterAttack; //카운터
             case Define.SkillState.Defense: return Skill.defense; //디펜스
             case Define.SkillState.Smash:   return Skill.smash;  //스매시
@@ -47,7 +48,8 @@ public static class Extension
             case Define.SkillState.Combat: return Resources.Load<SkillData>("Data/SkillData/Combat"); //기본 근접공격 스킬 데이터 반환
             case Define.SkillState.Defense: return Resources.Load<SkillData>("Data/SkillData/Defense");  //디펜스 스킬 데이터 반환
             case Define.SkillState.Smash: return Resources.Load<SkillData>("Data/SkillData/Smash");  //스매시 스킬 데이터 반환
-            case Define.SkillState.Counter: return Resources.Load<SkillData>("Data/SkillData/CounterAttack");  //카운터 스킬 데이터 반환      
+            case Define.SkillState.Counter: return Resources.Load<SkillData>("Data/SkillData/CounterAttack");  //카운터 스킬 데이터 반환
+            case Define.SkillState.Windmill: return Resources.Load<SkillData>("Data/SkillData/Windmill");
             default: return Resources.Load<SkillData>("Data/SkillData/Combat"); //이상한 값 들어오면 기본 근접공격 스킬 데이터 반환
         }
     }

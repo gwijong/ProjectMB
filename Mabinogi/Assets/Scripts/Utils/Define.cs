@@ -39,6 +39,7 @@ public class Define
         Defense = 1,
         Smash = 2,
         Counter = 3,
+        Windmill = 4,
     }
 
     /// <summary> 레이어 정의</summary>

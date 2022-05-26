@@ -42,6 +42,8 @@ public class Skill
     public static Skill counterAttack   = new Skill(Define.SkillState.Counter, "Counter", Define.SkillState.Counter.GetSkillData().CastTime, CounterWinCheck, true, true);
     /// <summary> Skill 클래스 defense 객체 생성</summary>
     public static Skill defense         = new Skill(Define.SkillState.Defense, "Defense", Define.SkillState.Defense.GetSkillData().CastTime, DefenseWinCheck, true, true);
+    /// <summary> Skill 클래스 windmill 객체 생성</summary>
+    public static Skill windmill        = new Skill(Define.SkillState.Windmill, "Windmill", Define.SkillState.Windmill.GetSkillData().CastTime, WindmillWinCheck, false, true);
 
     /// <summary> 근접 평타가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CombatWinCheck(Skill other)
@@ -78,7 +80,21 @@ public class Skill
     /// <summary> 카운터가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CounterWinCheck(Skill other) //카운터는 언제나 이긴다
     {
-        return true;
+        switch (other.type)
+        {
+            case Define.SkillState.Windmill: return false; //상대방의 스킬이 스매시일 경우 지므로 false 반환
+            default: return true;
+        };
+    }
+
+    /// <summary> 윈드밀이 이기는 경우는 true 지는 경우 false 반환</summary>
+    static bool WindmillWinCheck(Skill other) //카운터는 언제나 이긴다
+    {
+        switch (other.type)
+        {
+            case Define.SkillState.Defense: return false; //상대방의 스킬이 디펜스일 경우 지므로 false 반환
+            default: return true;
+        };
     }
 }
 
@@ -168,6 +184,7 @@ public class SkillList
         new SkillInfo(Define.SkillState.Smash, playerSkill.SmashRank),
         new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, playerSkill.CounterRank),
+        new SkillInfo(Define.SkillState.Windmill, playerSkill.WindmillRank),
     });
     /// <summary> 암탉이 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList hen = new SkillList(new SkillInfo[]

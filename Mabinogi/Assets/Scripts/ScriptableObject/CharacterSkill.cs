@@ -9,19 +9,24 @@ public class CharacterSkill : ScriptableObject
     /// <summary> 컴벳 마스터리 스킬 랭크 </summary>
     public int CombatRank { get { return combatRank; } }
 
-    [SerializeField, Tooltip("컴벳 마스터리 스킬 랭크"), Range(0, 15)] 
+    [SerializeField, Tooltip("디펜스 스킬 랭크"), Range(0, 15)] 
     int defenseRank = 1;
     /// <summary> 디펜스 스킬 랭크 </summary>
     public int DefenseRank { get { return defenseRank; } }
 
-    [SerializeField, Tooltip("컴벳 마스터리 스킬 랭크"), Range(0, 15)] 
+    [SerializeField, Tooltip("스매시 스킬 랭크"), Range(0, 15)] 
     int smashRank = 1;
     /// <summary> 스매시 스킬 랭크 </summary>
     public int SmashRank { get { return smashRank; } }
 
-    [SerializeField, Tooltip("컴벳 마스터리 스킬 랭크"), Range(0, 15)] 
+    [SerializeField, Tooltip("카운터 어택 스킬 랭크"), Range(0, 15)] 
     int counterRank = 1;
     /// <summary> 카운터 어택 스킬 랭크 </summary>
     public int CounterRank { get { return counterRank; } }
+
+    [SerializeField, Tooltip("윈드밀 스킬 랭크"), Range(0, 15)]
+    int windmillRank = 1;
+    /// <summary> 윈드밀 스킬 랭크 </summary>
+    public int WindmillRank { get { return windmillRank; } }
 
 }
