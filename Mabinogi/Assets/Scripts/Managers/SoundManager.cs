@@ -137,7 +137,22 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     /// <summary> 던전 문 열림 </summary>
     AudioClip dungeon_door;
-    
+
+    [Tooltip("마법 시전")]
+    [SerializeField]
+    /// <summary> 마법 시전 </summary>
+    AudioClip magic_standby;
+
+    [Tooltip("마법 준비 완료")]
+    [SerializeField]
+    /// <summary> 마법 준비 완료 </summary>
+    AudioClip magic_ready;
+
+    [Tooltip("마법 발사")]
+    [SerializeField]
+    /// <summary> 마법 발사 </summary>
+    AudioClip magic_lightning;
+
     private void Start()
     {
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -243,6 +258,15 @@ public class SoundManager : MonoBehaviour
                 break;
             case Define.SoundEffect.dungeon_door:
                 effectPlayer.clip = dungeon_door;
+                break;
+            case Define.SoundEffect.magic_ready:
+                effectPlayer.clip = magic_ready;
+                break;
+            case Define.SoundEffect.magic_standby:
+                effectPlayer.clip = magic_standby;
+                break;
+            case Define.SoundEffect.magic_lightning:
+                effectPlayer.clip = magic_lightning;
                 break;
             default:
                 effectPlayer.clip = null;

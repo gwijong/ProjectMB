@@ -45,7 +45,7 @@ public class Skill
     /// <summary> Skill 클래스 windmill 객체 생성</summary>
     public static Skill windmill        = new Skill(Define.SkillState.Windmill, "Windmill", Define.SkillState.Windmill.GetSkillData().CastTime, WindmillWinCheck, false, true);
     /// <summary> Skill 클래스 icebolt 객체 생성</summary>
-    public static Skill icebolt = new Skill(Define.SkillState.Icebolt, "Icebolt", Define.SkillState.Icebolt.GetSkillData().CastTime, IceboltWinCheck, false, false);
+    public static Skill icebolt = new Skill(Define.SkillState.Icebolt, "MagicProcessing", Define.SkillState.Icebolt.GetSkillData().CastTime, IceboltWinCheck, false, false);
 
     /// <summary> 근접 평타가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CombatWinCheck(Skill other)

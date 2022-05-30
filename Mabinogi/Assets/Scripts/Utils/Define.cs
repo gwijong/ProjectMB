@@ -115,6 +115,9 @@ public class Define
         gen_button_down,
         character_levelup,
         dungeon_door,
+        magic_standby,
+        magic_ready,
+        magic_lightning,
     }
 
     /// <summary> NPCÈ¿°úÀ½ </summary>

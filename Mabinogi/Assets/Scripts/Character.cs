@@ -209,6 +209,7 @@ public class Character : Movable
         TargetCheck(); //지정한 타겟 체크
 
         DestinationCheck();
+
     }
 
     /// <summary> 게이지들 업데이트 </summary>
@@ -245,7 +246,7 @@ public class Character : Movable
     /// <summary> 지정한 타겟이 사물인지, 캐릭터인지 체크하는 구간 </summary>
     void TargetCheck()
     {
-        if (focusTarget != null) //마우스로 클릭한 타겟이 있는 경우
+        if (focusTarget != null && reservedSkill==null) //마우스로 클릭한 타겟이 있는 경우
         {
             Vector3 positionDiff = (focusTarget.transform.position - transform.position);//상대 좌표에서 내 좌표 뺌
             positionDiff.y = 0;//높이 y는 배제함
@@ -354,8 +355,17 @@ public class Character : Movable
             reservedSkill = null;  // 준비중인 스킬 null로 전환
             if (loadedSkill.type != Define.SkillState.Combat)
             {
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
+                if(loadedSkill.type == Define.SkillState.Icebolt)
+                {
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_ready);//마법 준비 완료 효과음
+                }
+                else
+                {
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
+                }
+                
             }
+            setMoveSpeed(loadedSkill.type);//스킬 타입에 따라 이동속도 설정
         }
     }
 
@@ -374,6 +384,19 @@ public class Character : Movable
             case Define.SkillState.Windmill:
                 result = 0;  //윈드밀이면 이동 멈춤
                 break;
+            case Define.SkillState.Icebolt:
+                if (loadedSkill.type == type)
+                {
+                    result = runSpeed;  //시전끝나면 달림
+                    break;
+                }
+                if (reservedSkill.type == type)
+                {
+                    result = 0;  //시전중이면 이동 멈춤
+                    break;
+                }           
+                result = 0;  //이동 멈춤
+                break;             
         };
         if (walk && result > walkSpeed) result = walkSpeed;
         agent.speed = result;
@@ -407,12 +430,15 @@ public class Character : Movable
         {
             case Define.InteractType.Attack://공격 거리
                 {
+                    if(loadedSkill.type == Define.SkillState.Icebolt)
+                    {
+                        return 20; //아이스볼트 사정거리
+                    }
                     return 4; //무기 사거리가 늘어날 경우 여기서 조정한다.
                 }
             case Define.InteractType.Get: return 1; //아이템 줍기 가능 거리
             case Define.InteractType.Sheeping: return 2; //양털 채집 가능 거리
             case Define.InteractType.Talk: return 6;  //대화 가능 거리
-
             default: return 2;  //기본값은 2이다.
         };
     }
@@ -458,6 +484,10 @@ public class Character : Movable
                 case Define.SkillState.Windmill:
                     waitTime = 4.0f; //윈드밀이면 4초 대기
                     hitPoint.Current -= windmillData.CastCost; //윈드밀은 생명력을 깎음
+                    break;
+                case Define.SkillState.Icebolt: //아이스볼트면 2초 대기
+                    Icebolt(enemyTarget.GetComponent<Transform>());                            
+                    waitTime = 2f; //공격 대기 시간
                     break;
             };
 
@@ -562,6 +592,10 @@ public class Character : Movable
                 case Define.SkillState.Windmill: //윈드밀일 경우
                     damage = Attacker.CalculateDamage(Define.SkillState.Windmill); //데미지 계산
                     this.downGauge.Current += windmillData.DownGauge; //다운게이지를 100 채워줌
+                    break;
+                case Define.SkillState.Icebolt: //아이스볼트일 경우
+                    damage = Attacker.CalculateDamage(Define.SkillState.Icebolt); //데미지 계산
+                    this.downGauge.Current += iceboltData.DownGauge; //다운게이지를 40 채워줌
                     break;
             }
             this.hitPoint.Current -= damage;//현재 생명력에서 데미지만큼 빼줌
@@ -800,8 +834,20 @@ public class Character : Movable
                 GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= windmillData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
+            case Define.SkillState.Icebolt:
+                if (manaPoint.Current < iceboltData.CastCost) //현재 스킬 시전에 필요한 마나보다 적은 경우
+                {
+                    return; // 리턴하고 스킬 시전 안함
+                }
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_standby);//스킬 준비중 효과음
+                manaPoint.Current -= iceboltData.CastCost; // 시전비용만큼 마나 차감
+                break;
         }
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
+        if(reservedSkill.type == Define.SkillState.Icebolt)
+        {
+            PlayAnim("MagicCasting");
+        }
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
     /// <summary> 경직 시간 코루틴</summary>
@@ -908,6 +954,7 @@ public class Character : Movable
         return hit.position;
     }
 
+    /// <summary> 윈드밀 </summary>
     public void Windmill()
     {
         List<Character> enemyList = GetEnemyInRange(8.0f);
@@ -917,17 +964,25 @@ public class Character : Movable
             {
                 return;
             }
-            for (int i = 0; i < enemyList.Count; i++)
+            for (int i = 0; i < enemyList.Count; i++) //범위 안의 적들 싹 다 한번씩 때려줌
             {
                 Attack(enemyList[i]);
-                loadedSkill = Skill.windmill;
+                loadedSkill = Skill.windmill; //적들 다 때릴때까지 계속 윈드밀 재장전
                 StopAllCoroutines();
                 waitCount = 0;
             }
-            StartCoroutine(Wait(3));
+            StartCoroutine(Wait(3)); //윈드밀이 시전되면 3초간 이동불가
             loadedSkill = Skill.combatMastery;
             setMoveSpeed(Define.SkillState.Combat);
         }
+    }
+
+    public void Icebolt(Transform target)
+    {
+        GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
+        bolt.transform.position = gameObject.transform.position + Vector3.up;
+        bolt.GetComponent<Magic>().target = target;
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning);//볼트 마법 효과음
     }
 
     /// <summary> 범위 안의 캐릭터 가져오기</summary>
