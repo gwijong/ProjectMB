@@ -29,4 +29,9 @@ public class CharacterSkill : ScriptableObject
     /// <summary> 윈드밀 스킬 랭크 </summary>
     public int WindmillRank { get { return windmillRank; } }
 
+    [SerializeField, Tooltip("아이스볼트 스킬 랭크"), Range(0, 15)]
+    int iceboltRank = 1;
+    /// <summary> 아이스볼트 스킬 랭크 </summary>
+    public int IceboltRank { get { return iceboltRank; } }
+
 }

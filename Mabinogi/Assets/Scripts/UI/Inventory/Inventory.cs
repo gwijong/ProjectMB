@@ -297,6 +297,10 @@ public class Inventory : MonoBehaviour
         {
             return;
         }
+        if(gameObject.activeSelf == false)
+        {
+            inpo.SetActive(false);
+        }
         mouseItemPos.position = Input.mousePosition; //마우스 따라다니는 셀의 좌표를 마우스 좌표로 계속 대입 갱신
         Vector3 mousePosition = GetMousePositionFromInventory(); //마우스 위치를 이 인벤토리 기준으로 확인함
 
@@ -314,7 +318,7 @@ public class Inventory : MonoBehaviour
 
             overedCellLocation = Vector2Int.one * -1;// -1번칸은 없으므로 마우스가 올려진 곳이 없다는 뜻임
         }
-        else if(CheckMouseInside()) //마우스 커서가 소지품 창 안에 있는 경우
+        else if(CheckMouseInside() && gameObject.activeSelf == true) //마우스 커서가 소지품 창 안에 있는 경우
         {
             overedCellLocation.x = (int)mousePosition.x / 48; //마우스 좌표에서 칸 넓이인 48로 나눠서 정수로 변환
             overedCellLocation.y = (int)mousePosition.y / 48; //마우스 좌표에서 칸 높이인 48로 나눠서 정수로 변환
@@ -811,7 +815,7 @@ public class Inventory : MonoBehaviour
     void ItemInpo(Vector2Int position, bool active)
     {
         CellInfo rootCellInfo = CheckItemRoot(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
-        if(active && (rootCellInfo.GetItemType() != Define.Item.None)) //루트 아이템이 존재하면
+        if(active && (rootCellInfo.GetItemType() != Define.Item.None) && gameObject.activeSelf==true) //루트 아이템이 존재하면
         {
             ItemData[] itemData = GameManager.itemManager.data;
             inpo.SetActive(true); //정보창을 활성화한다

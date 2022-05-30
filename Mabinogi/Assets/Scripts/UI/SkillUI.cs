@@ -49,6 +49,16 @@ public class SkillUI : MonoBehaviour
                     skillImages[(int)Define.SkillState.Counter].gameObject.SetActive(true); //카운터 이미지 활성화
 
                     break;
+                case Define.SkillState.Windmill:
+                    Reset();
+                    skillImages[(int)Define.SkillState.Windmill].gameObject.SetActive(true); //윈드밀 이미지 활성화
+
+                    break;
+                case Define.SkillState.Icebolt:
+                    Reset();
+                    skillImages[(int)Define.SkillState.Icebolt].gameObject.SetActive(true); //아이스볼트 이미지 활성화
+
+                    break;
             }
         }
         else //준비중인 스킬이 있으면
@@ -72,6 +82,16 @@ public class SkillUI : MonoBehaviour
                 case Define.SkillState.Counter:
                     Casting();
                     skillImages[(int)Define.SkillState.Counter].gameObject.SetActive(true); //카운터 이미지 활성화
+
+                    break;
+                case Define.SkillState.Windmill:
+                    Casting();
+                    skillImages[(int)Define.SkillState.Windmill].gameObject.SetActive(true); //윈드밀 이미지 활성화
+
+                    break;
+                case Define.SkillState.Icebolt:
+                    Casting();
+                    skillImages[(int)Define.SkillState.Icebolt].gameObject.SetActive(true); //아이스볼트 이미지 활성화
 
                     break;
             }

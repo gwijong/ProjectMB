@@ -9,7 +9,8 @@ public class SceneLoadCollider : MonoBehaviour
     {
         if (other.gameObject.layer == (int)Define.Layer.Player)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(SceneName);
+            LoadingScene.NextSceneName = SceneName;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
         }
     }
 }

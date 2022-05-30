@@ -54,6 +54,7 @@ public class Soulstream : MonoBehaviour
         }
         whiteImage.color = new Color(1, 1, 1, 1);
         yield return new WaitForSeconds(0.5f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Intro");
+        LoadingScene.NextSceneName = "Intro";
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
     }
 }

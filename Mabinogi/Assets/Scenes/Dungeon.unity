@@ -340,7 +340,7 @@ MonoBehaviour:
   - {fileID: 1054766002}
   - {fileID: 905526016}
   - {fileID: 2037659777}
-  spawnAmount: 02000000030000000200000001000000
+  spawnAmount: 03000000040000000300000001000000
 --- !u!4 &54417490
 Transform:
   m_ObjectHideFlags: 0
@@ -1537,8 +1537,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 5, z: 100}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 13.680786, y: 5, z: 100}
+  m_Center: {x: 4.340393, y: 0, z: 0}
 --- !u!114 &679356214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,10 +1645,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvases
       objectReference: {fileID: 0}
-    - target: {fileID: 3428006640394060110, guid: 4572ae44ec989914b968a3979a5fe751, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3428006640394060111, guid: 4572ae44ec989914b968a3979a5fe751, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1698,6 +1694,11 @@ PrefabInstance:
 --- !u!1 &890579996 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3428006641280967669, guid: 4572ae44ec989914b968a3979a5fe751, type: 3}
+  m_PrefabInstance: {fileID: 890579995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &890579997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2135222975, guid: 4572ae44ec989914b968a3979a5fe751, type: 3}
   m_PrefabInstance: {fileID: 890579995}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &905526015
@@ -2938,6 +2939,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1585766150249150303, guid: 0e04f5e85c5cc87499f00273ed034674, type: 3}
+      propertyPath: dieCanvas
+      value: 
+      objectReference: {fileID: 890579997}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e04f5e85c5cc87499f00273ed034674, type: 3}
 --- !u!1 &1854377214 stripped

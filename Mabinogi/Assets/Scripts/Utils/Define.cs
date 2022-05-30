@@ -40,6 +40,7 @@ public class Define
         Smash = 2,
         Counter = 3,
         Windmill = 4,
+        Icebolt = 5,
     }
 
     /// <summary> 레이어 정의</summary>

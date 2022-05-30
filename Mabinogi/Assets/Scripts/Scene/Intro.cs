@@ -18,7 +18,8 @@ public class Intro : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("World");
+            LoadingScene.NextSceneName = "World";
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
         }
     }
 
@@ -58,6 +59,7 @@ public class Intro : MonoBehaviour
         }
         dark.color = new Color(1, 1, 1, 1);
         yield return new WaitForSeconds(0.5f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("World");
+        LoadingScene.NextSceneName = "World";
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
     }
 }

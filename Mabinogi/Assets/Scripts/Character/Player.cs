@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : Character
 {
     GameObject Dialog;
-    
+    public GameObject dieCanvas;
     protected override void Awake()
     {
         base.Awake();
@@ -61,5 +61,10 @@ public class Player : Character
 
         DialogTalk dialog = FindObjectOfType<DialogTalk>();
         dialog.SetTarget(this, target);
+    }
+
+    public override void PlayerDie()
+    {
+        dieCanvas.SetActive(true);
     }
 }

@@ -6332,6 +6332,7 @@ MonoBehaviour:
   gold: 1000
   isRespawnAIStart: 0
   respawn: 0
+  dieCanvas: {fileID: 0}
 --- !u!195 &1585766150249150302
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7353,12 +7354,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7913471446433781426, guid: fbcb7ce0ff7c4da4792bce01a822dd73, type: 3}
       propertyPath: skillSprites.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7913471446433781426, guid: fbcb7ce0ff7c4da4792bce01a822dd73, type: 3}
       propertyPath: skillSprites.Array.data[4]
       value: 
       objectReference: {fileID: -8447582219350002624, guid: 508a1afdaa27f9849bf5e7920eb85572, type: 3}
+    - target: {fileID: 7913471446433781428, guid: fbcb7ce0ff7c4da4792bce01a822dd73, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7913471446433781438, guid: fbcb7ce0ff7c4da4792bce01a822dd73, type: 3}
       propertyPath: m_Name
       value: SkillUICanvas

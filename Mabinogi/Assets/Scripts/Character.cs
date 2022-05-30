@@ -115,6 +115,8 @@ public class Character : Movable
     protected SkillData counterData;
     /// <summary> 윈드밀 스킬 데이터 </summary>
     protected SkillData windmillData;
+    /// <summary> 아이스볼트 스킬 데이터 </summary>
+    protected SkillData iceboltData;
 
     [SerializeField]
     [Tooltip("내비게이션 회전값")]
@@ -144,6 +146,7 @@ public class Character : Movable
         smashData = Define.SkillState.Smash.GetSkillData();
         counterData = Define.SkillState.Counter.GetSkillData();
         windmillData = Define.SkillState.Windmill.GetSkillData();
+        iceboltData = Define.SkillState.Icebolt.GetSkillData();
 
         rigid = GetComponent<Rigidbody>();//리지드바디 할당
         anim = GetComponent<Animator>();//애니메이터 할당
@@ -631,6 +634,8 @@ public class Character : Movable
                 return maxPhysicalStrikingPower * counterData.Coefficient * skillList[Define.SkillState.Counter].rank;
             case Define.SkillState.Windmill://윈드밀 데미지 계산
                 return maxPhysicalStrikingPower * windmillData.Coefficient * skillList[Define.SkillState.Windmill].rank;
+            case Define.SkillState.Icebolt://아이스볼트 데미지 계산
+                return maxPhysicalStrikingPower * iceboltData.Coefficient * skillList[Define.SkillState.Icebolt].rank;
         };
         return 0; //이상한거 들어오면 0 리턴
     }
@@ -844,25 +849,29 @@ public class Character : Movable
     /// <summary> 사망 코루틴</summary>
     IEnumerator Die()
     {
-        yield return new WaitForSeconds(1f); //1초 대기
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
-        yield return new WaitForSeconds(0.5f); //0.5초 대기
         gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
-        yield return new WaitForSeconds(5f);
         if (gameObject.layer == (int)Define.Layer.Player)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("World");
+            PlayerDie();
         }
-        else if (respawn == true)
+        yield return new WaitForSeconds(1f); //1초 대기
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
+        yield return new WaitForSeconds(5f);
+
+        if (respawn == true)
         {
             Respawn();
         }
         else
-        {
-            //gameObject.transform.position = new Vector3(500, 500, 500);
+        {         
             yield return null;
             MoveStop(true);
         }
+    }
+
+    public virtual void PlayerDie()
+    {
+
     }
 
     /// <summary> 캐릭터 부활</summary>
@@ -875,9 +884,12 @@ public class Character : Movable
         PlayAnim("Reset");//애니메이션을 idle로 전환
         Vector3 spawnPosition = GetRandomPointOnNavMesh(transform.position, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
         spawnPosition += Vector3.up * 2;  //바닥에서 2만큼 y좌표 위로 올리기
-        transform.position = spawnPosition;
+        if(gameObject.layer!= (int)Define.Layer.Player)//플레이어가 아닐 경우
+        {
+            transform.position = spawnPosition;//캐릭터 위치를 스폰 장소로 설정
+        }
         gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬
-        MoveStop(true);
+        MoveTo(spawnPosition);
     }
 
     //내비메시 위의 랜덤한 위치를 반환하는 메서드

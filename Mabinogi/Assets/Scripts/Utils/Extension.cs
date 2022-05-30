@@ -19,6 +19,7 @@ public static class Extension
             case Define.SkillState.Counter: return Skill.counterAttack; //카운터
             case Define.SkillState.Defense: return Skill.defense; //디펜스
             case Define.SkillState.Smash:   return Skill.smash;  //스매시
+            case Define.SkillState.Icebolt: return Skill.icebolt;  //스매시
             default:                        return Skill.combatMastery; //근접 공격
         }
     }
@@ -50,6 +51,7 @@ public static class Extension
             case Define.SkillState.Smash: return Resources.Load<SkillData>("Data/SkillData/Smash");  //스매시 스킬 데이터 반환
             case Define.SkillState.Counter: return Resources.Load<SkillData>("Data/SkillData/CounterAttack");  //카운터 스킬 데이터 반환
             case Define.SkillState.Windmill: return Resources.Load<SkillData>("Data/SkillData/Windmill");
+            case Define.SkillState.Icebolt: return Resources.Load<SkillData>("Data/SkillData/Icebolt");
             default: return Resources.Load<SkillData>("Data/SkillData/Combat"); //이상한 값 들어오면 기본 근접공격 스킬 데이터 반환
         }
     }

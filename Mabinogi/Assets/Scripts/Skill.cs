@@ -44,6 +44,8 @@ public class Skill
     public static Skill defense         = new Skill(Define.SkillState.Defense, "Defense", Define.SkillState.Defense.GetSkillData().CastTime, DefenseWinCheck, true, true);
     /// <summary> Skill 클래스 windmill 객체 생성</summary>
     public static Skill windmill        = new Skill(Define.SkillState.Windmill, "Windmill", Define.SkillState.Windmill.GetSkillData().CastTime, WindmillWinCheck, false, true);
+    /// <summary> Skill 클래스 icebolt 객체 생성</summary>
+    public static Skill icebolt = new Skill(Define.SkillState.Icebolt, "Icebolt", Define.SkillState.Icebolt.GetSkillData().CastTime, IceboltWinCheck, false, false);
 
     /// <summary> 근접 평타가 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool CombatWinCheck(Skill other)
@@ -89,6 +91,15 @@ public class Skill
 
     /// <summary> 윈드밀이 이기는 경우는 true 지는 경우 false 반환</summary>
     static bool WindmillWinCheck(Skill other) //카운터는 언제나 이긴다
+    {
+        switch (other.type)
+        {
+            case Define.SkillState.Defense: return false; //상대방의 스킬이 디펜스일 경우 지므로 false 반환
+            default: return true;
+        };
+    }
+
+    static bool IceboltWinCheck(Skill other) //카운터는 언제나 이긴다
     {
         switch (other.type)
         {
@@ -185,6 +196,7 @@ public class SkillList
         new SkillInfo(Define.SkillState.Defense, playerSkill.DefenseRank),
         new SkillInfo(Define.SkillState.Counter, playerSkill.CounterRank),
         new SkillInfo(Define.SkillState.Windmill, playerSkill.WindmillRank),
+        new SkillInfo(Define.SkillState.Icebolt, playerSkill.IceboltRank),
     });
     /// <summary> 암탉이 가진 스킬들을 스킬 리스트에 대입</summary>
     public static SkillList hen = new SkillList(new SkillInfo[]

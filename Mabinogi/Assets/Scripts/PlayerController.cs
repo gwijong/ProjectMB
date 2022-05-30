@@ -199,12 +199,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
+            playerCharacter.GetComponentInChildren<SkillBubble>().SkillCancel();//스킬 취소, 컴벳으로 전환
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel);//스킬 취소 효과음
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
+            //playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
+            playerCharacter.GetComponentInChildren<SkillBubble>().SkillCancel();
         }
     }
 }
