@@ -64,6 +64,7 @@ public class Define
         World,
         Dungeon,
         Boss,
+        Die,
     }
 
     /// <summary> 이동 상태 </summary>

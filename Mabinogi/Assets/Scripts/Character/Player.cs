@@ -65,6 +65,7 @@ public class Player : Character
 
     public override void PlayerDie()
     {
+        GameManager.soundManager.PlayBgmPlayer(Define.Scene.Die);
         dieCanvas.SetActive(true);
     }
 }

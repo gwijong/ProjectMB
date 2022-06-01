@@ -14,6 +14,7 @@ public class PlayerDie : MonoBehaviour
 
     public void ReviveHere()
     {
+        GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         FindObjectOfType<Player>().Respawn();
         gameObject.SetActive(false);
     }

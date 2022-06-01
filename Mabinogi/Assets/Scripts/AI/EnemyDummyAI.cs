@@ -86,11 +86,14 @@ public class EnemyDummyAI : AI
     IEnumerator DummyAI()
     {
         character.Casting(Define.SkillState.Combat);//일단 스킬을 기본공격으로 설정
-        yield return new WaitForSeconds(Random.Range(0.5f,3.0f)); //우선 2초 대기
         skillNum = Random.Range(0, 4);  //스킬 고름
         if (enemyCharacter != null)
         {
-            character.Casting((Define.SkillState)skillNum);  //스킬 시전
+            yield return new WaitForSeconds(Random.Range(1.5f, 3.0f)); //우선 2초 대기
+            if (enemyCharacter != null)
+            {
+                character.Casting((Define.SkillState)skillNum);  //스킬 시전
+            }
         }
         yield return new WaitForSeconds(Random.Range(2f, 6.0f));   // 4초 대기
 
@@ -135,7 +138,7 @@ public class EnemyDummyAI : AI
         while (!character.die)//이 캐릭터(Enemy)가 살아 있으면
         {
             //플레이어가 너무 멀리 도망가면
-            if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 30)) 
+            if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 20)) 
             {
                 Reset();
             }
@@ -145,7 +148,7 @@ public class EnemyDummyAI : AI
                 enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함              
             }
             character.TargetLookAt(enemyCharacter); // 보게 만듦
-            yield return new WaitForSeconds(1f); //1초마다 반복 실행            
+            yield return new WaitForSeconds(0.1f); //1초마다 반복 실행            
         }
     }
 }
