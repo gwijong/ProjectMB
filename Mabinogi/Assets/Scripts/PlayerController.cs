@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>마우스로 클릭한 타겟</summary>
     public Interactable target { get;private set; }
     /// <summary>레이어마스크</summary>
-    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock  | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
     public GameObject talkCanvasOutline;//대화 캔버스 아웃라인(대화중인지 체크용)
     private void Awake()
@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             playerCharacter.GetComponentInChildren<SkillBubble>().SkillCancel();//스킬 취소, 컴벳으로 전환
-            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel);//스킬 취소 효과음
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel, transform.position);//스킬 취소 효과음
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {

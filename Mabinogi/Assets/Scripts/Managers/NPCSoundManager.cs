@@ -135,7 +135,7 @@ public class NPCSoundManager : MonoBehaviour
                 npcEffectPlayer.clip = golem01_woo;
                 break;
         }
-        
-        npcEffectPlayer.Play();
+
+        GameManager.soundManager.PlaySfxPlayer(npcEffectPlayer.clip);
     }
 }

@@ -19,7 +19,7 @@ public class ShakeTree : Hitable
     /// <summary>³ª¹« Èçµé±â</summary>
     IEnumerator Shake()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit) ;
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit, transform.position) ;
         for (int i = 0; i<10; i++)
         {
             if(i%2 == 0)

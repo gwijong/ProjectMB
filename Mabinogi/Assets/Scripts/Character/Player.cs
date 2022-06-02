@@ -47,7 +47,7 @@ public class Player : Character
     IEnumerator DropItem(Define.Item item) 
     {
         yield return new WaitForSeconds(2.8f);
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.emotion_success);//성공 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.emotion_success, transform.position);//성공 효과음
         GameManager.itemManager.DropItem(item, 1);
     }
 

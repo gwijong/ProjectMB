@@ -121,6 +121,7 @@ public class Define
         magic_standby,
         magic_ready,
         magic_lightning,
+        none,
     }
 
     /// <summary> NPCÈ¿°úÀ½ </summary>

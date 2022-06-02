@@ -163,6 +163,9 @@ public class SoundManager : MonoBehaviour
     /// <summary> 마법 발사 </summary>
     AudioClip magic_lightning;
 
+    public float minDistance;
+    public float maxDistance;
+
     private void Start()
     {
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
@@ -220,74 +223,66 @@ public class SoundManager : MonoBehaviour
     }
     //예시: GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
     /// <summary> 사운드 이펙트 재생</summary>
-    public void PlaySfxPlayer(Define.SoundEffect audioClipName)
+    public void PlaySfxPlayer(Define.SoundEffect audioClipName, Vector3 pos)
+    {
+
+        /*
+        최소거리 1        1
+        최대거리 0       20
+        1 ~ 0   1 ~ 20
+        result = input
+            0 ~ 19
+        result = input - min
+        1 ~ 0    0 ~ 1
+        result = (input - min) / (max - min); 
+
+        1 ~ 0    1 ~ 0
+        result = 1 - ((input - min) / (max - min));
+         */
+        float distanceVolume = (Camera.main.transform.position - pos).magnitude;
+        distanceVolume = 1 - (distanceVolume - minDistance) / (maxDistance - minDistance);
+        distanceVolume = Mathf.Clamp(distanceVolume, 0, 1);
+        PlaySfxPlayer(audioClipName, distanceVolume);
+    }
+
+    public AudioClip GetClipByName(Define.SoundEffect audioClipName)
     {
         switch (audioClipName)
         {
-            case Define.SoundEffect.punch_hit:
-                effectPlayer.clip = punch_hit;
-                break;
-            case Define.SoundEffect.punch_blow:
-                effectPlayer.clip = punch_blow;
-                break;
-            case Define.SoundEffect.guard:
-                effectPlayer.clip = guard;
-                break;
-            case Define.SoundEffect.emotion_success:
-                effectPlayer.clip = emotion_success;
-                break;
-            case Define.SoundEffect.emotion_fail:
-                effectPlayer.clip = emotion_fail;
-                break;
-            case Define.SoundEffect.eatfood:
-                effectPlayer.clip = eatfood;
-                break;
-            case Define.SoundEffect.down:
-                effectPlayer.clip = down;
-                break;
-            case Define.SoundEffect.drinkpotion:
-                effectPlayer.clip = drinkpotion;
-                break;
-            case Define.SoundEffect.dungeon_monster_appear1:
-                effectPlayer.clip = dungeon_monster_appear1;
-                break;
-            case Define.SoundEffect.skill_cancel:
-                effectPlayer.clip = skill_cancel;
-                break;
-            case Define.SoundEffect.skill_standby:
-                effectPlayer.clip = skill_standby;
-                break;
-            case Define.SoundEffect.skill_ready:
-                effectPlayer.clip = skill_ready;
-                break;
-            case Define.SoundEffect.inventory_open:
-                effectPlayer.clip = inventory_open;
-                break;
-            case Define.SoundEffect.inventory_close:
-                effectPlayer.clip = inventory_close;
-                break;
-            case Define.SoundEffect.gen_button_down:
-                effectPlayer.clip = gen_button_down;
-                break;
-            case Define.SoundEffect.character_levelup:
-                effectPlayer.clip = character_levelup;
-                break;
-            case Define.SoundEffect.dungeon_door:
-                effectPlayer.clip = dungeon_door;
-                break;
-            case Define.SoundEffect.magic_ready:
-                effectPlayer.clip = magic_ready;
-                break;
-            case Define.SoundEffect.magic_standby:
-                effectPlayer.clip = magic_standby;
-                break;
-            case Define.SoundEffect.magic_lightning:
-                effectPlayer.clip = magic_lightning;
-                break;
-            default:
-                effectPlayer.clip = null;
-                break;
+            case Define.SoundEffect.punch_hit:                  return punch_hit;
+            case Define.SoundEffect.punch_blow:                 return punch_blow;
+            case Define.SoundEffect.guard:                      return guard;
+            case Define.SoundEffect.emotion_success:            return emotion_success;
+            case Define.SoundEffect.emotion_fail:               return emotion_fail;
+            case Define.SoundEffect.eatfood:                    return eatfood;
+            case Define.SoundEffect.down:                       return down;
+            case Define.SoundEffect.drinkpotion:                return drinkpotion;
+            case Define.SoundEffect.dungeon_monster_appear1:    return dungeon_monster_appear1;
+            case Define.SoundEffect.skill_cancel:               return skill_cancel;
+            case Define.SoundEffect.skill_standby:              return skill_standby;
+            case Define.SoundEffect.skill_ready:                return skill_ready;
+            case Define.SoundEffect.inventory_open:             return inventory_open;
+            case Define.SoundEffect.inventory_close:            return inventory_close;
+            case Define.SoundEffect.gen_button_down:            return gen_button_down;
+            case Define.SoundEffect.character_levelup:          return character_levelup;
+            case Define.SoundEffect.dungeon_door:               return dungeon_door;
+            case Define.SoundEffect.magic_ready:                return magic_ready;
+            case Define.SoundEffect.magic_standby:              return magic_standby;
+            case Define.SoundEffect.magic_lightning:            return magic_lightning;
+            default:                                            return null;
         }
-        effectPlayer.Play();
+    }
+    public void PlaySfxPlayer(Define.SoundEffect audioClipName, float volume = 1.0f)
+    {
+        AudioClip clip = GetClipByName(audioClipName);
+        PlaySfxPlayer(clip, volume);
+    }
+
+    public void PlaySfxPlayer(AudioClip clip, float volume = 1.0f)
+    {
+        if (clip != null)
+        {
+            effectPlayer.PlayOneShot(clip, volume * effectPlayer.volume);
+        };
     }
 }

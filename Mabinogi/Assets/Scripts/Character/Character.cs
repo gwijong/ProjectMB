@@ -364,11 +364,11 @@ public class Character : Movable
             {
                 if(loadedSkill.type == Define.SkillState.Icebolt)
                 {
-                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_ready);//마법 준비 완료 효과음
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_ready, transform.position);//마법 준비 완료 효과음
                 }
                 else
                 {
-                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready, transform.position);//스킬 준비 완료 효과음
                 }
                 
             }
@@ -520,7 +520,7 @@ public class Character : Movable
                             PlayAnim("Windmill");//공격에 실패했지만 공격 애니메이션은 재생한다
                         }
                         wait = Wait(attackFailTime); //공격 실패로 3초간 경직
-                        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.guard);//닫기 효과음
+                        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.guard, transform.position);//디펜스 효과음
                         StartCoroutine(wait);
                         break;
 
@@ -614,7 +614,7 @@ public class Character : Movable
             }
             this.hitPoint.Current -= damage;//현재 생명력에서 데미지만큼 빼줌
 
-            if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
+            if (this.hitPoint.Current <= 0.2 && die == false)//생명력이 0.2이하일 경우 사망
             {
                 Dead();
             }
@@ -624,7 +624,7 @@ public class Character : Movable
                 if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Groggy" || anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Blowaway_Ground")
                 {
                     PlayAnim("HitA");  //피격 애니메이션 재생
-                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit);//펀치 효과음
+                    GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit, transform.position);//펀치 효과음
                 }
                 wait = Wait(hitTime); // 피격 지속시간만큼 경직
                 StartCoroutine(wait);
@@ -780,7 +780,7 @@ public class Character : Movable
         Blowaway();
         die = true;  //사망 상태로 전환
         PlayAnim("Die");  //사망 트리거 체크
-        StartCoroutine("Die");//사망 코루틴 실행
+        StartCoroutine(Die());//사망 코루틴 실행
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
@@ -811,19 +811,23 @@ public class Character : Movable
     /// <summary> 스킬 시전중</summary>
     public void Casting(Define.SkillState value)
     {
+
         loadedSkill = skillList[Define.SkillState.Combat].skill; //준비 완료된 스킬을 취소하고 기본값인 기본공격으로 전환
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴
         if (reservedSkill == currentSkill.skill) return; //이미 같은 스킬을 시전중이면 리턴
+        Define.SoundEffect skillSound = Define.SoundEffect.skill_standby;
 
         switch (currentSkill.skill.type)//상대방 스킬에 따라 내가 피해를 입음
         {
+            case Define.SkillState.Combat:
+                skillSound = Define.SoundEffect.none;
+                break;
             case Define.SkillState.Defense:
                 if (staminaPoint.Current < defenseData.CastCost)  //현재 스킬 시전에 필요한 스태미나보다 적은 경우
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= defenseData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Smash:
@@ -831,7 +835,6 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= smashData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Counter:
@@ -839,7 +842,6 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= counterData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Windmill:
@@ -847,7 +849,6 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_standby);//스킬 준비중 효과음
                 staminaPoint.Current -= windmillData.CastCost; // 시전비용만큼 스태미나 차감
                 break;
             case Define.SkillState.Icebolt:
@@ -855,10 +856,11 @@ public class Character : Movable
                 {
                     return; // 리턴하고 스킬 시전 안함
                 }
-                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_standby);//스킬 준비중 효과음
+                skillSound = Define.SoundEffect.magic_standby;
                 manaPoint.Current -= iceboltData.CastCost; // 시전비용만큼 마나 차감
                 break;
         }
+        GameManager.soundManager.PlaySfxPlayer(skillSound, transform.position);//스킬 준비중 효과음
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
         if (reservedSkill.type == Define.SkillState.Icebolt)
         {
@@ -893,7 +895,7 @@ public class Character : Movable
     IEnumerator GroggyDown()
     {
         yield return new WaitForSeconds(1.0f); //1초간 그로기 애니메이션이 재생되도록 대기
-        if (this.hitPoint.Current <= 0.2)//생명력이 0.2이하일 경우 사망
+        if (this.hitPoint.Current <= 0.2 && die == false)//생명력이 0.2이하일 경우 사망
         {
             Dead();
         }
@@ -907,7 +909,7 @@ public class Character : Movable
     void Blowaway()
     {
         rigid.velocity = new Vector3(0, 0, 0);  //리지드바디의 속도를 0으로 초기화 
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_blow);//날아가는 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_blow, transform.position);//날아가는 효과음
         rigid.AddForce(gameObject.transform.forward * -600);//뒤로 밀림
         agent.velocity = (Vector3.up * 500); //위로 날림
     }
@@ -920,7 +922,7 @@ public class Character : Movable
             PlayerDie();
         }
         yield return new WaitForSeconds(1f); //1초 대기
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down, transform.position);//사망 효과음
         yield return new WaitForSeconds(20f);
 
         if (respawn == true)
@@ -1003,7 +1005,7 @@ public class Character : Movable
         GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
         bolt.transform.position = gameObject.transform.position + Vector3.up;
         bolt.GetComponent<Magic>().target = target;
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning);//볼트 마법 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning, transform.position);//볼트 마법 효과음
     }
 
     /// <summary> 범위 안의 캐릭터 가져오기</summary>

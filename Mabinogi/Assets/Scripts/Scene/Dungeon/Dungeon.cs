@@ -45,7 +45,7 @@ public class Dungeon : MonoBehaviour
         gate[progress - 1].GetComponent<BoxCollider>().enabled = false;
         leftDoor[progress - 1].SetActive(false);
         rightDoor[progress - 1].SetActive(false);
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.dungeon_door);
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.dungeon_door, gate[progress-1].transform.position);
         enemyList.Clear();
     }
 
@@ -55,10 +55,14 @@ public class Dungeon : MonoBehaviour
         for (int i = 0; i< spawnAmount[progress]; i++)
         {
             Vector3 pos = spawnPos[progress].position;
-            enemy = Instantiate(enemys[progress], spawnPos[progress]);
+            enemy = Instantiate(enemys[progress]);
+            enemy.GetComponent<NavMeshAgent>().enabled = false;
             //지정한 좌표에서 살짝 랜덤한 위치에 몬스터 생성함
-            enemy.transform.position = new Vector3(pos.x+Random.Range(-spawnAmount[progress], spawnAmount[progress])*2, pos.y, pos.z + Random.Range(-spawnAmount[progress], spawnAmount[progress])*2);
+            pos.x += Random.Range(-1.0f, 1.0f) * spawnAmount[progress];
+            pos.z += Random.Range(-1.0f, 1.0f) * spawnAmount[progress];
+            enemy.transform.position = pos;
             enemyList.Add(enemy); //전멸했는지 체크하는 리스트에 추가
+            enemy.GetComponent<NavMeshAgent>().enabled = true;
         }
         progress++;//던전 진행도 더하기
     }
