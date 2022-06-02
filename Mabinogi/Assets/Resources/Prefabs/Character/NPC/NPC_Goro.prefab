@@ -956,7 +956,7 @@ MonoBehaviour:
   state: 2
   runSpeed: 0
   walkSpeed: 0
-  characterName: "npc \uACE0\uB85C"
+  characterName: "\uACE0\uB85C"
   nameYpos: 1.6
   data: {fileID: 11400000, guid: 33208f0bda2c44a4d9b52328ab86eb88, type: 2}
   focusTarget: {fileID: 0}
@@ -964,23 +964,24 @@ MonoBehaviour:
   angularSpeed: 1000
   acceleration: 100
   gold: 0
+  isRespawnAIStart: 0
   respawn: 0
   appearanceDialogArray:
   - portrait: {fileID: 0}
-    npcName: "\uACE0\uB85C"
+    npcName: '  '
     currentText: "\uAC70\uCE5C \uD638\uD761\uC744 \uB0B4\uBFDC\uACE0 \uC788\uB294
       \uBAA8\uC2B5. \uAC70\uCE5C \uD53C\uBD80\uC640 \uD5D8\uC0C1\uAD82\uC740 \uD45C\uC815\uC740
       \uC601\uB77D\uC5C6\uB294 \uACE0\uBE14\uB9B0\uC758 \uBAA8\uC2B5."
     buttonArray: []
     portraitActive: 0
   - portrait: {fileID: 0}
-    npcName: "\uACE0\uB85C"
+    npcName: '  '
     currentText: "\uADF8\uB7EC\uB098, \uC5B4\uB518\uAC00 \uB2E4\uB978 \uACE0\uBE14\uB9B0\uACFC\uB294
       \uB2E4\uB974\uB2E4."
     buttonArray: []
     portraitActive: 0
   - portrait: {fileID: 0}
-    npcName: "\uACE0\uB85C"
+    npcName: '  '
     currentText: "\uAE30\uC774\uD558\uAC8C\uB3C4, \uC218\uC900\uB192\uC740 \uC9C0\uC131\uACFC
       \uAD50\uC591\uC744 \uAC16\uCD98 \uC778\uAC04\uC5D0\uAC8C\uC11C \uB290\uAEF4\uC9C0\uB294
       \uACE0\uC0C1\uD55C \uAE30\uD488\uACFC \uC778\uACA9\uC774 \uB290\uAEF4\uC9C4\uB2E4."
@@ -1100,6 +1101,7 @@ MonoBehaviour:
     portraitActive: 1
   farewellDialogArray: []
   portrait: {fileID: 21300000, guid: 6486c4b44ad141c45bc2eb8a98694605, type: 3}
+  npc: 0
 --- !u!114 &318429634
 MonoBehaviour:
   m_ObjectHideFlags: 0

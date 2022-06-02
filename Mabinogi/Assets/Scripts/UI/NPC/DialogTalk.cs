@@ -154,7 +154,7 @@ public class DialogTalk : MonoBehaviour
         OpenTalkCanvas();//대화창 열기
         SetDialog(currentNPC.AppearanceDialog);//NPC 최초 대화 시작
         GameManager.soundManager.PlayBgmPlayer(currentNPC.npc);//NPC 배경음악;
-        GameManager.soundManager.effectPlayer.volume = 0.15f;
+        GameManager.soundManager.effectPlayer.volume = 0.1f;
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
