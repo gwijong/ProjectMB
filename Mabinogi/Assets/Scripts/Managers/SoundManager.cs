@@ -58,6 +58,11 @@ public class SoundManager : MonoBehaviour
     /// <summary> ªÁ∏¡ πË∞Ê¿Ωæ« </summary>
     AudioClip dieBgm;
 
+    [Tooltip("∆©≈‰∏ÆæÛ πË∞Ê¿Ωæ«")]
+    [SerializeField]
+    /// <summary> ∆©≈‰∏ÆæÛ πË∞Ê¿Ωæ« </summary>
+    AudioClip tutorialBgm;
+
     [Tooltip("¡÷∏‘ ∆Ú≈∏")]
     [SerializeField]
     /// <summary> ¡÷∏‘ ∆Ú≈∏ </summary>
@@ -203,6 +208,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case Define.Scene.Die:
                 bgmPlayer.clip = dieBgm;
+                break;
+            case Define.Scene.Tutorial:
+                bgmPlayer.clip = tutorialBgm;
                 break;
             default:
                 bgmPlayer.clip = null;

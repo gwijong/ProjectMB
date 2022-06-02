@@ -984,7 +984,10 @@ public class Character : Movable
             }
             for (int i = 0; i < enemyList.Count; i++) //범위 안의 적들 싹 다 한번씩 때려줌
             {
-                Attack(enemyList[i]);
+                if (enemyList[i].die == false)
+                {
+                    Attack(enemyList[i]);
+                }
                 loadedSkill = Skill.windmill; //적들 다 때릴때까지 계속 윈드밀 재장전
                 StopAllCoroutines();
                 waitCount = 0;

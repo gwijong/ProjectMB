@@ -16,6 +16,7 @@ public class Tutorial : MonoBehaviour
 
     void Start()
     {
+        //GameManager.soundManager.PlayBgmPlayer(Define.Scene.Tutorial);
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
         characterPos = Player.transform.position;

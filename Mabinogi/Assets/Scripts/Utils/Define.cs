@@ -64,6 +64,7 @@ public class Define
         World,
         Dungeon,
         Boss,
+        Tutorial,
         Die,
     }
 
