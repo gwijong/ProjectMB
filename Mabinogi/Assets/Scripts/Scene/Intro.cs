@@ -9,6 +9,7 @@ public class Intro : MonoBehaviour
     public Image dark;
     void Start()
     {
+
         StartCoroutine(Progress());
     }
 

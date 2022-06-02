@@ -1,4 +1,3 @@
-using UnityEngine.AI; // 내비메시 관련 코드
 using UnityEngine;
 using System.Collections;
 /// <summary>나무 흔들고 나무열매 떨어뜨리는 스크립트</summary>

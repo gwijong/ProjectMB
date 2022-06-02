@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            playerCharacter.Casting(Define.SkillState.Icebolt);//윈드밀 시전
+            playerCharacter.Casting(Define.SkillState.Icebolt);//아이스볼트 시전
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {

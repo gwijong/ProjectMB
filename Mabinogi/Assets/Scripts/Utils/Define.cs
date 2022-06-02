@@ -95,6 +95,7 @@ public class Define
         Nao,
         Goro,
         Tarlach,
+        Tin,
     }
     /// <summary> È¿°úÀ½ </summary>
     public enum SoundEffect 

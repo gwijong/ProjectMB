@@ -233,17 +233,18 @@ public class Character : Movable
         }
     }
 
+    /// <summary> 목적지까지의 거리에 따라 행동 </summary>
     void DestinationCheck()
     {
-        if (movetype == Define.MoveType.DropItem)
+        if (movetype == Define.MoveType.DropItem)//아이템을 버리려는 경우
         {
             Vector3 positionDiff = (agent.destination - transform.position);//상대 좌표에서 내 좌표 뺌
             positionDiff.y = 0;//높이 y는 배제함
             float distance = positionDiff.magnitude;  //타겟과 나의 거리
-            if (distance < 1) //거리가 상호작용 가능 거리보다 먼 경우
+            if (distance < 1) //거리가 아이템 버릴 상호작용 거리보다 작을 경우
             {
-                Inventory.DropItem();
-                movetype = Define.MoveType.Move;
+                Inventory.DropItem(); //아이템 버리기
+                movetype = Define.MoveType.Move; //이동
                 MoveStop(true);
             }
         }

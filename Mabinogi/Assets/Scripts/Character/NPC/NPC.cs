@@ -110,6 +110,7 @@ public class Dialog
     public DialogButtonInfo[] buttonArray;
     /// <summary> 초상인물사진 활성화 여부 </summary>
     public bool portraitActive;
+
     /// <summary> 대화하는 모든 내용 하나 들어감 </summary>
     public Dialog(string wantCurrentText, Sprite wantPortrait = null, string wantNpcName = null,  DialogButtonInfo[] wantButtonArray = null, Dialog wantNext = null)
     {
