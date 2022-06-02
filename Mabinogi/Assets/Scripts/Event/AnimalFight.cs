@@ -13,6 +13,7 @@ public class AnimalFight : MonoBehaviour
         for (int i = 0; i < enemys.Length; i++)
         {
             spawnPos[i] = enemys[i].transform.position;
+            enemys[i].GetComponent<NavMeshAgent>().enabled = false;
             enemys[i].transform.position = waitPos.position+ Vector3.up;
         }
     }
@@ -24,7 +25,7 @@ public class AnimalFight : MonoBehaviour
             for(int i = 0; i< enemys.Length; i++)
             {
                 enemys[i].transform.position = spawnPos[i];
-                enemys[i].GetComponent<NavMeshAgent>().SetDestination(spawnPos[i]);
+                enemys[i].GetComponent<NavMeshAgent>().enabled = true;            
             }
         }
     }
@@ -35,8 +36,8 @@ public class AnimalFight : MonoBehaviour
         {
             for (int i = 0; i < enemys.Length; i++)
             {
+                enemys[i].GetComponent<NavMeshAgent>().enabled = false;
                 enemys[i].transform.position = waitPos.position + Vector3.up;
-                enemys[i].GetComponent<NavMeshAgent>().SetDestination(enemys[i].transform.position);
             }
         }
     }

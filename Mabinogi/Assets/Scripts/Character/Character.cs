@@ -103,6 +103,8 @@ public class Character : Movable
     protected Rigidbody rigid;
     /// <summary> 애니메이터 </summary>
     protected Animator anim;
+    /// <summary> 내비메시 </summary>
+    protected NavMeshAgent nav;
 
     //스킬데이터 스크립터블 오브젝트들
     /// <summary> 기본공격 컴벳 스킬 데이터 </summary>
@@ -133,11 +135,13 @@ public class Character : Movable
     /// <summary> 계속 부활시킬건지 체크 </summary>
     [Tooltip("체크하면 계속 부활함")]
     public bool respawn = false;
-
+    /// <summary> 부활시킬 장소 </summary>
+    protected Vector3 spawnPos;
     #endregion
 
     protected override void Awake()
     {
+        spawnPos = transform.position;
         base.Awake();
         #region 변수에 기본값 할당
         //스킬데이터 스크립터블 오브젝트 데이터 할당
@@ -150,6 +154,7 @@ public class Character : Movable
 
         rigid = GetComponent<Rigidbody>();//리지드바디 할당
         anim = GetComponent<Animator>();//애니메이터 할당
+        nav = GetComponent<NavMeshAgent>();
         agent.angularSpeed = angularSpeed;  //내비게이션 회전값
         agent.acceleration = acceleration; //내비게이션 가속도
         agent.speed = data.Speed; //내비게이션 이동속도
@@ -203,9 +208,10 @@ public class Character : Movable
         TargetLookAt(focusTarget); //타겟 바라보기
 
         SkillReady(); //skillCastingTimeLeft 남은시간 체크
-
-        MovableCheck(); //waitCount를 이용한 이동 가능 체크
-
+        if (nav.isActiveAndEnabled)
+        {
+            MovableCheck(); //waitCount를 이용한 이동 가능 체크
+        }
         TargetCheck(); //지정한 타겟 체크
 
         DestinationCheck();
@@ -548,13 +554,20 @@ public class Character : Movable
 
     public override void MoveTo(Vector3 goalPosition, bool isWalk = false)  //내비게이션 이동 메서드
     {
-        base.MoveTo(goalPosition, isWalk);
+        if (nav.isActiveAndEnabled)
+        {
+            base.MoveTo(goalPosition, isWalk);
+        }
     }
 
     public void MoveTo(Vector3 goalPosition, Define.MoveType currentMoveType, bool isWalk = false)  //내비게이션 이동 메서드
     {
-        base.MoveTo(goalPosition, isWalk);
-        movetype = currentMoveType;
+        if (nav.isActiveAndEnabled)
+        {
+            base.MoveTo(goalPosition, isWalk);
+            movetype = currentMoveType;
+        }
+
     }
 
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
@@ -770,7 +783,7 @@ public class Character : Movable
     }
 
     /// <summary> 애니메이터 파라미터(trigger) 설정</summary>
-    protected void PlayAnim(string wantName)
+    public void PlayAnim(string wantName)
     {
         if (wantName == "Combat") //애니메이션 스킬이 컴벳일 경우 
         {
@@ -800,6 +813,8 @@ public class Character : Movable
         loadedSkill = skillList[Define.SkillState.Combat].skill; //준비 완료된 스킬을 취소하고 기본값인 기본공격으로 전환
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴
+        if (reservedSkill == currentSkill.skill) return; //이미 같은 스킬을 시전중이면 리턴
+
         switch (currentSkill.skill.type)//상대방 스킬에 따라 내가 피해를 입음
         {
             case Define.SkillState.Defense:
@@ -844,9 +859,13 @@ public class Character : Movable
                 break;
         }
         reservedSkill = currentSkill.skill; //시전중인 스킬에 대입
-        if(reservedSkill.type == Define.SkillState.Icebolt)
+        if (reservedSkill.type == Define.SkillState.Icebolt)
         {
             PlayAnim("MagicCasting");
+        }
+        else if (gameObject.tag == "Player")
+        {
+            PlayAnim("SkillCancel");          
         }
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }
@@ -895,14 +914,13 @@ public class Character : Movable
     /// <summary> 사망 코루틴</summary>
     IEnumerator Die()
     {
-        gameObject.GetComponent<BoxCollider>().enabled = false; //콜라이더 끔
         if (gameObject.layer == (int)Define.Layer.Player)
         {
             PlayerDie();
         }
         yield return new WaitForSeconds(1f); //1초 대기
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down);//사망 효과음
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(20f);
 
         if (respawn == true)
         {
@@ -928,13 +946,12 @@ public class Character : Movable
         die = false;
         hitPoint.Current = hitPoint.Max;
         PlayAnim("Reset");//애니메이션을 idle로 전환
-        Vector3 spawnPosition = GetRandomPointOnNavMesh(transform.position, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
+        Vector3 spawnPosition = GetRandomPointOnNavMesh(spawnPos, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
         spawnPosition += Vector3.up * 2;  //바닥에서 2만큼 y좌표 위로 올리기
         if(gameObject.layer!= (int)Define.Layer.Player)//플레이어가 아닐 경우
         {
             transform.position = spawnPosition;//캐릭터 위치를 스폰 장소로 설정
         }
-        gameObject.GetComponent<BoxCollider>().enabled = true; //콜라이더 켬
         MoveTo(spawnPosition);
     }
 

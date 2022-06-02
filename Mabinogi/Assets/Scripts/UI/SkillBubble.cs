@@ -103,10 +103,11 @@ public class SkillBubble : MonoBehaviour
     /// <summary> 준비중이거나 준비된 스킬 취소되면 초기화 </summary>
     public void SkillCancel()
     {
-        Reset();
+        Reset();       
         backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
         skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
         character.Casting(Define.SkillState.Combat);
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel);//스킬 취소 효과음
+        character.PlayAnim("SkillCancel");
     }
 }

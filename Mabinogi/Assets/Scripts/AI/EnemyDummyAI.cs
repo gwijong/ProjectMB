@@ -34,6 +34,12 @@ public class EnemyDummyAI : AI
     }
     void OnUpdate()
     {
+        //플레이어가 너무 멀리 도망가면
+        if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 20))
+        {
+            Reset();
+        }
+
         if (character.isRespawnAIStart == true) //캐릭터가 리스폰했으면
         {
             character.isRespawnAIStart = false;
@@ -50,7 +56,7 @@ public class EnemyDummyAI : AI
             Reset();
             return;
         }
-  
+
         if (aiStart == false) //인공지능 코루틴이 시작되지 않았으면
         {
             aiStart = true; //인공지능 시작 bool값 true로 변경
@@ -124,7 +130,7 @@ public class EnemyDummyAI : AI
 
 
     /// <summary> 플레이어 사망시 AI 스킬 기본값으로 만드는 코루틴 </summary>
-    void Reset()
+    public void Reset()
     {
         enemyCharacter = null; //적 캐릭터를 비운다
         character.SetTarget(null); //타겟 비운다
@@ -137,18 +143,13 @@ public class EnemyDummyAI : AI
     {      
         while (!character.die)//이 캐릭터(Enemy)가 살아 있으면
         {
-            //플레이어가 너무 멀리 도망가면
-            if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 20)) 
-            {
-                Reset();
-            }
             List<Character> enemyList = GetEnemyInRange(10f);//반지름 10의 구 안에 적 캐릭터만 리스트에 담아옴
             if (enemyList.Count > 0) //적이 있으면
             {
                 enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함              
             }
             character.TargetLookAt(enemyCharacter); // 보게 만듦
-            yield return new WaitForSeconds(0.1f); //1초마다 반복 실행            
+            yield return new WaitForSeconds(1f); //1초마다 반복 실행            
         }
     }
 }

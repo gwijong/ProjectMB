@@ -29,16 +29,24 @@ public class Movable : Hitable
     /// <summary> 내비게이션 이동 메서드 </summary>
     public virtual void MoveTo(Vector3 goalPosition, bool isWalk = false)  //입력에서 불러옴
     {
-        walk = isWalk;
-        agent.isStopped = false;
-        agent.SetDestination(goalPosition);  //목적지는 goalPosition 좌표
+        if (GetComponent<NavMeshAgent>().isActiveAndEnabled)
+        {
+            walk = isWalk;
+            agent.isStopped = false;
+            agent.SetDestination(goalPosition);  //목적지는 goalPosition 좌표
+        }
+
     }
 
     /// <summary> 내비게이션 이동 정지 메서드 </summary>
     public void MoveStop(bool value) //이동 정지
     {
-        agent.isStopped = value;
-        if(value) agent.SetDestination(agent.transform.position);//목적지를 내 자신 위치로 갱신
+        if (GetComponent<NavMeshAgent>().isActiveAndEnabled)
+        {
+            agent.isStopped = value;
+            if (value) agent.SetDestination(agent.transform.position);//목적지를 내 자신 위치로 갱신
+        }
+
     }
 
 
