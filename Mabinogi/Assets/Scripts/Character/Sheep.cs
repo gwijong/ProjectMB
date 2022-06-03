@@ -33,6 +33,6 @@ public class Sheep : Character
 
     public void Bark()
     {
-        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.sheep);//양 우는 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.sheep, transform.position);//양 우는 효과음
     }
 }

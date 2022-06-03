@@ -163,6 +163,76 @@ public class SoundManager : MonoBehaviour
     /// <summary> 마법 발사 </summary>
     AudioClip magic_lightning;
 
+    [Tooltip("개 짖기")]
+    [SerializeField]
+    /// <summary> 개 짖기 </summary>
+    AudioClip dog01_natural_stand_offensive;
+
+    [Tooltip("개 다운")]
+    [SerializeField]
+    /// <summary> 개 다운 </summary>
+    AudioClip dog01_natural_blowaway;
+
+    [Tooltip("개 맞기")]
+    [SerializeField]
+    /// <summary> 개 짖기 </summary>
+    AudioClip dog01_natural_hit;
+
+    [Tooltip("늑대 짖기")]
+    [SerializeField]
+    /// <summary> 늑대 짖기 </summary>
+    AudioClip wolf01_natural_stand_offensive;
+
+    [Tooltip("양 울기")]
+    [SerializeField]
+    /// <summary> 양 울기 </summary>
+    AudioClip sheep;
+
+    [Tooltip("닭 날기")]
+    [SerializeField]
+    /// <summary> 닭 날기 </summary>
+    AudioClip chicken_fly;
+
+    [Tooltip("닭 다운")]
+    [SerializeField]
+    /// <summary> 닭 다운 </summary>
+    AudioClip chicken_down;
+
+    [Tooltip("닭 맞기")]
+    [SerializeField]
+    /// <summary> 닭 맞기 </summary>
+    AudioClip chicken_hit;
+
+    [Tooltip("곰 전투모드")]
+    [SerializeField]
+    /// <summary> 곰 전투모드 </summary>
+    AudioClip bear01_natural_stand_offensive;
+
+    [Tooltip("곰 스매시")]
+    [SerializeField]
+    /// <summary> 곰 스매시 </summary>
+    AudioClip bear01_natural_attack_smash;
+
+    [Tooltip("곰 카운터")]
+    [SerializeField]
+    /// <summary> 곰 카운터 </summary>
+    AudioClip bear01_natural_attack_counter;
+
+    [Tooltip("곰 다운")]
+    [SerializeField]
+    /// <summary> 곰 다운 </summary>
+    AudioClip bear01_natural_blowaway;
+
+    [Tooltip("곰 맞기")]
+    [SerializeField]
+    /// <summary> 곰 맞기 </summary>
+    AudioClip bear01_natural_hit;
+
+    [Tooltip("골렘 전투모드")]
+    [SerializeField]
+    /// <summary> 골렘 전투모드 </summary>
+    AudioClip golem01_woo;
+
     public float minDistance;
     public float maxDistance;
 
@@ -170,6 +240,7 @@ public class SoundManager : MonoBehaviour
     {
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
+    /// <summary> npc에 따른 배경음악 재생</summary>
     public void PlayBgmPlayer(Define.NPC audioClipName)
     {
         switch (audioClipName)
@@ -190,12 +261,16 @@ public class SoundManager : MonoBehaviour
         bgmPlayer.Play();
     }
 
+    /// <summary> 씬에 따른 배경음악 재생</summary>
     public void PlayBgmPlayer(Define.Scene audioClipName)
     {
         switch (audioClipName)
         {
             case Define.Scene.Soulstream:
                 bgmPlayer.clip = null;
+                break;
+            case Define.Scene.Tutorial:
+                bgmPlayer.clip = tutorialBgm;
                 break;
             case Define.Scene.Intro:
                 bgmPlayer.clip = introBgm;
@@ -212,9 +287,6 @@ public class SoundManager : MonoBehaviour
             case Define.Scene.Die:
                 bgmPlayer.clip = dieBgm;
                 break;
-            case Define.Scene.Tutorial:
-                bgmPlayer.clip = tutorialBgm;
-                break;
             default:
                 bgmPlayer.clip = null;
                 break;
@@ -222,7 +294,7 @@ public class SoundManager : MonoBehaviour
         bgmPlayer.Play();
     }
     //예시: GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_ready);//스킬 준비 완료 효과음
-    /// <summary> 사운드 이펙트 재생</summary>
+    /// <summary> 거리에 따른 볼륨 크기를 가진 사운드 이펙트 재생</summary>
     public void PlaySfxPlayer(Define.SoundEffect audioClipName, Vector3 pos)
     {
 
@@ -245,6 +317,7 @@ public class SoundManager : MonoBehaviour
         PlaySfxPlayer(audioClipName, distanceVolume);
     }
 
+    /// <summary> 재생할 효과음 고르기</summary>
     public AudioClip GetClipByName(Define.SoundEffect audioClipName)
     {
         switch (audioClipName)
@@ -269,15 +342,31 @@ public class SoundManager : MonoBehaviour
             case Define.SoundEffect.magic_ready:                return magic_ready;
             case Define.SoundEffect.magic_standby:              return magic_standby;
             case Define.SoundEffect.magic_lightning:            return magic_lightning;
+            case Define.SoundEffect.dog01_natural_stand_offensive: return dog01_natural_stand_offensive;
+            case Define.SoundEffect.dog01_natural_blowaway: return dog01_natural_blowaway;
+            case Define.SoundEffect.dog01_natural_hit: return dog01_natural_hit;
+            case Define.SoundEffect.wolf01_natural_stand_offensive: return wolf01_natural_stand_offensive;
+            case Define.SoundEffect.sheep: return sheep;
+            case Define.SoundEffect.chicken_fly: return chicken_fly;
+            case Define.SoundEffect.chicken_down: return chicken_down;
+            case Define.SoundEffect.chicken_hit: return chicken_hit;
+            case Define.SoundEffect.bear01_natural_stand_offensive: return bear01_natural_stand_offensive;
+            case Define.SoundEffect.bear01_natural_attack_smash: return bear01_natural_attack_smash;
+            case Define.SoundEffect.bear01_natural_attack_counter: return bear01_natural_attack_counter;
+            case Define.SoundEffect.bear01_natural_blowaway: return bear01_natural_blowaway;
+            case Define.SoundEffect.bear01_natural_hit: return bear01_natural_hit;
+            case Define.SoundEffect.golem01_woo: return golem01_woo;
             default:                                            return null;
         }
     }
+    /// <summary> 효과음 재생</summary>
     public void PlaySfxPlayer(Define.SoundEffect audioClipName, float volume = 1.0f)
     {
         AudioClip clip = GetClipByName(audioClipName);
         PlaySfxPlayer(clip, volume);
     }
 
+    /// <summary> 효과음 재생</summary>
     public void PlaySfxPlayer(AudioClip clip, float volume = 1.0f)
     {
         if (clip != null)

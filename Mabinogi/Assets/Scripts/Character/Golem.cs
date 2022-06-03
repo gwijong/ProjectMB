@@ -24,7 +24,7 @@ public class Golem : Character
     /// <summary> 전투모드 효과음 </summary>
     public void StandOffensive()
     {
-        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.golem01_woo);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_woo, transform.position);// 효과음
     }
     /// <summary> 스매시 효과음 </summary>
     public void Samsh()

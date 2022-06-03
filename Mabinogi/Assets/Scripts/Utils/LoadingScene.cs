@@ -17,6 +17,10 @@ public class LoadingScene : MonoBehaviour
 
     IEnumerator Loading()
     {
+        if (NextSceneName == null)
+        {
+            NextSceneName = "Soulstream";
+        }
         AsyncOperation oper = SceneManager.LoadSceneAsync(NextSceneName);
         oper.allowSceneActivation = false;
 

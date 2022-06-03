@@ -9522,7 +9522,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -9821,7 +9821,6 @@ GameObject:
   - component: {fileID: 1955190142089970485}
   - component: {fileID: 1955190142089970486}
   - component: {fileID: 1955190142089970473}
-  - component: {fileID: 1955190142089970487}
   - component: {fileID: 1955190142089970483}
   m_Layer: 0
   m_Name: '@Manager'
@@ -9911,33 +9910,22 @@ MonoBehaviour:
   magic_standby: {fileID: 8300000, guid: ec53d5d8a3c85e448870152d3665668e, type: 3}
   magic_ready: {fileID: 8300000, guid: 0bdb4315f90ceac47a1e26cfe4148927, type: 3}
   magic_lightning: {fileID: 8300000, guid: 567b38c354a8e444bacf29b971ce5895, type: 3}
---- !u!114 &1955190142089970487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955190142089970482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf2ccdcde362c54d9f647c0e93b76ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  npcEffectPlayer: {fileID: 1955190141662565763}
-  dog01_natural_stand_offensive: {fileID: 8300000, guid: 9dc033b8fcd328c44888acc988738d7c, type: 3}
-  dog01_natural_blowaway: {fileID: 8300000, guid: 8be3be5bced91054eac093220ae7fe96, type: 3}
-  dog01_natural_hit: {fileID: 8300000, guid: 4de11f5aa5e7dd749b5d77be4dffd3aa, type: 3}
+  dog01_natural_stand_offensive: {fileID: 0}
+  dog01_natural_blowaway: {fileID: 0}
+  dog01_natural_hit: {fileID: 0}
   wolf01_natural_stand_offensive: {fileID: 8300000, guid: 7904ffd97f6756a4dada09bd29961f37, type: 3}
-  sheep: {fileID: 8300000, guid: a246fa78bccdcaf49adf9b24a3864133, type: 3}
-  chicken_fly: {fileID: 8300000, guid: 4b39b97e898e6af4bafce38e56bdb5c4, type: 3}
-  chicken_down: {fileID: 8300000, guid: 9781612aea3c6a8418c5657aee4acd9b, type: 3}
-  chicken_hit: {fileID: 8300000, guid: ba2064367afef744a9522557928eaf91, type: 3}
-  bear01_natural_stand_offensive: {fileID: 8300000, guid: 6d1bf6730337ff9429f3522a63f8bd7a, type: 3}
-  bear01_natural_attack_smash: {fileID: 8300000, guid: 21fac9337f94e6241936aa4ce62d12d6, type: 3}
-  bear01_natural_attack_counter: {fileID: 8300000, guid: 07bdef21977b7494b8b1310c131343e2, type: 3}
-  bear01_natural_blowaway: {fileID: 8300000, guid: 6607740447471af4898369942c5941e3, type: 3}
-  bear01_natural_hit: {fileID: 8300000, guid: 39608999363415940a0e897cf7525657, type: 3}
-  golem01_woo: {fileID: 8300000, guid: 025707c6d05ac8b45932b7887d8a5c0e, type: 3}
+  sheep: {fileID: 0}
+  chicken_fly: {fileID: 0}
+  chicken_down: {fileID: 0}
+  chicken_hit: {fileID: 0}
+  bear01_natural_stand_offensive: {fileID: 0}
+  bear01_natural_attack_smash: {fileID: 0}
+  bear01_natural_attack_counter: {fileID: 0}
+  bear01_natural_blowaway: {fileID: 0}
+  bear01_natural_hit: {fileID: 0}
+  golem01_woo: {fileID: 0}
+  minDistance: 1
+  maxDistance: 100
 --- !u!1 &1977299109382562126
 GameObject:
   m_ObjectHideFlags: 0

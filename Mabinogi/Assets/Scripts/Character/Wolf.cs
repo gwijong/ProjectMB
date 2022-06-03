@@ -24,6 +24,6 @@ public class Wolf : Character
 
     public void Bark()
     {
-        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.wolf01_natural_stand_offensive);//´Á´ë Â¢´Â È¿°úÀ½
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_stand_offensive, transform.position);//´Á´ë Â¢´Â È¿°úÀ½
     }
 }

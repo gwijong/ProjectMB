@@ -13,12 +13,18 @@ public class Soulstream : MonoBehaviour
     public AudioClip naoStage;
     void Start()
     {
+        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
+        GameManager.update.UpdateMethod += OnUpdate;
         StartCoroutine(NaoAppear());
     }
 
-    void Update()
+    void OnUpdate()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            LoadingScene.NextSceneName = "Tutorial";
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
+        }
     }
     IEnumerator NaoAppear()
     {

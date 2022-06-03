@@ -59,12 +59,13 @@ public class Define
     /// <summary> 씬 정의</summary>
     public enum Scene
     {
+        None,
         Soulstream,
+        Tutorial,
         Intro,
         World,
         Dungeon,
         Boss,
-        Tutorial,
         Die,
     }
 
@@ -121,13 +122,6 @@ public class Define
         magic_standby,
         magic_ready,
         magic_lightning,
-        none,
-    }
-
-    /// <summary> NPC효과음 </summary>
-    public enum NPCSoundEffect
-    {
-        none,
         dog01_natural_stand_offensive,
         dog01_natural_blowaway,
         dog01_natural_hit,
@@ -142,6 +136,7 @@ public class Define
         bear01_natural_attack_counter,
         bear01_natural_stand_offensive,
         golem01_woo,
+        none,
     }
 
     /// <summary> NPC 대화 버튼 종류 </summary>

@@ -1003,7 +1003,7 @@ public class Character : Movable
     public void Icebolt(Transform target)
     {
         GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
-        bolt.transform.position = gameObject.transform.position + Vector3.up;
+        bolt.transform.position = gameObject.transform.position + Vector3.up*2;
         bolt.GetComponent<Magic>().target = target;
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning, transform.position);//볼트 마법 효과음
     }

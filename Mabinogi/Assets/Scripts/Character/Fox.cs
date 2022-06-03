@@ -24,11 +24,11 @@ public class Fox : Character
 
     public void Blowaway()
     {
-        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.none);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.none, transform.position);// 효과음
     }
     /// <summary> 맞기 효과음 </summary>
     public void Hit()
     {
-        GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.none);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.none, transform.position);// 효과음
     }
 }
