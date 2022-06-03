@@ -192,11 +192,11 @@ public class DialogTalk : MonoBehaviour
     /// <summary> 상점 대화지문으로 진입 버튼 </summary>
     public void ShopButton()
     {
-        if (inven.isOpen == false)
+        if (inven.isOpen == false)//인벤이 꺼져있으면
         {
             inven.Open();
         }
-        if (inven.isStoreOpen == false)
+        if (inven.isStoreOpen == false)//상점이 꺼져있으면
         {
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
             inven.StoreOpen();
