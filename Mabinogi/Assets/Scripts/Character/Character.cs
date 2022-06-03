@@ -944,6 +944,7 @@ public class Character : Movable
     /// <summary> 캐릭터 부활</summary>
     public void Respawn()
     {
+        StopAllCoroutines();
         waitCount = 0;
         die = false;
         hitPoint.Current = hitPoint.Max;
@@ -956,6 +957,7 @@ public class Character : Movable
             isRespawnAIStart = true;
         }
         MoveTo(spawnPosition);
+        MoveStop(false);
     }
 
     //내비메시 위의 랜덤한 위치를 반환하는 메서드
