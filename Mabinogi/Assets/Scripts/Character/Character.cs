@@ -944,7 +944,6 @@ public class Character : Movable
     /// <summary> 캐릭터 부활</summary>
     public void Respawn()
     {
-        isRespawnAIStart = true;
         waitCount = 0;
         die = false;
         hitPoint.Current = hitPoint.Max;
@@ -954,6 +953,7 @@ public class Character : Movable
         if(gameObject.layer!= (int)Define.Layer.Player)//플레이어가 아닐 경우
         {
             transform.position = spawnPosition;//캐릭터 위치를 스폰 장소로 설정
+            isRespawnAIStart = true;
         }
         MoveTo(spawnPosition);
     }
