@@ -18,7 +18,7 @@ public class Define
         Sheeping,
         Egg,
     }
-
+    /// <summary> 이동 타입</summary>
     public enum MoveType
     {
         Move,
@@ -91,6 +91,7 @@ public class Define
         Wool,
         Firewood,
     }
+    /// <summary> NPC들</summary>
     public enum NPC
     {
         None,

@@ -6,20 +6,23 @@ using UnityEngine.UI;
 
 public class LoadingScene : MonoBehaviour
 {
+    /// <summary> 씬 로딩이 몇프로 되었는지 보여주는 게이지 바 </summary>
     public Image GaugeBar;
+    /// <summary> 씬 로딩이 몇프로 되었는지 보여주는 텍스트 </summary>
     public Text text;
+    /// <summary> 로드할 씬 이름 </summary>
     public static string NextSceneName;
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine("Loading");
     }
-
+    /// <summary> 씬 로딩 </summary>
     IEnumerator Loading()
     {
         if (NextSceneName == null)
         {
-            NextSceneName = "Soulstream";
+            NextSceneName = "Soulstream";//씬 로드 최초값은 소울스트림
         }
         AsyncOperation oper = SceneManager.LoadSceneAsync(NextSceneName);
         oper.allowSceneActivation = false;

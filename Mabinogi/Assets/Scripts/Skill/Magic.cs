@@ -16,18 +16,18 @@ public class Magic : MonoBehaviour
 
     void OnUpdate()
     {
-        Follow();
+        Follow();//계속 따라감
     }
 
+    /// <summary> 따라다닐 타겟 오브젝트로 이 오브젝트 계속 이동</summary>
     public void Follow()
     {
         Vector3 followPos = new Vector3(target.position.x, target.position.y, target.position.z);
-        //따라다닐 플레이어 오브젝트로 이 오브젝트 계속 이동
         transform.position = Vector3.Lerp(gameObject.transform.position, followPos, 4f*Time.deltaTime);
 
-        if((followPos - gameObject.transform.position).magnitude < 2)
+        if((followPos - gameObject.transform.position).magnitude < 1) //거리가 1 이내이면 
         {
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); //비활성화
         }
     }
 }

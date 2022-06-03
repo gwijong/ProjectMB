@@ -63,9 +63,10 @@ public class Player : Character
         dialog.SetTarget(this, target);
     }
 
+    /// <summary> 플레이어 사망 시 처리 </summary>
     public override void PlayerDie()
     {
-        GameManager.soundManager.PlayBgmPlayer(Define.Scene.Die);
-        dieCanvas.SetActive(true);
+        GameManager.soundManager.PlayBgmPlayer(Define.Scene.Die); //사망 배경음악 재생
+        dieCanvas.SetActive(true);//사망 캔버스 활성화
     }
 }
