@@ -24,6 +24,8 @@ public class SkillBubble : MonoBehaviour
         }
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
+        backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
+        skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
     }
 
 

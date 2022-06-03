@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock  | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
     public GameObject talkCanvasOutline;//대화 캔버스 아웃라인(대화중인지 체크용)
-    private void Awake()
+    private void Start()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
         PlayerSetting();
         controller = this;

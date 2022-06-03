@@ -811,7 +811,7 @@ public class Character : Movable
     /// <summary> 스킬 시전중</summary>
     public void Casting(Define.SkillState value)
     {
-
+        SetOffensive(true);
         loadedSkill = skillList[Define.SkillState.Combat].skill; //준비 완료된 스킬을 취소하고 기본값인 기본공격으로 전환
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴

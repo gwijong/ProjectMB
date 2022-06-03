@@ -67,6 +67,7 @@ public class EnemyDummyAI : AI
 
         if (enemyCharacter == null) //적이 없으면 탈출
         {
+            Reset();
             return;
         }
 
@@ -146,9 +147,14 @@ public class EnemyDummyAI : AI
             List<Character> enemyList = GetEnemyInRange(15f);//반지름 15의 구 안에 적 캐릭터만 리스트에 담아옴
             if (enemyList.Count > 0) //적이 있으면
             {
-                enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함              
+                enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함
+                character.TargetLookAt(enemyCharacter); // 보게 만듦
             }
-            character.TargetLookAt(enemyCharacter); // 보게 만듦
+            else
+            {
+                enemyCharacter = null;
+            }
+
             yield return new WaitForSeconds(1f); //1초마다 반복 실행            
         }
     }
