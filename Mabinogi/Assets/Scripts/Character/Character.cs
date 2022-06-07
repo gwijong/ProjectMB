@@ -577,7 +577,6 @@ public class Character : Movable
         transform.LookAt(Attacker.transform); //때린 상대를 바라본다
         reservedSkill = null; //준비중인 스킬 취소
         skillCastingTimeLeft = 0; //준비중인 스킬이 취소되었으므로 취소 시간도 0으로 초기화
-
         SetOffensive(true); //전투모드로 전환
         bool result = true;//기본적으로 공격은 성공하지만 경합일 경우 아래쪽에서 실패 체크
         agent.speed = runSpeed; //이동속도 초기화
@@ -744,7 +743,6 @@ public class Character : Movable
     void OffensiveSetting()
     {
         PlayAnim("Offensive", offensive); //offensive bool값에 맞춰 애니메이터의 Offensive bool값 전환
-
         if (!offensive && agent.speed >= runSpeed) //일상모드이고 현재 이동속도가 달리는 속도 이상이면
         {
             walk = true; //걷기로 전환
@@ -811,7 +809,6 @@ public class Character : Movable
     /// <summary> 스킬 시전중</summary>
     public void Casting(Define.SkillState value)
     {
-        SetOffensive(true);
         loadedSkill = skillList[Define.SkillState.Combat].skill; //준비 완료된 스킬을 취소하고 기본값인 기본공격으로 전환
         SkillInfo currentSkill = skillList[value]; //현재 스킬은 skillList[value]이다.
         if (currentSkill == null) return; //입력된 현재 스킬이 null일 경우 리턴
@@ -866,9 +863,9 @@ public class Character : Movable
         {
             PlayAnim("MagicCasting");
         }
-        else if (gameObject.tag == "Player")
+        else if(anim.GetCurrentAnimatorStateInfo(0).IsName("MagicCasting"))
         {
-            PlayAnim("SkillCancel");          
+            PlayAnim("Reset");//애니메이션을 idle로 전환        
         }
         skillCastingTimeLeft = currentSkill.skill.castingTime;//업데이트문에 델타타임으로 조절//캔슬 시 skill을 null
     }

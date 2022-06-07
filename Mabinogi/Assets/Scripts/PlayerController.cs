@@ -8,13 +8,14 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController controller;
-    /// <summary>플레이어 캐릭터 딱 하나</summary>
+    /// <summary>플레이어 캐릭터 오브젝트</summary>
     public GameObject player;
+    /// <summary>플레이어 캐릭터 스크립트</summary>
     public Character playerCharacter { get; private set; }
     /// <summary>마우스로 클릭한 타겟</summary>
     public Interactable target { get;private set; }
     /// <summary>레이어마스크</summary>
-    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock  | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
+    int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock  | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
     public GameObject talkCanvasOutline;//대화 캔버스 아웃라인(대화중인지 체크용)
     private void Start()
@@ -24,12 +25,13 @@ public class PlayerController : MonoBehaviour
         //업데이트 매니저의 Update메서드에 몰아주기
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
-        FindObjectOfType<PlayerInventory>().owner = playerCharacter;
+        //플레이어 컨트롤러가 조종하는 캐릭터가 소지품창의 주인이다.
+        FindObjectOfType<PlayerInventory>().owner = playerCharacter; 
     }
 
     void OnUpdate()
     {
-        if (playerCharacter.die == true) //캐릭터 사망시 리턴
+        if (playerCharacter.die == true && playerCharacter.tag== "Player") //캐릭터 사망시 리턴
         {
             return;
         }
@@ -70,7 +72,7 @@ public class PlayerController : MonoBehaviour
             {
                 target = hit.collider.GetComponent<Character>();  //충돌한 대상이 캐릭터면 타겟에 할당 시도
                 
-                if (target != null)
+                if (target != null) //타겟이 캐릭터이면
                 {
                     if(target.gameObject.layer == (int)Define.Layer.NPC) //플레이어가 마을 NPC가 될 수는 없음
                     {
@@ -137,10 +139,6 @@ public class PlayerController : MonoBehaviour
     /// <summary>플레이어 캐릭터로 전환</summary>
     void PlayerSetting()
     {
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-        }
         player.layer = (int)Define.Layer.Player;  //플레이어의 레이어를 플레이어로 변경
         playerCharacter = player.GetComponent<Character>();  //플레이어의 캐릭터 컴포넌트를 가져옴
         player.GetComponentInChildren<SkillBubble>().gameObject.GetComponentInChildren<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌

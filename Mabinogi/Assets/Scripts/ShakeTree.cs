@@ -19,14 +19,14 @@ public class ShakeTree : Hitable
     /// <summary>나무 흔들기</summary>
     IEnumerator Shake()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit, transform.position) ;
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.punch_hit, transform.position) ; //맞는 효과음 재생
         for (int i = 0; i<10; i++)
         {
-            if(i%2 == 0)
+            if(i%2 == 0) //2로 나눈 나머지 값이 0이면
             {
                 transform.position = transform.position + new Vector3(0.05f, 0, 0.05f);
             }
-            else
+            else //2로 나눈 나머지 값이 1이면
             {
                 transform.position = transform.position + new Vector3(-0.05f, 0,-0.05f);
             }

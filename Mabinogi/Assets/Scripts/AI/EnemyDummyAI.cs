@@ -17,6 +17,7 @@ public class EnemyDummyAI : AI
     IEnumerator dummyAICoroutine;
     /// <summary> 추적 코루틴 할당할 변수 </summary>
     IEnumerator searchCoroutine;
+
     private void OnEnable()//오브젝트가 활성화되면
     {
         aiStart = false;//aiStart를 false로 맞춰 인공지능이 시작할 수 있게 한다.
@@ -65,19 +66,12 @@ public class EnemyDummyAI : AI
             StartCoroutine(dummyAICoroutine); //인공지능 코루틴 시작
         }
 
-        if (enemyCharacter == null) //적이 없으면 탈출
+
+        if (enemyCharacter != null && enemyCharacter.die == true) //적이 죽으면
         {
             Reset();
-            return;
         }
 
-        if (enemyCharacter.die == true) //적이 죽으면
-        {
-            Reset();
-            return;
-        }
-
-        
     }
 
     /// <summary> 코루틴 중지 </summary>
@@ -147,15 +141,21 @@ public class EnemyDummyAI : AI
             List<Character> enemyList = GetEnemyInRange(15f);//반지름 15의 구 안에 적 캐릭터만 리스트에 담아옴
             if (enemyList.Count > 0) //적이 있으면
             {
-                enemyCharacter = enemyList[0]; //적 리스트의 0번째 적을 enemyCharacter에 할당함
+                for(int i = 0; i< enemyList.Count; i++)
+                {
+                    if(enemyList[i].die == false)
+                    {
+                        enemyCharacter = enemyList[i]; //적 리스트의 i번째 적을 enemyCharacter에 할당함
+                        break;
+                    }
+                }
                 character.TargetLookAt(enemyCharacter); // 보게 만듦
             }
             else
             {
-                enemyCharacter = null;
+                Reset();
             }
-
-            yield return new WaitForSeconds(1f); //1초마다 반복 실행            
+            yield return new WaitForSeconds(3f); //1초마다 반복 실행            
         }
     }
 }

@@ -111,6 +111,6 @@ public class SkillBubble : MonoBehaviour
         skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
         character.Casting(Define.SkillState.Combat);
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel, transform.position);//스킬 취소 효과음
-        character.PlayAnim("SkillCancel");
+        character.PlayAnim("Reset");
     }
 }
