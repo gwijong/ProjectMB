@@ -78,6 +78,10 @@ public class SkillBubble : MonoBehaviour
     /// <summary> 스킬 시전 애니메이션 코루틴 실행용 메서드 </summary>
     void Casting()
     {
+        if (character.magicBolt != null)
+        {
+            Destroy(character.magicBolt);
+        }
         if (coroutineFlag == false)
         {
             coroutineFlag = true;
@@ -106,7 +110,11 @@ public class SkillBubble : MonoBehaviour
     /// <summary> 준비중이거나 준비된 스킬 취소되면 초기화 </summary>
     public void SkillCancel()
     {
-        Reset();       
+        Reset();
+        if (character.magicBolt != null)
+        {
+            Destroy(character.magicBolt);
+        }
         backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
         skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
         character.Casting(Define.SkillState.Combat);

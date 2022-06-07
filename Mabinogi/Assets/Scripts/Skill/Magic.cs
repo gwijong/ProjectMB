@@ -16,7 +16,10 @@ public class Magic : MonoBehaviour
 
     void OnUpdate()
     {
-        Follow();//계속 따라감
+        if (target != null)
+        {
+            Follow();//계속 따라감
+        }
     }
 
     /// <summary> 따라다닐 타겟 오브젝트로 이 오브젝트 계속 이동</summary>
@@ -27,7 +30,8 @@ public class Magic : MonoBehaviour
 
         if((followPos - gameObject.transform.position).magnitude < 1) //거리가 1 이내이면 
         {
-            gameObject.SetActive(false); //비활성화
+            Destroy(gameObject);
+            GameManager.update.UpdateMethod -= OnUpdate;
         }
     }
 }

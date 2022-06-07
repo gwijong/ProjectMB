@@ -138,7 +138,7 @@ public class Character : Movable
     /// <summary> 부활시킬 장소 </summary>
     protected Vector3 spawnPos;
     #endregion
-
+    public GameObject magicBolt;
     protected override void Awake()
     {
         spawnPos = transform.position;
@@ -365,6 +365,8 @@ public class Character : Movable
                 if(loadedSkill.type == Define.SkillState.Icebolt)
                 {
                     GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_ready, transform.position);//마법 준비 완료 효과음
+                    magicBolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/IceboltCast")); //아이스볼트 프리팹 생성
+                    magicBolt.GetComponent<MagicCasting>().character = gameObject.transform;
                 }
                 else
                 {
@@ -519,6 +521,11 @@ public class Character : Movable
                         {
                             PlayAnim("Windmill");//공격에 실패했지만 공격 애니메이션은 재생한다
                         }
+                        else if (loadedSkill == skillList[Define.SkillState.Icebolt].skill)
+                        {
+                            PlayAnim("MagicProcessing");
+                            Icebolt(enemyTarget.transform); //공격에 실패했지만 마법 애니메이션은 재생한다
+                        }
                         wait = Wait(attackFailTime); //공격 실패로 3초간 경직
                         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.guard, transform.position);//디펜스 효과음
                         StartCoroutine(wait);
@@ -574,6 +581,10 @@ public class Character : Movable
     /// <summary> 상대방이 이 캐릭터에 데미지를 주려고 상대방이 부르는 함수</summary>
     public override bool TakeDamage(Character Attacker)
     {
+        if (magicBolt != null)
+        {
+            Destroy(magicBolt);
+        }
         transform.LookAt(Attacker.transform); //때린 상대를 바라본다
         reservedSkill = null; //준비중인 스킬 취소
         skillCastingTimeLeft = 0; //준비중인 스킬이 취소되었으므로 취소 시간도 0으로 초기화
@@ -1001,6 +1012,7 @@ public class Character : Movable
 
     public void Icebolt(Transform target)
     {
+        Destroy(magicBolt);
         GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
         bolt.transform.position = gameObject.transform.position + Vector3.up*2;
         bolt.GetComponent<Magic>().target = target;
