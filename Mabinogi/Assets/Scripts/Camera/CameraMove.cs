@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 카메라 이동 </summary>
 public class CameraMove : MonoBehaviour
 {
     Camera mainCamera;//메인 카메라 자신

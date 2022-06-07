@@ -40,7 +40,7 @@ public class DialogTalk : MonoBehaviour
 
     private void Start()
     {
-        inven = GameObject.FindGameObjectWithTag("Inventory").gameObject.GetComponent<InvenOpen>();
+        inven = GameObject.FindGameObjectWithTag("Inventory").gameObject.GetComponent<InvenOpen>();//인벤토리 찾아옴
     }
 
     private void Update()

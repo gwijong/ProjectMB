@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 늑대 몬스터 캐릭터 </summary>
 public class Wolf : Character
 {
     protected override void Awake()

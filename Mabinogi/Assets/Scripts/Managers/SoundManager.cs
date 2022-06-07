@@ -233,7 +233,9 @@ public class SoundManager : MonoBehaviour
     /// <summary> 골렘 전투모드 </summary>
     AudioClip golem01_woo;
 
+    /// <summary> 최소 거리 </summary>
     public float minDistance;
+    /// <summary> 최대 거리 </summary>
     public float maxDistance;
 
     private void Start()
@@ -311,9 +313,9 @@ public class SoundManager : MonoBehaviour
         1 ~ 0    1 ~ 0
         result = 1 - ((input - min) / (max - min));
          */
-        float distanceVolume = (Camera.main.transform.position - pos).magnitude;
-        distanceVolume = 1 - (distanceVolume - minDistance) / (maxDistance - minDistance);
-        distanceVolume = Mathf.Clamp(distanceVolume, 0, 1);
+        float distanceVolume = (Camera.main.transform.position - pos).magnitude; //카메라와 소리를 내는 타겟 사이의 거리
+        distanceVolume = 1 - (distanceVolume - minDistance) / (maxDistance - minDistance); //볼륨을 타겟 거리에서 멀수록 작게 설정
+        distanceVolume = Mathf.Clamp(distanceVolume, 0, 1); //0에서 1 사이 값으로 특정
         PlaySfxPlayer(audioClipName, distanceVolume);
     }
 

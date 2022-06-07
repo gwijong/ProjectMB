@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/// <summary> 플레이어 캐릭터의 인벤토리 </summary>
 public class PlayerInventory : Inventory
 {
     public Text goldText;

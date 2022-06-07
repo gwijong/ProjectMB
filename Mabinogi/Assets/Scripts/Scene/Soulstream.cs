@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary> 게임 최초 씬 진행</summary>
 public class Soulstream : MonoBehaviour
 {
     /// <summary> 나오 NPC 게임오브젝트 </summary>
@@ -41,7 +42,7 @@ public class Soulstream : MonoBehaviour
         yield return new WaitForSeconds(7.0f);
         bgmPlayer.GetComponent<AudioSource>().clip = naoAppear; //나오 등장 배경음악 재생
         bgmPlayer.GetComponent<AudioSource>().Play();
-        for (int i = 0; i < 20; i++)  //화면을 흰색 조금씩 채움
+        for (int i = 0; i < 20; i++)  //페이드아웃
         {
             whiteImage.color = new Color(1, 1, 1, 0f + (float)i / 20);
             yield return new WaitForSeconds(0.01f);
@@ -49,7 +50,7 @@ public class Soulstream : MonoBehaviour
         whiteImage.color = new Color(1, 1, 1, 1);
         GameObject go = Instantiate(nao);
         go.transform.position = new Vector3(0, 0, 0);
-        for (int i = 0; i < 100; i++) //화면을 채운 흰색을 조금씩 투명하게 변경
+        for (int i = 0; i < 100; i++) //페이드인
         {
             whiteImage.color = new Color(1, 1, 1, 1f - (float)i / 100);
             yield return new WaitForSeconds(0.01f);
@@ -63,7 +64,7 @@ public class Soulstream : MonoBehaviour
         //yield return new WaitForSeconds(0f);
         for (int i = 0; i < 100; i++)
         {
-            whiteImage.color = new Color(1, 1, 1, 0f + (float)i / 100); //화면을 흰색으로 조금씩 채움
+            whiteImage.color = new Color(1, 1, 1, 0f + (float)i / 100); //페이드아웃
             yield return new WaitForSeconds(0.01f);
         }
         whiteImage.color = new Color(1, 1, 1, 1);

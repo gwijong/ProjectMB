@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 구매, 판매 버튼 UI </summary>
 public class BuySellButton : MonoBehaviour
 {
     /// <summary> 구매 버튼 </summary>

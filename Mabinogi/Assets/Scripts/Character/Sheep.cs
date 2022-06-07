@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 양 동물 캐릭터 </summary>
 public class Sheep : Character
 {
     protected override void Awake()
@@ -31,8 +32,9 @@ public class Sheep : Character
         return Define.InteractType.Sheeping; //적이 아니면 양털채집 리턴
     }
 
+    /// <summary> 양 우는 효과음 </summary>
     public void Bark()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.sheep, transform.position);//양 우는 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.sheep, transform.position);
     }
 }

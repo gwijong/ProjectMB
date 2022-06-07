@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> ∏ÛΩ∫≈Õ ∞Ò∑Ω </summary>
 public class Golem : Character
 {
     protected override void Awake()

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 플레이어 캐릭터 </summary>
 public class Player : Character
 {
-    GameObject Dialog;
     public GameObject dieCanvas;
     protected override void Awake()
     {
@@ -16,7 +16,6 @@ public class Player : Character
 
     private void Start()
     {
-        Dialog = GameObject.FindGameObjectWithTag("Dialog");
         anim = GetComponentInChildren<Animator>();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
@@ -59,8 +58,8 @@ public class Player : Character
             return;
         }
 
-        DialogTalk dialog = FindObjectOfType<DialogTalk>();
-        dialog.SetTarget(this, target);
+        DialogTalk dialog = FindObjectOfType<DialogTalk>();//대화 캔버스 가져옴
+        dialog.SetTarget(this, target);//대화 대상 세팅
     }
 
     /// <summary> 플레이어 사망 시 처리 </summary>

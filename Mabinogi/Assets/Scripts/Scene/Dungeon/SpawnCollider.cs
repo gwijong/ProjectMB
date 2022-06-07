@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 트리거 콜라이더에 달리는 스크립트</summary>
 public class SpawnCollider : MonoBehaviour
 {
     //충돌시 몬스터 한번 스폰됨

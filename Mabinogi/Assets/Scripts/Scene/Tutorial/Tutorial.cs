@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/// <summary> 튜토리얼 진행</summary>
 public class Tutorial : MonoBehaviour
 {
     /// <summary> 왼쪽의 인간 캐릭터 </summary>
@@ -36,7 +37,7 @@ public class Tutorial : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))//ESC키 누르면 스킵
         {
-            LoadingScene.NextSceneName = "Intro";
+            LoadingScene.NextSceneName = "Intro"; //인트로 씬으로 넘어감
             UnityEngine.SceneManagement.SceneManager.LoadScene("Loading");
         }
     }
@@ -59,6 +60,8 @@ public class Tutorial : MonoBehaviour
         image.GetComponent<Image>().sprite = sprites[spriteNumber];//전투 설명 이미지의 스프라이트를 세팅
         text.SetActive(true); //전투 설명 텍스트 활성화
     }
+
+    /// <summary> 튜토리얼 진행 코루틴</summary>
     IEnumerator Progress()
     {
         for (int i = 0; i < 100; i++)//화면 전체를 채운 흰색 이미지를 투명으로 점차 변경, 페이드인

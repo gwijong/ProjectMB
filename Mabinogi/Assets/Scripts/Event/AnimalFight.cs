@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+/// <summary> 플레이어가 접근하면 동물들 싸우게 함 </summary>
 public class AnimalFight : MonoBehaviour
 {
     /// <summary> 적 리스트 </summary>

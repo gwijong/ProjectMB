@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 아이템 우클릭 시 나오는 버튼들 </summary>
 public class ItemUseButton : MonoBehaviour
 {
     /// <summary> 아이템 사용 버튼 </summary>

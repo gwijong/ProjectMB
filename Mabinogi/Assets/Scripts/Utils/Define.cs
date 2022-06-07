@@ -1,4 +1,4 @@
-
+/// <summary> 각종 열거형</summary>
 public class Define
 {
     /// <summary> 마우스 입력값</summary>

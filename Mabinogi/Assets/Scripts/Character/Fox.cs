@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 여우 몬스터 </summary>
 public class Fox : Character
 {
     protected override void Awake()

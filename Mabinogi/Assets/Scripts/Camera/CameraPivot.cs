@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 플레이어를 따라다니는 카메라 기준점 </summary>
 public class CameraPivot : MonoBehaviour
 {
     public Transform following_object; //따라다닐 플레이어 트랜스폼

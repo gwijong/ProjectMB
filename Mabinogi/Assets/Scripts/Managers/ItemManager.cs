@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI; // 내비메시 관련 코드
 
+/// <summary> 플레이어 주위에 아이템 생성하는 매니저</summary>
 public class ItemManager : MonoBehaviour
 {
     /// <summary> 아이템 데이터 스크립터블 오브젝트 </summary>

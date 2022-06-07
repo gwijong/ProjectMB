@@ -137,11 +137,13 @@ public class Character : Movable
     public bool respawn = false;
     /// <summary> 부활시킬 장소 </summary>
     protected Vector3 spawnPos;
-    #endregion
+    /// <summary> 플레이어 주위를 뱅뱅 도는 마법 게임오브젝트 </summary>
     public GameObject magicBolt;
+    #endregion
+
     protected override void Awake()
     {
-        spawnPos = transform.position;
+        spawnPos = transform.position;//현재 위치를 부활 기준점으로 지정
         base.Awake();
         #region 변수에 기본값 할당
         //스킬데이터 스크립터블 오브젝트 데이터 할당
@@ -366,7 +368,7 @@ public class Character : Movable
                 {
                     GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_ready, transform.position);//마법 준비 완료 효과음
                     magicBolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/IceboltCast")); //아이스볼트 프리팹 생성
-                    magicBolt.GetComponent<MagicCasting>().character = gameObject.transform;
+                    magicBolt.GetComponent<MagicCast>().character = gameObject.transform;
                 }
                 else
                 {
@@ -933,14 +935,14 @@ public class Character : Movable
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down, transform.position);//사망 효과음
         yield return new WaitForSeconds(20f);
 
-        if (respawn == true)
+        if (respawn == true) //부활 체크가 되어 있으면
         {
-            Respawn();
+            Respawn(); //부활
         }
-        else
+        else //부활 체크가 안 되어 있으면
         {         
             yield return null;
-            MoveStop(true);
+            MoveStop(true); //이동 정지
         }
     }
 
@@ -1015,7 +1017,7 @@ public class Character : Movable
         Destroy(magicBolt);
         GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
         bolt.transform.position = gameObject.transform.position + Vector3.up*2;
-        bolt.GetComponent<Magic>().target = target;
+        bolt.GetComponent<MagicTracking>().target = target;
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning, transform.position);//볼트 마법 효과음
     }
 

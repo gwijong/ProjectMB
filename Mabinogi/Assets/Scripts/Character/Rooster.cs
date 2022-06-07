@@ -21,9 +21,10 @@ public class Rooster : Character
     {
         base.OnUpdate();
     }
+    /// <summary> 닭 나는 효과음 </summary>
     public void Fly()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.chicken_fly, transform.position);//닭 나는 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.chicken_fly, transform.position);
     }
 
     /// <summary> 다운 효과음 </summary>

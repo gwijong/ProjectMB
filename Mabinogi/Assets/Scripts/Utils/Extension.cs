@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 확장 메서드</summary>
 public static class Extension
 {
     /// <summary>target이 compare과 똑같거나 서브클래스인지 확인</summary>
@@ -19,8 +20,8 @@ public static class Extension
             case Define.SkillState.Counter: return Skill.counterAttack; //카운터
             case Define.SkillState.Defense: return Skill.defense; //디펜스
             case Define.SkillState.Smash:   return Skill.smash;  //스매시
-            case Define.SkillState.Icebolt: return Skill.icebolt;  //스매시
-            default:                        return Skill.combatMastery; //근접 공격
+            case Define.SkillState.Icebolt: return Skill.icebolt;  //아이스볼트
+            default:                        return Skill.combatMastery; //기본값은 근접 공격
         }
     }
 
@@ -50,8 +51,8 @@ public static class Extension
             case Define.SkillState.Defense: return Resources.Load<SkillData>("Data/SkillData/Defense");  //디펜스 스킬 데이터 반환
             case Define.SkillState.Smash: return Resources.Load<SkillData>("Data/SkillData/Smash");  //스매시 스킬 데이터 반환
             case Define.SkillState.Counter: return Resources.Load<SkillData>("Data/SkillData/CounterAttack");  //카운터 스킬 데이터 반환
-            case Define.SkillState.Windmill: return Resources.Load<SkillData>("Data/SkillData/Windmill");
-            case Define.SkillState.Icebolt: return Resources.Load<SkillData>("Data/SkillData/Icebolt");
+            case Define.SkillState.Windmill: return Resources.Load<SkillData>("Data/SkillData/Windmill"); //윈드밀 스킬 데이터 반환
+            case Define.SkillState.Icebolt: return Resources.Load<SkillData>("Data/SkillData/Icebolt"); //아이스볼트 스킬 데이터 반환
             default: return Resources.Load<SkillData>("Data/SkillData/Combat"); //이상한 값 들어오면 기본 근접공격 스킬 데이터 반환
         }
     }
@@ -150,18 +151,19 @@ public static class Extension
             default: return null;
         }
     }
+    /// <summary>Define.Item.GetItemData(); 아이템 사용 효과</summary>
     public static void Use(this Define.Item item)
     {
         switch (item)
         {
-            case Define.Item.Fruit: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.Fruit: GameObject.FindObjectOfType<Player>().staminaPoint.Current += 10; break;
             case Define.Item.Wool: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
-            case Define.Item.Egg: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.Egg: GameObject.FindObjectOfType<Player>().staminaPoint.Current += 10; break;
             case Define.Item.Firewood: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
             case Define.Item.LifePotion: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
             case Define.Item.ManaPotion: GameObject.FindObjectOfType<Player>().manaPoint.Current += 10; break;
             case Define.Item.Bottle: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
-            case Define.Item.BottleWater: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
+            case Define.Item.BottleWater: GameObject.FindObjectOfType<Player>().staminaPoint.Current += 10; break;
             default: GameObject.FindObjectOfType<Player>().hitPoint.Current += 10; break;
         }
     }

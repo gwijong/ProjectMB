@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+/// <summary> 모리안 등장 씬 진행</summary>
 public class Intro : MonoBehaviour
 {
     /// <summary> 화면 하단 모리안이 말할 대사들 </summary>

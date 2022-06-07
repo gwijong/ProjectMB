@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 공통 인공지능 </summary>
 public class EnemyDummyAI : AI
 {
-    //public LayerMask whatIsTarget;
-    /// <summary> 때릴 대상 레이어 마스크 </summary>
-    //int layerMask = 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock | 1 << (int)Define.Layer.Player;    
     /// <summary> 적(캐릭터 컴포넌트) </summary>
     Character enemyCharacter; 
     /// <summary> 인공지능 시작 체크 </summary>

@@ -7,12 +7,18 @@ using UnityEngine.UI;
 /// <summary> 캐릭터 머리 위에 달리는 스킬 말풍선 </summary>
 public class SkillBubble : MonoBehaviour
 {
-    Character character; //플레이어거나 적이거나 상관없이 모든 캐릭터
-    public Sprite[] skillSprites;//준비된 스킬 이미지 스프라이트들
-    Image skillImage; //스킬 스프라이트가 담길 이미지 컴포넌트
-    Image backGroundImage; //스킬 스프라이트 뒤의 흰색 말풍선
-    IEnumerator skillCastingCoroutine; //스킬 시전 말풍선 움직여줄 코루틴
-    bool coroutineFlag = false;//코루틴 중복실행 방지
+    /// <summary> 플레이어거나 적이거나 상관없이 모든 캐릭터</summary>
+    Character character; 
+    /// <summary> 준비된 스킬 이미지 스프라이트들</summary>
+    public Sprite[] skillSprites;
+    /// <summary> 스킬 스프라이트가 담길 이미지 컴포넌트</summary>
+    Image skillImage; 
+    /// <summary> 스킬 스프라이트 뒤의 흰색 말풍선</summary>
+    Image backGroundImage; 
+    /// <summary> 스킬 시전 말풍선 움직여줄 코루틴</summary>
+    IEnumerator skillCastingCoroutine; 
+    /// <summary> 코루틴 중복실행 방지</summary>
+    bool coroutineFlag = false;
     void Start()
     {
         backGroundImage = GetComponentsInChildren<Image>()[0];
@@ -78,9 +84,9 @@ public class SkillBubble : MonoBehaviour
     /// <summary> 스킬 시전 애니메이션 코루틴 실행용 메서드 </summary>
     void Casting()
     {
-        if (character.magicBolt != null)
+        if (character.magicBolt != null) //시전한 마법 게임오브젝트가 존재하면
         {
-            Destroy(character.magicBolt);
+            Destroy(character.magicBolt); //마법 삭제
         }
         if (coroutineFlag == false)
         {
@@ -111,14 +117,14 @@ public class SkillBubble : MonoBehaviour
     public void SkillCancel()
     {
         Reset();
-        if (character.magicBolt != null)
+        if (character.magicBolt != null) //시전한 마법 게임오브젝트가 있으면
         {
-            Destroy(character.magicBolt);
+            Destroy(character.magicBolt); //마법 게임오브젝트 파괴
         }
         backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
         skillImage.enabled = false; //스킬 말풍선 이미지 비활성화
-        character.Casting(Define.SkillState.Combat);
+        character.Casting(Define.SkillState.Combat); //스킬을 기본공격으로 세팅
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel, transform.position);//스킬 취소 효과음
-        character.PlayAnim("Reset");
+        character.PlayAnim("Reset"); //애니메이션을 아이들 상태로 전환
     }
 }

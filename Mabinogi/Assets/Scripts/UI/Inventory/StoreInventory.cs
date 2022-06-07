@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+/// <summary> NPC 상점 인벤토리 </summary>
 public class StoreInventory : Inventory
 {
     /// <summary> 구매 UI 프리팹 </summary>
@@ -175,6 +176,7 @@ public class StoreInventory : Inventory
         LeftClick(pos); //좌클릭 메서드 실행
     }
 
+    /// <summary> 아이템 구매 </summary>
     public void Buy()
     {
         if (PlayerController.controller.playerCharacter.gold >= item.GetItemData().SalePrice)//남은 돈이 물품 가격보다 크면
@@ -185,6 +187,7 @@ public class StoreInventory : Inventory
         }
     }
 
+    /// <summary> 아이템 판매 </summary>
     public void Sell()
     {
         PlayerController.controller.playerCharacter.gold += mouseItem.GetItemType().GetItemData().SalePrice * mouseItem.amount;//남은 돈에 판매가격 더함

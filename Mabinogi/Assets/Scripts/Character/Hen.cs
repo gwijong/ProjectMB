@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 닭 동물 캐릭터 </summary>
 public class Hen : Character
 {
 
@@ -32,9 +33,10 @@ public class Hen : Character
         return Define.InteractType.Egg; //적이 아니면 달걀채집 리턴
     }
 
+    /// <summary> 닭 나는 효과음 </summary>
     public void Fly()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.chicken_fly, transform.position);//닭 나는 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.chicken_fly, transform.position);
     }
 
     /// <summary> 다운 효과음 </summary>

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> µ¿¹° °³ </summary>
 public class Dog : Character
 {
 

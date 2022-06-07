@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 최상위 인공지능 클래스 </summary>
 public class AI : MonoBehaviour
 {
     /// <summary> 인공지능 몬스터 나 자신 </summary>

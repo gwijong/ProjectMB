@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> ∞ı ∏ÛΩ∫≈Õ </summary>
 public class Bear : Character
 {
     protected override void Awake()
