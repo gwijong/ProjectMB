@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
             return;
         }      
         //왼쪽 컨트롤 키를 누른 상태로 캐릭터를 마우스 좌클릭하면 그 캐릭터가 플레이어가 됨
-        if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick) && Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick) && Input.GetKey(KeyCode.LeftShift))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨
             RaycastHit hit;  //충돌 물체 정보 받아올 데이터 컨테이너
@@ -105,7 +105,12 @@ public class PlayerController : MonoBehaviour
                 playerCharacter.Windmill();
                 return;
             }
-            
+            if (GuideLine.targetCharacter != null)
+            {
+                playerCharacter.SetTarget(GuideLine.targetCharacter);
+                Debug.Log("gggg");
+                return;
+            }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨
             RaycastHit hit;  //충돌 물체 정보 받아올 데이터 컨테이너
 
