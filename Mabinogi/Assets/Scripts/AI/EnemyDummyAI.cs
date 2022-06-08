@@ -136,7 +136,7 @@ public class EnemyDummyAI : AI
     {      
         while (!character.die)//이 캐릭터(Enemy)가 살아 있으면
         {
-            List<Character> enemyList = GetEnemyInRange(15f);//반지름 15의 구 안에 적 캐릭터만 리스트에 담아옴
+            List<Character> enemyList = GetEnemyInRange(30f);//반지름 15의 구 안에 적 캐릭터만 리스트에 담아옴
             if (enemyList.Count > 0) //적이 있으면
             {
                 for(int i = 0; i< enemyList.Count; i++)
