@@ -183,6 +183,26 @@ public class SoundManager : MonoBehaviour
     /// <summary> ´Á´ë Â¢±â </summary>
     AudioClip wolf01_natural_stand_offensive;
 
+    [Tooltip("´Á´ë Ä«¿îÅÍ")]
+    [SerializeField]
+    /// <summary> ´Á´ë Ä«¿îÅÍ </summary>
+    AudioClip wolf01_natural_attack_counter;
+
+    [Tooltip("´Á´ë ½º¸Å½Ã")]
+    [SerializeField]
+    /// <summary> ´Á´ë ½º¸Å½Ã </summary>
+    AudioClip wolf01_natural_attack_smash;
+
+    [Tooltip("´Á´ë ´Ù¿î")]
+    [SerializeField]
+    /// <summary> ´Á´ë ´Ù¿î </summary>
+    AudioClip wolf01_natural_down;
+
+    [Tooltip("´Á´ë ¸Â±â")]
+    [SerializeField]
+    /// <summary> ´Á´ë ¸Â±â </summary>
+    AudioClip wolf01_natural_hit;
+
     [Tooltip("¾ç ¿ï±â")]
     [SerializeField]
     /// <summary> ¾ç ¿ï±â </summary>
@@ -348,6 +368,9 @@ public class SoundManager : MonoBehaviour
             case Define.SoundEffect.dog01_natural_blowaway: return dog01_natural_blowaway;
             case Define.SoundEffect.dog01_natural_hit: return dog01_natural_hit;
             case Define.SoundEffect.wolf01_natural_stand_offensive: return wolf01_natural_stand_offensive;
+            case Define.SoundEffect.wolf01_natural_attack_counter: return wolf01_natural_attack_counter;
+            case Define.SoundEffect.wolf01_natural_attack_smash: return wolf01_natural_attack_smash;
+            case Define.SoundEffect.wolf01_natural_hit: return wolf01_natural_hit;
             case Define.SoundEffect.sheep: return sheep;
             case Define.SoundEffect.chicken_fly: return chicken_fly;
             case Define.SoundEffect.chicken_down: return chicken_down;

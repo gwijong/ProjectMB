@@ -962,6 +962,8 @@ public class Character : Movable
         waitCount = 0;
         die = false;
         hitPoint.Current = hitPoint.Max;
+        manaPoint.Current = manaPoint.Max;
+        staminaPoint.Current = staminaPoint.Max;
         PlayAnim("Reset");//애니메이션을 idle로 전환
         Vector3 spawnPosition = GetRandomPointOnNavMesh(spawnPos, 7); //사망 위치 근처에서 내비메시 위의 랜덤 위치 가져오기
         spawnPosition += Vector3.up * 2;  //바닥에서 2만큼 y좌표 위로 올리기

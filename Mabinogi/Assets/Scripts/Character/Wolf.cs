@@ -27,4 +27,23 @@ public class Wolf : Character
     {
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_stand_offensive, transform.position);//늑대 짖는 효과음
     }
+    public void Samsh()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_attack_smash, transform.position);// 효과음
+    }
+    /// <summary> 카운터 효과음 </summary>
+    public void Counter()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_attack_counter, transform.position);// 효과음
+    }
+    /// <summary> 다운 효과음 </summary>
+    public void Blowaway()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_down, transform.position);// 효과음
+    }
+    /// <summary> 맞기 효과음 </summary>
+    public void Hit()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.wolf01_natural_hit, transform.position);// 효과음
+    }
 }
