@@ -10,17 +10,21 @@ public class UILookAtCamera : MonoBehaviour
     /// <summary> 카메라 각도에 따라 회전시킬 오브젝트</summary>
     GameObject UI;
 
+
+
     void Start()
     {
         UI = gameObject; //나 자신 게임오브젝트
         mainCamera = Camera.main.transform;//메인카메라의 트랜스폼
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
+        
     }
 
 
     void OnUpdate()
     {
+
         if (UI == null) //회전시킬 게임오브젝트가 파괴되면 실행 안함
         {
             return;

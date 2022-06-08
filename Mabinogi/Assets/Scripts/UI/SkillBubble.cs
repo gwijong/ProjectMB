@@ -19,6 +19,8 @@ public class SkillBubble : MonoBehaviour
     IEnumerator skillCastingCoroutine; 
     /// <summary> 코루틴 중복실행 방지</summary>
     bool coroutineFlag = false;
+   
+    float distance;
     void Start()
     {
         backGroundImage = GetComponentsInChildren<Image>()[0];
@@ -37,6 +39,12 @@ public class SkillBubble : MonoBehaviour
 
     void OnUpdate()
     {
+        distance = (gameObject.transform.position - Camera.main.transform.position).magnitude;
+        if (distance / 20 < 1)
+        {
+            distance = 20;
+        }
+
         if (character.GetloadedSkill().type == Define.SkillState.Combat) //스킬이 기본공격이면
         {
             backGroundImage.enabled = false; //스킬 말풍선 이미지 비활성화
@@ -77,7 +85,7 @@ public class SkillBubble : MonoBehaviour
         {
             StopCoroutine(skillCastingCoroutine);
         }
-        transform.localScale = new Vector3(0.4f, 0.4f, 0.4f); //스킬 말풍선 크기를 최초값으로 변경
+        transform.localScale = new Vector3(0.4f, 0.4f, 0.4f) * distance / 20; //스킬 말풍선 크기를 최초값으로 변경
     }
 
 
@@ -102,12 +110,12 @@ public class SkillBubble : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {  //말풍선 줄이는 구간
-            transform.localScale = new Vector3(0.4f - (float)i / 100, 0.4f - (float)i / 100, 0.4f - (float)i / 100);
+            transform.localScale = new Vector3(0.4f - (float)i / 100, 0.4f - (float)i / 100, 0.4f - (float)i / 100) * distance/20;
             yield return new WaitForSeconds(0.04f);
         }
         for (int i = 0; i < 10; i++)
         {  //말풍선 키우는 구간
-            transform.localScale = new Vector3(0.3f + (float)i / 100, 0.3f + (float)i / 100, 0.3f + (float)i / 100);
+            transform.localScale = new Vector3(0.3f + (float)i / 100, 0.3f + (float)i / 100, 0.3f + (float)i / 100) * distance / 20;
             yield return new WaitForSeconds(0.04f);
         }
         coroutineFlag = false;

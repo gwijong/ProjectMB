@@ -751,6 +751,10 @@ public class Character : Movable
         offensive = value;
         OffensiveSetting();
     }
+    public bool GetOffensive()
+    {
+        return offensive;
+    }
 
     /// <summary> 일상, 전투모드에 맞춰 애니메이션과 이동속도 전환 </summary>
     void OffensiveSetting()

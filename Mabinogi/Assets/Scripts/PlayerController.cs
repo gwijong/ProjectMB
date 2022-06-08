@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
             if (GuideLine.targetCharacter != null)
             {
                 playerCharacter.SetTarget(GuideLine.targetCharacter);
-                Debug.Log("gggg");
                 return;
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨

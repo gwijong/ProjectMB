@@ -3623,6 +3623,7 @@ GameObject:
   - component: {fileID: 1585766149395887920}
   - component: {fileID: 1585766149395887923}
   - component: {fileID: 1585766149395887922}
+  - component: {fileID: 8401312735039428266}
   m_Layer: 5
   m_Name: HPUICanvas
   m_TagString: Untagged
@@ -3735,6 +3736,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1c93ad6c2a898b4885041dc73f4e2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8401312735039428266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585766149395887932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a8af7810e1e994b87bef4b4a4c2785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1585766149400843949
@@ -6332,6 +6345,7 @@ MonoBehaviour:
   gold: 1000
   isRespawnAIStart: 0
   respawn: 0
+  magicBolt: {fileID: 0}
   dieCanvas: {fileID: 0}
 --- !u!195 &1585766150249150302
 NavMeshAgent:
