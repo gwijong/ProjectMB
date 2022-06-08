@@ -100,14 +100,14 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown((int)Define.mouseKey.LeftClick))  //마우스 좌클릭 입력되면
         {
-            if(playerCharacter.GetloadedSkill() == Skill.windmill)
+            if(playerCharacter.GetloadedSkill() == Skill.windmill) //윈드밀이면
             {
-                playerCharacter.Windmill();
+                playerCharacter.Windmill();//윈드밀 사용
                 return;
             }
-            if (GuideLine.targetCharacter != null)
+            if (GuideLine.targetCharacter != null) //가이드라인의 타겟캐릭터가 있는 경우
             {
-                playerCharacter.SetTarget(GuideLine.targetCharacter);
+                playerCharacter.SetTarget(GuideLine.targetCharacter); //가이드라인의 타겟으로 타겟 설정
                 return;
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  //카메라에서 마우스좌표로 레이를 쏨

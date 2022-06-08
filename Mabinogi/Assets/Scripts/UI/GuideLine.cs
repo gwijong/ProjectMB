@@ -14,24 +14,23 @@ public class GuideLine : MonoBehaviour
     /// <summary> 렌더러 컴포넌트 </summary>
     Renderer rend;
     float startAngle;
+
     void Start()
     {
-        line = GetComponent<LineRenderer>();//라인렌더러 할당
-        line.widthMultiplier = 0.005f;//점선의 굵기
-        player = PlayerController.controller.playerCharacter; //플레이어 캐릭터 할당
-        line.textureMode = LineTextureMode.Tile; //라인렌더러 모드를 타일로 설정해서 점선 반복
         rend = GetComponent<Renderer>(); //렌더러 할당
-        rend.material.mainTextureScale = new Vector2(Vector2.Distance(line.GetPosition(0), line.GetPosition(line.positionCount - 1)) / line.widthMultiplier, 1);
+        line = GetComponent<LineRenderer>();//라인렌더러 할당
+        line.widthMultiplier = 0.005f;//점선의 굵기       
+        line.textureMode = LineTextureMode.Tile; //라인렌더러 모드를 타일로 설정해서 점선 반복
     }
     
     void LateUpdate()
     {
         rend.material.mainTextureScale = new Vector2(Vector2.Distance(line.GetPosition(0), line.GetPosition(line.positionCount - 1)) / line.widthMultiplier, 1);
-
-        rend.material.mainTextureScale = (rend.material.mainTextureScale * startAngle)/ rend.material.mainTextureScale*4f;
+        rend.material.mainTextureScale = (rend.material.mainTextureScale * startAngle)/ rend.material.mainTextureScale*8f;
         
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 키보드 왼쪽 컨트롤 키를 누르면
         {
+            player = PlayerController.controller.playerCharacter; //플레이어 캐릭터 할당
             Character[] characters = GameObject.FindObjectsOfType<Character>();//모든 캐릭터 긁어옴
             float neardistance = 100000;//마우스 커서와 가장 가까운 NPC와의 거리
             Character nearCharacter = null; //마우스 커서와 가장 가까운 NPC 타겟;
@@ -39,7 +38,7 @@ public class GuideLine : MonoBehaviour
             {
                 if (player.GetOffensive()) //플레이어가 전투모드이면
                 {
-                    if (current.gameObject.layer == (int)Define.Layer.Enemy)
+                    if (current.gameObject.layer == (int)Define.Layer.Enemy && current.die == false) //레이어가 적이고 사망하지 않은 경우
                     {
                         float currentDistance = (Input.mousePosition - Camera.main.WorldToScreenPoint(current.transform.position)).magnitude;
                         if (currentDistance < neardistance)
@@ -49,10 +48,10 @@ public class GuideLine : MonoBehaviour
                         }
                     }
                 }
-
                 else //플레이어가 일상모드이면
                 {
-                    if (current.gameObject.layer == (int)Define.Layer.Livestock || current.gameObject.layer == (int)Define.Layer.NPC)
+                    //레이어가 가축이나 NPC이고 사망하지 않았다면
+                    if (current.gameObject.layer == (int)Define.Layer.Livestock || current.gameObject.layer == (int)Define.Layer.NPC && current.die == false)
                     {
                         float currentDistance = (Input.mousePosition - Camera.main.WorldToScreenPoint(current.transform.position)).magnitude;
                         if (currentDistance < neardistance)
