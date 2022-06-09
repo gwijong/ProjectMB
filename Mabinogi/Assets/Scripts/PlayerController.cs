@@ -214,6 +214,14 @@ public class PlayerController : MonoBehaviour
             //playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
             playerCharacter.GetComponentInChildren<SkillBubble>().SkillCancel();
         }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            Inventory.EatItem(Define.Item.LifePotion);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            Inventory.EatItem(Define.Item.ManaPotion);
+        }
     }
 }
 

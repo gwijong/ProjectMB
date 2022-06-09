@@ -8,7 +8,6 @@ public class ItemUseButton : MonoBehaviour
     /// <summary> 아이템 사용 버튼 </summary>
     public void Use()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.eatfood);//버튼 다운 효과음
         FindObjectOfType<PlayerInventory>().Use();
     }
     /// <summary> 아이템 나누기 버튼 </summary>

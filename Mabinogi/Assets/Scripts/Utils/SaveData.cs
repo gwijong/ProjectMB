@@ -73,19 +73,9 @@ public class SaveData : MonoBehaviour
         int amount = 0; //현재 찾는 아이템의 총 개수
         for (int i = 0; i < System.Enum.GetValues(typeof(Define.Item)).Length; i++) //아이템 종류만큼 반복
         {
-            for (int y = 0; y < playerInventory.height; y++) //소지품창 높이만큼 반복
-            {
-                for (int x = 0; x < playerInventory.width; x++) //소지품창 넓이만큼 반복
-                {
-                    if (playerInventory.infoArray[y, x].GetItemType() == (Define.Item)itemId + 1) //인벤토리 칸 아이템 타입이 현재 찾는 아이템 타입과 같으면
-                    {
-                        amount += playerInventory.infoArray[y, x].amount; //같은 아이템 타입끼리 누적합 해줌
-                    }
-                }
-            }
+            amount = playerInventory.GetItemAmount((Define.Item)itemId + 1);
             invendata.itemAmount[itemId] = amount; //해당 아이템 타입의 누적합한 개수를 저장용 데이터컨테이너에 넣음
             itemId++;
-            amount = 0; //다른 아이템 타입의 개수를 저장하기 위해 초기화
             invendata.gold = playerInventory.owner.gold; //플레이어 골드 저장
         }
         string json = JsonUtility.ToJson(invendata); //저장되는 문자열

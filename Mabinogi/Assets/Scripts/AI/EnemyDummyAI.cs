@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyDummyAI : AI
 {
     /// <summary> 적(캐릭터 컴포넌트) </summary>
-    Character enemyCharacter; 
+    public Character enemyCharacter; 
     /// <summary> 인공지능 시작 체크 </summary>
     bool aiStart = false; 
     /// <summary> 인공지능이 시전할 랜덤 스킬 번호 </summary>
@@ -15,6 +15,8 @@ public class EnemyDummyAI : AI
     IEnumerator dummyAICoroutine;
     /// <summary> 추적 코루틴 할당할 변수 </summary>
     IEnumerator searchCoroutine;
+
+    float progress = 0;
 
     private void OnEnable()//오브젝트가 활성화되면
     {
@@ -88,35 +90,45 @@ public class EnemyDummyAI : AI
         skillNum = Random.Range(0, 4);  //스킬 고름
         if (enemyCharacter != null)
         {
-            if (enemyCharacter != null)
+            character.Casting((Define.SkillState)skillNum);  //스킬 시전
+
+            yield return new WaitForSeconds(Random.Range(1f, 3.0f));   // 1초부터 3초 대기
+
+            switch (skillNum)
             {
-                character.Casting((Define.SkillState)skillNum);  //스킬 시전
+                case (int)Define.SkillState.Combat:
+                    character.SetTarget(enemyCharacter);  //선공스킬이면 공격
+                    break;
+                case (int)Define.SkillState.Defense:
+                    {
+                        int patrolTime = Random.Range(200, 500);
+                        float randomDistance = Random.Range(8.0f, 12.0f);
+                        for(int i= 0; i< patrolTime && character.GetloadedSkill().type == Define.SkillState.Defense && enemyCharacter != null; i++)
+                        {
+                            Vector3 currentPos = new Vector3(Mathf.Sin(progress), 0, Mathf.Cos(progress));
+                            currentPos *= randomDistance;
+                            character.MoveTo(enemyCharacter.transform.position + currentPos);
+                            progress += 0.015f;
+                            yield return new WaitForSeconds(0.02f);
+                        }
+                        yield return new WaitForSeconds(1.2f);
+                        character.SetTarget(enemyCharacter);
+                        yield return new WaitForSeconds(1.2f);
+                        character.SetTarget(enemyCharacter);
+                        yield return new WaitForSeconds(1.2f);
+                        character.SetTarget(enemyCharacter);
+                        break;
+                    }                    
+                case (int)Define.SkillState.Smash:
+                    character.SetTarget(enemyCharacter);  //선공스킬이면 공격
+                    break;
+                case (int)Define.SkillState.Counter:
+                    break;
             }
-        }
-        yield return new WaitForSeconds(Random.Range(1f, 3.0f));   // 2초 대기
-
-        if (skillNum == (int)Define.SkillState.Defense)//시전된 스킬이 디펜스이면
-        {
-            yield return new WaitForSeconds(1.2f); //1.2초 대기
-            character.SetTarget(enemyCharacter); //공격 시도
-            yield return new WaitForSeconds(1.2f); //1.2초 대기
-            character.SetTarget(enemyCharacter); //공격 시도
-            yield return new WaitForSeconds(1.2f); //1.2초 대기
-            character.SetTarget(enemyCharacter); //공격 시도
-        }
-
-        if (skillNum != (int)Define.SkillState.Counter)  // 카운터어택이 아니면 선공 공격이므로
-        {
-
-            if (enemyCharacter != null)
-            {
-                character.SetTarget(enemyCharacter);  //선공스킬이면 공격
-            }
-        }
-        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f)); //0.6초 대기
+        }       
+        yield return new WaitForSeconds(Random.Range(1f, 3.0f)); //1초부터 3초 대기
         character.SetTarget(null); //타겟 해제
         aiStart = false; //코루틴 재실행 준비
-
     }
 
 
@@ -130,29 +142,33 @@ public class EnemyDummyAI : AI
         character.SetOffensive(false); //일상모드로 전환
     }
 
+    /// <summary> 순찰 </summary>
+    void Patrol(float range)
+    {
+        Vector3 movePos = new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range)); //랜덤하게 이동할 범위
+        character.MoveTo(character.spawnPos + movePos); //부활 기준점 주위 이동    
+    }
+
     /// <summary> 5초마다 반복실행되는 플레이어를 찾는 코루틴 </summary>
     private IEnumerator UpdatePath()
     {      
-        while (!character.die)//이 캐릭터(Enemy)가 살아 있으면
+        while (!character.die )//이 캐릭터(Enemy)가 살아 있으면
         {
-            List<Character> enemyList = GetEnemyInRange(40f);//반지름 40의 구 안에 적 캐릭터만 리스트에 담아옴
-            if (enemyList.Count > 0) //적이 있으면
+            if(enemyCharacter == null)
             {
-                for(int i = 0; i< enemyList.Count; i++)
-                {
-                    if(enemyList[i].die == false)
-                    {
-                        enemyCharacter = enemyList[i]; //적 리스트의 i번째 적을 enemyCharacter에 할당함
-                        break;
-                    }
+                List<Character> enemyList = GetEnemyInRange(40f);//반지름 40의 구 안에 적 캐릭터만 리스트에 담아옴
+                if (enemyList.Count > 0 ) //적이 있으면
+                {                     
+                    enemyCharacter = enemyList[Random.Range(0,enemyList.Count)]; //적 리스트의 i번째 적을 enemyCharacter에 할당함
+                    character.TargetLookAt(enemyCharacter); // 보게 만듦
                 }
-                character.TargetLookAt(enemyCharacter); // 보게 만듦
-            }
-            else
-            {
-                Reset();
-            }
-            yield return new WaitForSeconds(2f); //1초마다 반복 실행            
+                else
+                {
+                    Reset();
+                    Patrol(3.0f);
+                }
+            };
+            yield return new WaitForSeconds(Random.Range(4.0f,8.0f)); //4에서 8초 사이 반복 실행            
         }
     }
 }

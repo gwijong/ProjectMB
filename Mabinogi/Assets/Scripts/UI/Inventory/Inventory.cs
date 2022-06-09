@@ -422,10 +422,11 @@ public class Inventory : MonoBehaviour
         mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 사용창 아이템 한개로 설정한다.
         use.SetActive(false);//사용창 비활성화
     }
-
+    
     /// <summary> 아이템 사용 </summary>
     public void Use()
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.eatfood);//먹는 효과음
         useItem.SetAmount(useItem.amount-1); //아이템 개수를 한개 줄임
         useItem.amountText.text = useItem.amount.ToString();
         Vector2Int rootLocation = useItem.GetLocation(); //루트 좌표는 해당 좌표 셀의 루트의 좌표이다
@@ -636,6 +637,7 @@ public class Inventory : MonoBehaviour
         return result; //리스트 반환
     }
 
+
     /// <summary> 인벤토리 내의 마우스 좌표</summary>
     Vector3 GetMousePositionFromInventory()
     {
@@ -838,6 +840,32 @@ public class Inventory : MonoBehaviour
         {
             inpo.SetActive(false); //정보창 비활성화
         }
+    }
+
+    /// <summary> 아이템 하나 사용</summary> 
+    //여러개 사용하는 메서드는 아직 구현 안함, 반복문으로 한번 더 감싸면 됨
+    public static bool EatItem(Define.Item item)
+    {
+        int amount = 0;
+        Inventory hasPotionInven = null;
+        //생명력 포션 사용
+        foreach (Inventory current in Inventory.playerInventoryList)
+        {
+            int currentAmount = current.GetItemAmount(item);
+            if (currentAmount > 0)
+            {
+                amount += currentAmount;
+                hasPotionInven = current;
+            }
+        }
+        if (amount >= 1)
+        {
+            List<CellInfo> currentCell = hasPotionInven.FindItemList(item);
+            useItem = currentCell[currentCell.Count - 1];
+            hasPotionInven.Use();
+            return true;
+        }
+        return false;
     }
 }
 

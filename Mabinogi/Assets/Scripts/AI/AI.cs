@@ -35,7 +35,7 @@ public class AI : MonoBehaviour
 
         foreach(Character current in from)//범위 안의 모든 캐릭터 숫자만큼 반복
         {
-            if(Interactable.IsEnemy(character, current)) //내 캐릭터 자신과 상대방의 상호작용이 적이면(IsEnemy가 true면)
+            if(Interactable.IsEnemy(character, current) && !current.die) //내 캐릭터 자신과 상대방의 상호작용이 적이면(IsEnemy가 true면)
             {
                 result.Add(current);//적 리스트에 추가
             };

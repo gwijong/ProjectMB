@@ -136,7 +136,7 @@ public class Character : Movable
     [Tooltip("체크하면 계속 부활함")]
     public bool respawn = false;
     /// <summary> 부활시킬 장소 </summary>
-    protected Vector3 spawnPos;
+    public Vector3 spawnPos;
     /// <summary> 플레이어 주위를 뱅뱅 도는 마법 게임오브젝트 </summary>
     public GameObject magicBolt;
     #endregion
