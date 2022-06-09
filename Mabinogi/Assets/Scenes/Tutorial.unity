@@ -158,8 +158,8 @@ Camera:
   m_GameObject: {fileID: 136849184}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.64165044, g: 0.6367924, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -391,7 +391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchoredPosition: {x: 100, y: -200}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1472557792
@@ -431,20 +431,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 45
+    m_FontSize: 52
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 50
+    m_MaxSize: 55
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '
-
-'
+  m_Text: 
 --- !u!222 &1472557794
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6328,6 +6326,7 @@ MonoBehaviour:
   gold: 1000
   isRespawnAIStart: 0
   respawn: 0
+  magicBolt: {fileID: 0}
   dieCanvas: {fileID: 0}
 --- !u!195 &1585766149517250259
 NavMeshAgent:
@@ -9909,11 +9908,15 @@ MonoBehaviour:
   dungeon_door: {fileID: 8300000, guid: da5fe6963ead3de4b8dac5e2fc90f82a, type: 3}
   magic_standby: {fileID: 8300000, guid: ec53d5d8a3c85e448870152d3665668e, type: 3}
   magic_ready: {fileID: 8300000, guid: 0bdb4315f90ceac47a1e26cfe4148927, type: 3}
-  magic_lightning: {fileID: 8300000, guid: 567b38c354a8e444bacf29b971ce5895, type: 3}
+  magic_lightning: {fileID: 8300000, guid: 8e42c91beed20ab47b855f4d9cd26339, type: 3}
   dog01_natural_stand_offensive: {fileID: 0}
   dog01_natural_blowaway: {fileID: 0}
   dog01_natural_hit: {fileID: 0}
   wolf01_natural_stand_offensive: {fileID: 8300000, guid: 7904ffd97f6756a4dada09bd29961f37, type: 3}
+  wolf01_natural_attack_counter: {fileID: 0}
+  wolf01_natural_attack_smash: {fileID: 0}
+  wolf01_natural_down: {fileID: 0}
+  wolf01_natural_hit: {fileID: 0}
   sheep: {fileID: 0}
   chicken_fly: {fileID: 0}
   chicken_down: {fileID: 0}
@@ -11792,6 +11795,7 @@ MonoBehaviour:
   gold: 0
   isRespawnAIStart: 0
   respawn: 0
+  magicBolt: {fileID: 0}
 --- !u!1 &6308167511858839790
 GameObject:
   m_ObjectHideFlags: 0
