@@ -539,6 +539,8 @@ public class Character : Movable
 
                     //카운터는 반격 당하고 다운됨
                     case Define.SkillState.Counter:
+                        GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/Hit"));
+                        hitEffect.transform.position = gameObject.transform.position + Vector3.up * 3;
                         this.downGauge.Current += counterData.DownGauge;//다운게이지를 100 추가
                         float damage = asCharacter.CalculateDamage(Define.SkillState.Counter); //데미지 계산
                         this.hitPoint.Current -= damage; //현재 생명력에서 데미지 만큼 빼줌
@@ -607,6 +609,8 @@ public class Character : Movable
 
         if (result == true) //상대방의 공격이 성공한 경우
         {
+            GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/Hit"));
+            hitEffect.transform.position = gameObject.transform.position+Vector3.up*3;
             float damage = 0.0f;
             switch (Attacker.loadedSkill.type)//상대방 스킬에 따라 내가 피해를 입음
             {
@@ -940,6 +944,8 @@ public class Character : Movable
             PlayerDie();
         }
         yield return new WaitForSeconds(1f); //1초 대기
+        GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/CosmicReversal"));
+        hitEffect.transform.position = gameObject.transform.position + Vector3.up * 1;
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down, transform.position);//사망 효과음
         yield return new WaitForSeconds(20f);
 
@@ -960,7 +966,7 @@ public class Character : Movable
     }
 
     /// <summary> 캐릭터 부활</summary>
-    public void Respawn()
+    public virtual void Respawn()
     {
         StopAllCoroutines();
         waitCount = 0;

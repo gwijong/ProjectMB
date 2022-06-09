@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary> 몬스터 골렘 </summary>
 public class Golem : Character
 {
+    bool bossDieCheck = false;
     protected override void Awake()
     {
         base.Awake();
@@ -21,6 +22,18 @@ public class Golem : Character
     protected override void OnUpdate()
     {
         base.OnUpdate();
+        if (die == true && bossDieCheck ==false)
+        {
+            bossDieCheck = true;
+            GameObject dieEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/ChargingPop"));
+            dieEffect.transform.position = gameObject.transform.position + Vector3.up * 3;
+        }
+    }
+
+    public override void Respawn()
+    {
+        base.Respawn();
+        bossDieCheck = false;
     }
     /// <summary> 전투모드 효과음 </summary>
     public void StandOffensive()

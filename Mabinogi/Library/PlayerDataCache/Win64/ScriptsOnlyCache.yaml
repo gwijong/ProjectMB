@@ -484,6 +484,12 @@ ScriptsOnlyBuild:
       Script: {instanceID: 4542}
     - Class: 114
       Script: {instanceID: 4582}
+    - Class: 114
+      Script: {instanceID: 505662}
+    - Class: 114
+      Script: {instanceID: 505664}
+    - Class: 114
+      Script: {instanceID: 505666}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 120
@@ -1224,7 +1230,7 @@ ScriptsOnlyBuild:
     className: ExitButton
   - hash:
       serializedVersion: 2
-      Hash: 24b6e7df8ab5f884d026425a4cb7c839
+      Hash: 672eb92ff57dd8d70326103ffd4dfe75
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -1674,7 +1680,7 @@ ScriptsOnlyBuild:
     className: SpawnCollider
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 32f0d103144f42b57d3214b6bea12428
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerDie
@@ -1756,6 +1762,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
+  - hash:
+      serializedVersion: 2
+      Hash: c068a0cf81494a540f00d112d5c1ddf7
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: TravisGameAssets
+    className: HitImpactEffectsPreview
   platform: 19
   scenePathNames:
   - Assets/Scenes/Loading.unity
