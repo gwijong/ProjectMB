@@ -8,7 +8,6 @@ public class BuySellButton : MonoBehaviour
     /// <summary> 구매 버튼 </summary>
     public void Buy()
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         Inventory.store.Buy();
         transform.parent.gameObject.SetActive(false); //구매창 꺼줌
     }

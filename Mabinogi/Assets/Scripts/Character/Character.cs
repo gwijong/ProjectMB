@@ -384,6 +384,10 @@ public class Character : Movable
     void setMoveSpeed(Define.SkillState type)
     {
         float result = runSpeed;
+        if (offensive == false)
+        {
+            result = walkSpeed;
+        }
         switch (type)  //준비중인 현재 스킬 타입
         {
             case Define.SkillState.Defense:

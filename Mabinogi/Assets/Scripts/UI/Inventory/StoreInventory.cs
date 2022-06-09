@@ -121,12 +121,12 @@ public class StoreInventory : Inventory
     /// <summary> 마우스 좌클릭 </summary>
     public override void LeftClick(Vector2Int pos)
     {
-        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         if (mouseItem.GetItemType() == Define.Item.None)//마우스 커서가 집고있는 아이템이 없으면
         {
             CellInfo rootCellInfo = CheckItemRoot(pos);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
             if ((rootCellInfo.GetItemType() != Define.Item.None)) //마우스 커서가 위치한 셀에 아이템이 존재하면
             {
+                GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
                 item = rootCellInfo.GetItemType();
 
                 if(Input.GetKey(KeyCode.LeftControl))
@@ -179,6 +179,7 @@ public class StoreInventory : Inventory
     /// <summary> 아이템 구매 </summary>
     public void Buy()
     {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         if (PlayerController.controller.playerCharacter.gold >= item.GetItemData().SalePrice)//남은 돈이 물품 가격보다 크면
         {
             PlayerController.controller.playerCharacter.gold -= item.GetItemData().SalePrice;//물품 가격만큼 빼주기
@@ -196,7 +197,7 @@ public class StoreInventory : Inventory
 
     /// <summary> 구매, 판매창 활성화하고 아이템데이터에서 정보 뽑아와 설정 </summary>
     GameObject SetUI(GameObject go)
-    { 
+    {
         go.transform.position = Input.mousePosition; //UI를 마우스 커서 좌표로 이동
 
         Text[] text = go.GetComponentsInChildren<Text>(); //자식 오브젝트의 텍스트 컴포넌트들을 가져온다

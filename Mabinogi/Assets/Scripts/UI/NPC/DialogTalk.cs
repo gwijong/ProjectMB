@@ -154,7 +154,6 @@ public class DialogTalk : MonoBehaviour
         OpenTalkCanvas();//대화창 열기
         SetDialog(currentNPC.AppearanceDialog);//NPC 최초 대화 시작
         GameManager.soundManager.PlayBgmPlayer(currentNPC.npc);//NPC 배경음악;
-        GameManager.soundManager.effectPlayer.volume = 0.1f;
     }
 
     /// <summary> 대화 끝내기 버튼 </summary>
@@ -162,7 +161,6 @@ public class DialogTalk : MonoBehaviour
     {
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-        GameManager.soundManager.effectPlayer.volume = 0.5f;
         SelectButtonOff(); //모든 버튼 꺼줌
         CloseTalkCanvas(); //대화 캔버스 꺼줌
         UI_Canvas.SetActive(true); //전투 UI 켜줌

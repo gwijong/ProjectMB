@@ -513,10 +513,10 @@ public class Inventory : MonoBehaviour
 
         CellInfo currentCell = CheckItemRoot(pos); //현재 셀에 마우스 좌표의 루트 대입
         if (mouseItem.GetItemType() == Define.Item.None)// 마우스가 집고 있는 아이템이 없는 경우
-        {          
-             currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
-             mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
-             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
+        {
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
+            currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
+            mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
         }
         else //마우스가 뭔가를 집고 있는 경우
         {
@@ -789,7 +789,7 @@ public class Inventory : MonoBehaviour
         Define.Item CellItem = CheckItem(position); //해당 좌표의 아이템 받아옴
         Vector2Int size = CellItem.GetSize(); // 아이템 사이즈 받아옴
         if (isHighright)//하이라이트 해줘야 하면
-        {
+        {         
             for (int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
