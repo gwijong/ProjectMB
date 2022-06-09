@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 193624932}
   - component: {fileID: 193624931}
   m_Layer: 5
-  m_Name: Information01
+  m_Name: InformationText01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &228352961
 RectTransform:
   m_ObjectHideFlags: 0
@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 727457178}
   - component: {fileID: 727457177}
   m_Layer: 5
-  m_Name: KnockDown
+  m_Name: KnockDownText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,7 +1077,7 @@ GameObject:
   - component: {fileID: 1458581357}
   - component: {fileID: 1458581356}
   m_Layer: 5
-  m_Name: Information02
+  m_Name: InformationText02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1700,6 +1700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f16ed4b3236d25489f9f0c05fbb644f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diePanel: {fileID: 228352960}
 --- !u!1 &44189817783218697
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,13 @@ public class GuideLine : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 키보드 왼쪽 컨트롤 키를 누르면
         {
+            if(FindObjectOfType<InvenOpen>() != null && player != null)
+            {
+                if (FindObjectOfType<InvenOpen>().isStoreOpen == true || player.die == true)
+                {
+                    return;
+                }
+            }
             player = PlayerController.controller.playerCharacter; //플레이어 캐릭터 할당
             Character[] characters = GameObject.FindObjectsOfType<Character>();//모든 캐릭터 긁어옴
             float neardistance = 100000;//마우스 커서와 가장 가까운 NPC와의 거리

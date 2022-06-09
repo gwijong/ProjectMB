@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary> 플레이어 사망 UI </summary>
 public class PlayerDie : MonoBehaviour
 {
+    public GameObject diePanel;
     /// <summary> 마을에서 부활 </summary>
     public void ReviveInTown()
     {
@@ -18,6 +19,7 @@ public class PlayerDie : MonoBehaviour
     {
         GameManager.soundManager.PlayBgmPlayer((Define.Scene)UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);//현재 씬의 배경음악으로 전환
         FindObjectOfType<Player>().Respawn();//플레이어 부활
+        diePanel.SetActive(false);
         gameObject.SetActive(false);
     }
 

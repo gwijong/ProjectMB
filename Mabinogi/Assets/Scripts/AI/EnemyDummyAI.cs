@@ -88,21 +88,20 @@ public class EnemyDummyAI : AI
         skillNum = Random.Range(0, 4);  //스킬 고름
         if (enemyCharacter != null)
         {
-            yield return new WaitForSeconds(Random.Range(1.5f, 3.0f)); //우선 2초 대기
             if (enemyCharacter != null)
             {
                 character.Casting((Define.SkillState)skillNum);  //스킬 시전
             }
         }
-        yield return new WaitForSeconds(Random.Range(2f, 6.0f));   // 4초 대기
+        yield return new WaitForSeconds(Random.Range(1f, 3.0f));   // 2초 대기
 
         if (skillNum == (int)Define.SkillState.Defense)//시전된 스킬이 디펜스이면
         {
-            yield return new WaitForSeconds(1.5f); //1.5초 대기
+            yield return new WaitForSeconds(1.2f); //1.2초 대기
             character.SetTarget(enemyCharacter); //공격 시도
-            yield return new WaitForSeconds(1.5f); //1.5초 대기
+            yield return new WaitForSeconds(1.2f); //1.2초 대기
             character.SetTarget(enemyCharacter); //공격 시도
-            yield return new WaitForSeconds(1.5f); //1.5초 대기
+            yield return new WaitForSeconds(1.2f); //1.2초 대기
             character.SetTarget(enemyCharacter); //공격 시도
         }
 
@@ -114,7 +113,7 @@ public class EnemyDummyAI : AI
                 character.SetTarget(enemyCharacter);  //선공스킬이면 공격
             }
         }
-        yield return new WaitForSeconds(Random.Range(0.5f, 3.0f)); //2초 대기
+        yield return new WaitForSeconds(Random.Range(0.2f, 1.0f)); //0.6초 대기
         character.SetTarget(null); //타겟 해제
         aiStart = false; //코루틴 재실행 준비
 
@@ -153,7 +152,7 @@ public class EnemyDummyAI : AI
             {
                 Reset();
             }
-            yield return new WaitForSeconds(3f); //1초마다 반복 실행            
+            yield return new WaitForSeconds(0.2f); //1초마다 반복 실행            
         }
     }
 }

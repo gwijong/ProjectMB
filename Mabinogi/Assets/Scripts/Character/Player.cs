@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : Character
 {
     public GameObject dieCanvas;
+    public GameObject diePanel;
     protected override void Awake()
     {
         base.Awake();
@@ -66,6 +67,13 @@ public class Player : Character
     public override void PlayerDie()
     {
         GameManager.soundManager.PlayBgmPlayer(Define.Scene.Die); //»ç¸Á ¹è°æÀ½¾Ç Àç»ý
-        dieCanvas.SetActive(true);//»ç¸Á Äµ¹ö½º È°¼ºÈ­
+        dieCanvas.SetActive(true);
+        StartCoroutine(Die());//»ç¸Á Äµ¹ö½º È°¼ºÈ­
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(1.5f);
+        diePanel.SetActive(true);
     }
 }
