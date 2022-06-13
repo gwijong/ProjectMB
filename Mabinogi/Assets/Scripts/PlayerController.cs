@@ -13,11 +13,12 @@ public class PlayerController : MonoBehaviour
     /// <summary>플레이어 캐릭터 스크립트</summary>
     public Character playerCharacter { get; private set; }
     /// <summary>마우스로 클릭한 타겟</summary>
-    public Interactable target { get;private set; }
+    public Interactable target;
+    public Interactable npcTarget { get; private set; }
     /// <summary>레이어마스크</summary>
     int layerMask = 1 << (int)Define.Layer.Ground | 1 << (int)Define.Layer.Player | 1 << (int)Define.Layer.Enemy | 1 << (int)Define.Layer.Livestock  | 1 << (int)Define.Layer.Item | 1 << (int)Define.Layer.NPC;
 
-    public GameObject talkCanvasOutline;//대화 캔버스 아웃라인(대화중인지 체크용)
+    GameObject talkCanvasDark;//대화 캔버스 암흑효과(대화중인지 체크용)
     private void Start()
     {   //게임 시작할때 캐릭터 플레이어 설정하는 구간
         PlayerSetting();
@@ -26,16 +27,29 @@ public class PlayerController : MonoBehaviour
         GameManager.update.UpdateMethod -= OnUpdate;
         GameManager.update.UpdateMethod += OnUpdate;
         //플레이어 컨트롤러가 조종하는 캐릭터가 소지품창의 주인이다.
-        FindObjectOfType<PlayerInventory>().owner = playerCharacter; 
+        FindObjectOfType<PlayerInventory>().owner = playerCharacter;
+        talkCanvasDark = FindObjectOfType<DialogTalk>().dark;
     }
 
     void OnUpdate()
-    {
+    { 
+        if (target != null)
+        {
+            if (target.gameObject.layer == (int)Define.Layer.NPC)
+            {
+                npcTarget = target;
+            }
+        }
+        if (playerCharacter == null)//플레이어가 없으면
+        {
+            player = GameObject.FindGameObjectWithTag("Player"); //플레이어 할당
+            PlayerSetting();
+        }
         if (playerCharacter.die == true && playerCharacter.tag== "Player") //캐릭터 사망시 리턴
         {
             return;
         }
-        if (talkCanvasOutline.activeSelf) //대화중이면 리턴
+        if (talkCanvasDark.activeSelf) //대화중이면 리턴
         {
             return;
         }    
@@ -78,8 +92,11 @@ public class PlayerController : MonoBehaviour
                     {
                         return;
                     }
-                    if(player.GetComponent<EnemyDummyAI>()!=null)
+                    if (player.GetComponent<EnemyDummyAI>() != null)
+                    {
                         player.GetComponent<EnemyDummyAI>().enabled = true; //기존 플레이어 캐릭터의 인공지능 켜줌
+                        player.GetComponent<EnemyDummyAI>().Setting();//인공지능을 시작값으로 세팅
+                    }                       
                     if(player.tag == "Enemy")
                     {
                         player.layer = (int)Define.Layer.Enemy;  //기존 플레이어 캐릭터의 레이어를 적으로 바꿈
@@ -145,6 +162,7 @@ public class PlayerController : MonoBehaviour
     {
         player.layer = (int)Define.Layer.Player;  //플레이어의 레이어를 플레이어로 변경
         playerCharacter = player.GetComponent<Character>();  //플레이어의 캐릭터 컴포넌트를 가져옴
+        playerCharacter.spawnPos = player.transform.position; // 리스폰 위치를 현재 위치로 갱신
         player.GetComponentInChildren<SkillBubble>().gameObject.GetComponentInChildren<Button>().enabled = true; //플레이어의 말풍선 눌려서 스킬취소하는 기능 켜줌
         if (player.GetComponent<EnemyDummyAI>() != null)//인공지능이 있으면
             player.GetComponent<EnemyDummyAI>().enabled = false; //인공지능 꺼줌
@@ -214,11 +232,11 @@ public class PlayerController : MonoBehaviour
             //playerCharacter.Casting(Define.SkillState.Combat);//스킬 취소, 컴벳으로 전환
             playerCharacter.GetComponentInChildren<SkillBubble>().SkillCancel();
         }
-        else if (Input.GetKeyDown(KeyCode.H))
-        {
+        else if (Input.GetKeyDown(KeyCode.H))//생명력 회복
+        {           
             Inventory.EatItem(Define.Item.LifePotion);
         }
-        else if (Input.GetKeyDown(KeyCode.J))
+        else if (Input.GetKeyDown(KeyCode.J))//마나 회복
         {
             Inventory.EatItem(Define.Item.ManaPotion);
         }

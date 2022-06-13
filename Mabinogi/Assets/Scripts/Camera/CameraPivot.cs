@@ -15,9 +15,14 @@ public class CameraPivot : MonoBehaviour
     }
     private void OnUpdate()
     {
+        if (following_object == null)
+        {
+            return;
+        }
         Vector3 pos = transform.position;//현재 위치
         Vector3 followPos = new Vector3 (following_object.position.x, following_object.position.y+ Ypos, following_object.position.z);
         //따라다닐 플레이어 오브젝트로 이 오브젝트 계속 이동
         transform.position = Vector3.Lerp(pos, followPos, 0.4f); //현재 위치에서 플레이어 위치로 부드럽게 이동
+
     }
 }

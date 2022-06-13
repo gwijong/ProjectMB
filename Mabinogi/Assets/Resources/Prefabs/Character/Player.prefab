@@ -6129,6 +6129,7 @@ MonoBehaviour:
   gold: 1000
   isRespawnAIStart: 0
   respawn: 0
+  spawnPos: {x: 0, y: 0, z: 0}
   magicBolt: {fileID: 0}
   dieCanvas: {fileID: 0}
   diePanel: {fileID: 0}
@@ -6166,6 +6167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef32697d83a273498dea18a5883e4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyCharacter: {fileID: 0}
 --- !u!1 &1585766150258683060
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,18 +25,30 @@ public class GuideLine : MonoBehaviour
     
     void LateUpdate()
     {
+        Vector3[] pos = new Vector3[line.positionCount];
+
+        if (FindObjectOfType<DialogTalk>().dark.gameObject.activeSelf == true)
+        {
+            line.SetPositions(pos);
+            targetCharacter = null;
+            return;
+        }
+        if (player != null)
+        {
+            if (player.die == true)
+            {
+                line.SetPositions(pos);
+                targetCharacter = null;
+                return;
+            }
+        }
+
         rend.material.mainTextureScale = new Vector2(Vector2.Distance(line.GetPosition(0), line.GetPosition(line.positionCount - 1)) / line.widthMultiplier, 1);
         rend.material.mainTextureScale = (rend.material.mainTextureScale * startAngle)/ rend.material.mainTextureScale*8f;
-        
+
         if (Input.GetKeyDown(KeyCode.LeftControl)) // 키보드 왼쪽 컨트롤 키를 누르면
         {
-            if(FindObjectOfType<InvenOpen>() != null && player != null)
-            {
-                if (FindObjectOfType<InvenOpen>().isStoreOpen == true || player.die == true)
-                {
-                    return;
-                }
-            }
+
             player = PlayerController.controller.playerCharacter; //플레이어 캐릭터 할당
             Character[] characters = GameObject.FindObjectsOfType<Character>();//모든 캐릭터 긁어옴
             float neardistance = 100000;//마우스 커서와 가장 가까운 NPC와의 거리
@@ -70,13 +82,13 @@ public class GuideLine : MonoBehaviour
                 }
             }
             targetCharacter = nearCharacter;//최종적으로 가까운 캐릭터를 타겟 캐릭터로 지정
+            PlayerController.controller.target = targetCharacter;
         }
         else if(Input.GetKeyUp(KeyCode.LeftControl)) //키보드 왼쪽 컨트롤 키를 떼면
         {
             targetCharacter = null; //타겟을 비워줌
         }
 
-        Vector3[] pos = new Vector3[line.positionCount];
         if (targetCharacter == null)//타겟 캐릭터가 없는 경우
         {
             line.SetPositions(pos);

@@ -13,20 +13,15 @@ public class Golem : Character
         loadedSkill = skillList[Define.SkillState.Combat].skill; //스킬 기본값인 컴벳으로 준비된 스킬 설정
     }
 
-    private void Start()
-    {
-        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
-        GameManager.update.UpdateMethod += OnUpdate;
-    }
-
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        if (die == true && bossDieCheck ==false)
+        if (die == true && bossDieCheck ==false) //보스 사망시 이펙트 효과
         {
             bossDieCheck = true;
             GameObject dieEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/ChargingPop"));
             dieEffect.transform.position = gameObject.transform.position + Vector3.up * 3;
+            GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.item_get, transform.position);// 효과음
         }
     }
 
@@ -40,25 +35,25 @@ public class Golem : Character
     {
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_woo, transform.position);// 효과음
     }
-    /// <summary> 스매시 효과음 </summary>
-    public void Samsh()
+    /// <summary> 걷기 효과음 </summary>
+    public void Walk()
     {
-        //GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_attack_smash);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_walk, transform.position);// 효과음
     }
-    /// <summary> 카운터 효과음 </summary>
-    public void Counter()
+    /// <summary> 일어나기 효과음 </summary>
+    public void DownToStand()
     {
-        //GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_attack_counter);// 효과음
-    }
-    /// <summary> 다운 효과음 </summary>
-    public void Blowaway()
-    {
-        //GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_blowaway);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_downb_to_stand, transform.position);// 효과음
     }
     /// <summary> 맞기 효과음 </summary>
     public void Hit()
     {
-        //GameManager.npcSoundManager.PlaySfxPlayer(Define.NPCSoundEffect.bear01_natural_hit);// 효과음
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_hit, transform.position);// 효과음
+    }
+    /// <summary> 다운 효과음 </summary>
+    public void Down()
+    {
+        GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.golem01_blowaway_ground, transform.position);// 효과음
     }
 
 }

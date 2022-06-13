@@ -23,7 +23,7 @@ public class HPUI : MonoBehaviour
     }
 
     // 계속 갱신
-    void OnUpdate()
+    public void OnUpdate()
     {
         currentHP = character.GetCurrentHP();//현재 생명력을 계속 가져옴
         hpGauge.fillAmount = currentHP / maxHP; //생명력 이미지 채워진 비율 갱신

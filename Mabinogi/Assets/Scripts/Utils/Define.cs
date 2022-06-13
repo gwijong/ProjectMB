@@ -141,6 +141,11 @@ public class Define
         bear01_natural_attack_counter,
         bear01_natural_stand_offensive,
         golem01_woo,
+        golem01_walk,
+        golem01_downb_to_stand,
+        golem01_hit,
+        golem01_blowaway_ground,
+        item_get,
         none,
     }
 

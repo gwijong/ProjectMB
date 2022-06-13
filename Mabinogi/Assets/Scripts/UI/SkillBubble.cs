@@ -37,7 +37,7 @@ public class SkillBubble : MonoBehaviour
     }
 
 
-    void OnUpdate()
+    public void OnUpdate()
     {
         distance = (gameObject.transform.position - Camera.main.transform.position).magnitude;
         if (distance / 20 < 1)
@@ -134,5 +134,11 @@ public class SkillBubble : MonoBehaviour
         character.Casting(Define.SkillState.Combat); //스킬을 기본공격으로 세팅
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.skill_cancel, transform.position);//스킬 취소 효과음
         character.PlayAnim("Reset"); //애니메이션을 아이들 상태로 전환
+    }
+
+    /// <summary> 사망처리 </summary>
+    public void Die()
+    {
+        GameManager.update.UpdateMethod -= OnUpdate;
     }
 }

@@ -18,6 +18,7 @@ public class FirstGate : MonoBehaviour
             doors[0].SetActive(false);//왼쪽 문 비활성화
             doors[1].SetActive(false);//오른쪽 문 비활성화
             gateCollider.enabled = false; //문 충돌 비활성화
+            gameObject.SetActive(false);
         }
     }
 }

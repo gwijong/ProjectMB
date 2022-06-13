@@ -201,6 +201,12 @@ public class Character : Movable
         #endregion
     }
 
+    private void Start()
+    {
+        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
+        GameManager.update.UpdateMethod += OnUpdate;
+    }
+
     protected virtual void OnUpdate()
     {
         GaugeCheck(); // 각종 게이지 관리
@@ -447,7 +453,7 @@ public class Character : Movable
                 {
                     if(loadedSkill.type == Define.SkillState.Icebolt)
                     {
-                        return 20; //아이스볼트 사정거리
+                        return 16; //아이스볼트 사정거리
                     }
                     return 4; //무기 사거리가 늘어날 경우 여기서 조정한다.
                 }
@@ -539,8 +545,10 @@ public class Character : Movable
 
                     //카운터는 반격 당하고 다운됨
                     case Define.SkillState.Counter:
-                        GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/Hit"));
+                        //공격 성공 이펙트
+                        GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/SwordImpactPurple"));
                         hitEffect.transform.position = gameObject.transform.position + Vector3.up * 3;
+                        Destroy(hitEffect, 2f);
                         this.downGauge.Current += counterData.DownGauge;//다운게이지를 100 추가
                         float damage = asCharacter.CalculateDamage(Define.SkillState.Counter); //데미지 계산
                         this.hitPoint.Current -= damage; //현재 생명력에서 데미지 만큼 빼줌
@@ -609,8 +617,10 @@ public class Character : Movable
 
         if (result == true) //상대방의 공격이 성공한 경우
         {
-            GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/Hit"));
+            //공격 성공 이펙트
+            GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/SwordImpactPurple"));
             hitEffect.transform.position = gameObject.transform.position+Vector3.up*3;
+            Destroy(hitEffect, 2f);
             float damage = 0.0f;
             switch (Attacker.loadedSkill.type)//상대방 스킬에 따라 내가 피해를 입음
             {
@@ -622,6 +632,10 @@ public class Character : Movable
                     damage = Attacker.CalculateDamage(Define.SkillState.Smash); //데미지 계산
                     groggy = true; //그로기 상태로 전환
                     this.downGauge.Current += smashData.DownGauge; //다운게이지를 100 채워줌
+                    //스매시 이펙트
+                    GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/SwordImpactEpicPurple"));
+                    Effect.transform.position = gameObject.transform.position + Vector3.up;
+                    Destroy(Effect, 1f);
                     break;
                 case Define.SkillState.Windmill: //윈드밀일 경우
                     damage = Attacker.CalculateDamage(Define.SkillState.Windmill); //데미지 계산
@@ -670,6 +684,10 @@ public class Character : Movable
             {
                 case Define.SkillState.Defense:
                     PlayAnim("Defense"); //적 디펜스 애니메이션 재생
+                    //방어 이펙트
+                    GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/ShieldAuraBlue"));
+                    Effect.transform.position = gameObject.transform.position + Vector3.up;
+                    Destroy(Effect, 1f);
                     StartCoroutine(Wait(1f));//적 디펜스 시전 중 이동 막기
                     //공격을 막았는데 디펜스로 막음
                     break;
@@ -944,8 +962,10 @@ public class Character : Movable
             PlayerDie();
         }
         yield return new WaitForSeconds(1f); //1초 대기
+        //사망 이펙트
         GameObject hitEffect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/CosmicReversal"));
         hitEffect.transform.position = gameObject.transform.position + Vector3.up * 1;
+        Destroy(hitEffect, 2f);
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.down, transform.position);//사망 효과음
         yield return new WaitForSeconds(20f);
 
@@ -956,7 +976,16 @@ public class Character : Movable
         else //부활 체크가 안 되어 있으면
         {         
             yield return null;
-            MoveStop(true); //이동 정지
+            GameManager.update.UpdateMethod -= OnUpdate;
+            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<EnemyDummyAI>().OnUpdate;
+            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<SkillBubble>().OnUpdate;
+            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<HPUI>().OnUpdate;
+            for (int i = 0; i <gameObject.GetComponentsInChildren<UILookAtCamera>().Length; i++)
+            {
+                GameManager.update.UpdateMethod -= gameObject.GetComponentsInChildren<UILookAtCamera>()[i].OnUpdate;
+            }
+            Destroy(gameObject);
+            //MoveStop(true); //이동 정지
         }
     }
 
@@ -984,6 +1013,10 @@ public class Character : Movable
         }
         MoveTo(spawnPosition);
         MoveStop(false);
+        //부활 이펙트
+        GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/BeamupCylinderBlue"));
+        Effect.transform.position = gameObject.transform.position + Vector3.up * 1;
+        Destroy(Effect, 2f);
     }
 
     //내비메시 위의 랜덤한 위치를 반환하는 메서드
@@ -1031,8 +1064,9 @@ public class Character : Movable
     public void Icebolt(Transform target)
     {
         Destroy(magicBolt);
+        //아이스볼트 투사체 이펙트
         GameObject bolt = Instantiate(Resources.Load<GameObject>("Prefabs/Magic/Icebolt")); //아이스볼트 프리팹 생성
-        bolt.transform.position = gameObject.transform.position + Vector3.up*2;
+        bolt.transform.position = gameObject.transform.position + Vector3.up*3;
         bolt.GetComponent<MagicTracking>().target = target;
         GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.magic_lightning, transform.position);//볼트 마법 효과음
     }

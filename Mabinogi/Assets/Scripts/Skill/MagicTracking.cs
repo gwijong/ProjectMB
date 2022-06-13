@@ -25,7 +25,7 @@ public class MagicTracking : MonoBehaviour
     /// <summary> 따라다닐 타겟 오브젝트로 이 오브젝트 계속 이동</summary>
     public void Follow()
     {
-        Vector3 followPos = new Vector3(target.position.x, target.position.y, target.position.z);//따라갈 대상 목표물 좌표
+        Vector3 followPos = new Vector3(target.position.x, target.position.y+1, target.position.z);//따라갈 대상 목표물 좌표
         transform.position = Vector3.Lerp(gameObject.transform.position, followPos, 8f*Time.deltaTime); //목표물을 향해 계속 부드럽게 따라감
 
         if((followPos - gameObject.transform.position).magnitude < 1) //거리가 1 이내이면 

@@ -253,6 +253,31 @@ public class SoundManager : MonoBehaviour
     /// <summary> °ñ·½ ÀüÅõ¸ðµå </summary>
     AudioClip golem01_woo;
 
+    [Tooltip("°ñ·½ ÀÌµ¿")]
+    [SerializeField]
+    /// <summary> °ñ·½ ÀÌµ¿ </summary>
+    AudioClip golem01_walk;
+
+    [Tooltip("°ñ·½ ÀÏ¾î³ª±â")]
+    [SerializeField]
+    /// <summary> °ñ·½ ÀÏ¾î³ª±â </summary>
+    AudioClip golem01_downb_to_stand;
+
+    [Tooltip("°ñ·½ ¸Â±â")]
+    [SerializeField]
+    /// <summary> °ñ·½ ¸Â±â</summary>
+    AudioClip golem01_hit;
+
+    [Tooltip("°ñ·½ ´Ù¿î")]
+    [SerializeField]
+    /// <summary> °ñ·½ ´Ù¿î</summary>
+    AudioClip golem01_blowaway_ground;
+
+    [Tooltip("¿­¼è ÁÝ±â")]
+    [SerializeField]
+    /// <summary> ¿­¼è ÁÝ±â</summary>
+    AudioClip item_get;
+
     /// <summary> ÃÖ¼Ò °Å¸® </summary>
     public float minDistance;
     /// <summary> ÃÖ´ë °Å¸® </summary>
@@ -381,6 +406,11 @@ public class SoundManager : MonoBehaviour
             case Define.SoundEffect.bear01_natural_blowaway: return bear01_natural_blowaway;
             case Define.SoundEffect.bear01_natural_hit: return bear01_natural_hit;
             case Define.SoundEffect.golem01_woo: return golem01_woo;
+            case Define.SoundEffect.golem01_walk: return golem01_walk;
+            case Define.SoundEffect.golem01_downb_to_stand: return golem01_downb_to_stand;
+            case Define.SoundEffect.golem01_hit: return golem01_hit;
+            case Define.SoundEffect.golem01_blowaway_ground: return golem01_blowaway_ground;
+            case Define.SoundEffect.item_get: return item_get;
             default:                                            return null;
         }
     }

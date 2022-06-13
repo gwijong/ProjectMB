@@ -19,25 +19,25 @@ public class StoreInventory : Inventory
 
     ItemData[] itemData; //아이템 데이터들 가져옴
 
- 
-    //상점이 활성화될때 판매할 아이템들 가져옴
     private void OnEnable()
     {
-        if (FindObjectOfType<PlayerController>().target != null)
+        if (FindObjectOfType<InvenOpen>().isStoreOpen == true)
         {
-            SellList sellList;
-            //상점에 아이템을 채워넣기 전에 
-            if (FindObjectOfType<PlayerController>().target.TryGetComponent(out sellList) == true)
+            if (PlayerController.controller.npcTarget != null)
             {
-                //판매 목록 가져옴
-                sellList = FindObjectOfType<PlayerController>().target.GetComponent<SellList>();
-                for (int i = 0; i < sellList.sellItemList.Count; i++)
+                SellList sellList;
+                //상점에 아이템을 채워넣기 전에 
+                if (PlayerController.controller.npcTarget.TryGetComponent(out sellList) == true)
                 {
-                    AddItem(sellList.sellItemList[i], 1);//상점에 판매 아이템 추가
+                    //판매 목록 가져옴
+                    sellList = PlayerController.controller.npcTarget.GetComponent<SellList>();
+                    for (int i = 0; i < sellList.sellItemList.Count; i++)
+                    {
+                        AddItem(sellList.sellItemList[i], 1);//상점에 판매 아이템 추가
+                    }
                 }
             }
         }
-
     }
 
     //상점 아이템을 비움
@@ -97,6 +97,7 @@ public class StoreInventory : Inventory
         CloseUI(buyInstance); //마우스 커서가 UI를 벗어난 상태에서 마우스 입력 들어오면 구매창 닫기
         CloseUI(sellInstance); //마우스 커서가 UI를 벗어난 상태에서 마우스 입력 들어오면 판매창 닫기
     }
+
 
     /// <summary> 마우스 커서가 UI를 벗어난 상태면 구매, 판매창 닫기 </summary>
     void CloseUI(GameObject ui)

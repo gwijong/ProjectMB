@@ -18,22 +18,18 @@ public class EnemyDummyAI : AI
 
     float progress = 0;
 
-    private void OnEnable()//오브젝트가 활성화되면
-    {
-        aiStart = false;//aiStart를 false로 맞춰 인공지능이 시작할 수 있게 한다.
-        dummyAICoroutine = DummyAI(); //코루틴 변수에 AI 코루틴 할당
-        searchCoroutine = UpdatePath();
-    }
     protected override void Start()
     {
         base.Start();
+        Setting();
         GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
         GameManager.update.UpdateMethod += OnUpdate;
         //player = GameObject.FindGameObjectWithTag("Player"); //플레이어 오브젝트 찾아옴
         //playerCharacter = player.GetComponent<Character>();//플레이어 캐릭터 가져오기
         StartCoroutine(searchCoroutine);//UpdatePath 코루틴은 한번 시작되면 1초 간격으로 무한 반복 실행됨 
     }
-    void OnUpdate()
+
+    public void OnUpdate()
     {
         //플레이어가 너무 멀리 도망가면
         if ((enemyCharacter != null && (enemyCharacter.transform.position - gameObject.transform.position).magnitude > 20))
@@ -72,6 +68,13 @@ public class EnemyDummyAI : AI
             Reset();
         }
 
+    }
+    /// <summary> 시작 세팅 </summary>
+    public void Setting()
+    {
+        aiStart = false;//aiStart를 false로 맞춰 인공지능이 시작할 수 있게 한다.
+        dummyAICoroutine = DummyAI(); //코루틴 변수에 AI 코루틴 할당
+        searchCoroutine = UpdatePath();
     }
 
     /// <summary> 코루틴 중지 </summary>
@@ -156,7 +159,7 @@ public class EnemyDummyAI : AI
         {
             if(enemyCharacter == null)
             {
-                List<Character> enemyList = GetEnemyInRange(40f);//반지름 40의 구 안에 적 캐릭터만 리스트에 담아옴
+                List<Character> enemyList = GetEnemyInRange(30f);//반지름 30의 구 안에 적 캐릭터만 리스트에 담아옴
                 if (enemyList.Count > 0 ) //적이 있으면
                 {                     
                     enemyCharacter = enemyList[Random.Range(0,enemyList.Count)]; //적 리스트의 i번째 적을 enemyCharacter에 할당함
@@ -165,10 +168,10 @@ public class EnemyDummyAI : AI
                 else
                 {
                     Reset();
-                    Patrol(3.0f);
+                    Patrol(5.0f);
                 }
             };
-            yield return new WaitForSeconds(Random.Range(4.0f,8.0f)); //4에서 8초 사이 반복 실행            
+            yield return new WaitForSeconds(Random.Range(1.0f,4.0f)); //1에서 4초 사이 반복 실행            
         }
     }
 }

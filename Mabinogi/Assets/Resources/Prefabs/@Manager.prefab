@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  talkCanvasOutline: {fileID: 0}
+  target: {fileID: 0}
 --- !u!114 &5333920537792136449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +132,11 @@ MonoBehaviour:
   bear01_natural_blowaway: {fileID: 8300000, guid: 6607740447471af4898369942c5941e3, type: 3}
   bear01_natural_hit: {fileID: 8300000, guid: 39608999363415940a0e897cf7525657, type: 3}
   golem01_woo: {fileID: 8300000, guid: 025707c6d05ac8b45932b7887d8a5c0e, type: 3}
+  golem01_walk: {fileID: 8300000, guid: 657bb8e92113cf3419aa7bf4e3acde60, type: 3}
+  golem01_downb_to_stand: {fileID: 8300000, guid: 3b5cdbaabeb7ef2479d457930ba0bc8a, type: 3}
+  golem01_hit: {fileID: 8300000, guid: 08f62751a33a34046a09e199d5ccf057, type: 3}
+  golem01_blowaway_ground: {fileID: 8300000, guid: ed69a8df52bb3ee4cb02d1235929b0c0, type: 3}
+  item_get: {fileID: 8300000, guid: f57dfe9f21f92e0419015a092893d242, type: 3}
   minDistance: 1
   maxDistance: 50
 --- !u!114 &5333920537792136477

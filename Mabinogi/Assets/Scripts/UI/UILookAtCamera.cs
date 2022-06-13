@@ -22,7 +22,7 @@ public class UILookAtCamera : MonoBehaviour
     }
 
 
-    void OnUpdate()
+    public void OnUpdate()
     {
 
         if (UI == null) //회전시킬 게임오브젝트가 파괴되면 실행 안함

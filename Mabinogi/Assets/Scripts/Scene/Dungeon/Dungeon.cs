@@ -21,7 +21,9 @@ public class Dungeon : MonoBehaviour
     GameObject enemy = null;
     /// <summary> 생성할 몬스터 숫자 </summary>
     public int[] spawnAmount;
+    
     /// <summary> 한 라운드에 생성한 모든 몬스터들 </summary>
+    [SerializeField]
     List<GameObject> enemyList = new List<GameObject>();
 
     void Update()
@@ -36,10 +38,12 @@ public class Dungeon : MonoBehaviour
             {
                 return;
             }
-      
-            if(enemyList[i].GetComponent<Character>().die == false) //적이 한마리라도 살아있으면 리턴
+            if(enemyList[i] != null)
             {
-                return;
+                if (enemyList[i].GetComponent<Character>().die == false) //적이 한마리라도 살아있으면 리턴
+                {
+                    return;
+                }
             }
         }
         //적이 전멸한 경우
@@ -63,7 +67,12 @@ public class Dungeon : MonoBehaviour
             pos.z += Random.Range(-1.0f, 1.0f) * spawnAmount[progress];
             enemy.transform.position = pos;
             enemyList.Add(enemy); //전멸했는지 체크하는 리스트에 추가
+            enemy.GetComponent<Character>().spawnPos = pos;
             enemy.GetComponent<NavMeshAgent>().enabled = true; //내비메시 켬
+            //몬스터 스폰 이펙트
+            GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/SmokeCircleDark"));
+            Effect.transform.position = pos;
+            Destroy(Effect, 2f);
         }
         progress++;//던전 진행도 더하기
     }

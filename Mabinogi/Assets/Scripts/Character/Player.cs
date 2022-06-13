@@ -12,14 +12,10 @@ public class Player : Character
         base.Awake();
         skillList = SkillList.player;  //플레이어 스킬 리스트 사용
         loadedSkill = skillList[Define.SkillState.Combat].skill; //스킬 기본값인 컴벳으로 준비된 스킬 설정
-        
-    }
-
-    private void Start()
-    {
         anim = GetComponentInChildren<Animator>();
-        GameManager.update.UpdateMethod -= OnUpdate;//업데이트 매니저의 Update 메서드에 일감 몰아주기
-        GameManager.update.UpdateMethod += OnUpdate;
+        GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/SpawnSimpleBlue"));
+        Effect.transform.position = gameObject.transform.position + Vector3.up;
+        Destroy(Effect, 2f);
     }
 
     protected override void OnUpdate()

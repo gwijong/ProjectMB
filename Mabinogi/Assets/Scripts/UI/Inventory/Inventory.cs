@@ -848,7 +848,7 @@ public class Inventory : MonoBehaviour
     {
         int amount = 0;
         Inventory hasPotionInven = null;
-        //생명력 포션 사용
+        //아이테 사용
         foreach (Inventory current in Inventory.playerInventoryList)
         {
             int currentAmount = current.GetItemAmount(item);
@@ -863,6 +863,20 @@ public class Inventory : MonoBehaviour
             List<CellInfo> currentCell = hasPotionInven.FindItemList(item);
             useItem = currentCell[currentCell.Count - 1];
             hasPotionInven.Use();
+            if (item == Define.Item.ManaPotion)
+            {
+                //마나 회복 이펙트
+                GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce_Mana"));
+                Effect.transform.position = PlayerController.controller.player.transform.position + Vector3.up * 3;
+                Destroy(Effect, 2f);
+            }
+            else
+            {
+                //생명력 회복 이펙트
+                GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce"));
+                Effect.transform.position = PlayerController.controller.player.transform.position + Vector3.up * 3;
+                Destroy(Effect, 2f);
+            }        
             return true;
         }
         return false;
