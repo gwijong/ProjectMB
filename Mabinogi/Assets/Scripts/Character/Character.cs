@@ -974,18 +974,21 @@ public class Character : Movable
             Respawn(); //부활
         }
         else //부활 체크가 안 되어 있으면
-        {         
-            yield return null;
-            GameManager.update.UpdateMethod -= OnUpdate;
-            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<EnemyDummyAI>().OnUpdate;
-            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<SkillBubble>().OnUpdate;
-            GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<HPUI>().OnUpdate;
-            for (int i = 0; i <gameObject.GetComponentsInChildren<UILookAtCamera>().Length; i++)
+        {
+            if (gameObject.tag != "Player")
             {
-                GameManager.update.UpdateMethod -= gameObject.GetComponentsInChildren<UILookAtCamera>()[i].OnUpdate;
+                yield return null;
+                GameManager.update.UpdateMethod -= OnUpdate;
+                GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<EnemyDummyAI>().OnUpdate;
+                GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<SkillBubble>().OnUpdate;
+                GameManager.update.UpdateMethod -= gameObject.GetComponentInChildren<HPUI>().OnUpdate;
+                for (int i = 0; i < gameObject.GetComponentsInChildren<UILookAtCamera>().Length; i++)
+                {
+                    GameManager.update.UpdateMethod -= gameObject.GetComponentsInChildren<UILookAtCamera>()[i].OnUpdate;
+                }
+                Destroy(gameObject);
+                //MoveStop(true); //이동 정지
             }
-            Destroy(gameObject);
-            //MoveStop(true); //이동 정지
         }
     }
 
