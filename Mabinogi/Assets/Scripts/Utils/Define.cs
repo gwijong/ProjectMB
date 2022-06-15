@@ -1,5 +1,5 @@
 /// <summary> 각종 열거형</summary>
-public class Define
+namespace Define
 {
     /// <summary> 마우스 입력값</summary>
     public enum mouseKey

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Define;
 
 /// <summary> 셀 정보 데이터 컨테이너 </summary>
-public class CellInfo
+public class CellInfo //struct는 메서드를 만들지 못한다.
 {
     /// <summary> 아이템을 찾으려면 루트를 먼저 찾아준다 루트가 null이거나 나 자신 셀이면 이놈이 시작지점이다 </summary>
-    CellInfo root = null;
+    CellInfo root = null; //똑같은 내용을 여러 곳에 중복해서 넣으면 무결성 문제 생김, 그래서 아이템의 나머지 칸은 루트를 가리키고 있어야 한다.
     /// <summary> 아이템 타입 </summary>
-    Define.Item itemType = Define.Item.None;
+    Define.Item itemType = Item.None;
     /// <summary> 아이템 개수 </summary>
     public int amount;
     /// <summary> 아이템 배경이 되는 버튼 이미지 </summary>
@@ -31,7 +32,7 @@ public class CellInfo
 
 
     /// <summary> 소지품창 안에서의 아이템 좌표와 나 자신을 루트로 지정하는 생성자 </summary>
-    public CellInfo(Vector2Int wantLocation)
+    public CellInfo(Vector2Int wantLocation)//초기화
     {
         location = wantLocation; //인벤토리 안에서의 셀 위치 지정
         root = this; //루트는 나 자신 셀이다
@@ -104,7 +105,7 @@ public class CellInfo
     /// <summary> 칸이 비어있는지 체크. 루트가 null이거나 나 자신 셀이면서 아이템타입이 none이면 true </summary>
     public bool IsEmpty()
     {
-        if ((root == null || root == this) && itemType == Define.Item.None == true)
+        if ((root == null || root == this) && itemType == Define.Item.None)
         {
             return true;
         }
@@ -119,9 +120,10 @@ public class CellInfo
     public void SetAmount(int wantAmount)
     {
         amount = wantAmount;
+        
         //amountText.text = wantAmount > 0 ? wantAmount.ToString() : ""
-        if (wantAmount > 0)
-        {
+        if (wantAmount > 0 && root.GetItemType().GetMaxStack() > 1)
+        {      
             amountText.text = wantAmount.ToString();
         }
         else
@@ -136,7 +138,7 @@ public class CellInfo
         amount += wantAmount;  //루트 아이템의 갯수에 줍는 아이템 갯수 더함                                                    
         int overAmount = Mathf.Max(0, amount - itemType.GetMaxStack()); //아이템 겹치기 초과치 계산
         amount -= overAmount;
-        SetAmount(amount); //마우스 아이템 텍스트 갱신
+        SetAmount(amount); //인벤토리 아이템 텍스트 갱신
 
         return overAmount;
     }
@@ -211,6 +213,8 @@ public class Inventory : MonoBehaviour
     /// <summary> 소지품창 주인 플레이어 </summary>
     public Character owner;
 
+    int cellPrefabSize = 48;
+    Text[] inpoText;
     /// <summary> 인벤토리 소멸자 </summary>
     void OnDestroy()
     {
@@ -220,7 +224,7 @@ public class Inventory : MonoBehaviour
 
     protected virtual void Start()
     {
- 
+     
         GameObject currentCellGameObject = Instantiate(mouseCell); //마우스 계속 따라다니는 빈 셀 지정
         currentCellGameObject.transform.SetParent(GameObject.FindGameObjectWithTag("Inventory").transform); //마우스 따라다니는 셀의 부모를 인벤토리로 지정
         currentCellGameObject.tag = "MouseCell"; //마우스 셀의 태그를 지정
@@ -243,6 +247,8 @@ public class Inventory : MonoBehaviour
             inpoImage.rectTransform.pivot = new Vector2(0,1); // 정보창 중심점을 0,1로 맞춤
             inpo.SetActive(false);//일단 끄고 필요할때 켜줌
         }
+
+        inpoText = inpo.GetComponentsInChildren<Text>(); //정보창의 자식 오브젝트의 텍스트 컴포넌트들을 가져온다
 
         if (use == null)
         {
@@ -278,7 +284,7 @@ public class Inventory : MonoBehaviour
                 infoArray[y, x].CalculateColor();//칸이 비어있으면 빈 색상, 칸이 차있으면 어두운 색상
                 
                 RectTransform childRect = currentCell.GetComponent<RectTransform>(); //현재 셀의 RectTransform 가져옴
-                Vector2 pos = cellAnchor.anchoredPosition + new Vector2((48 * x), (-48 * y));//각 셀들의 위치를 시작 기준점에서 48픽셀 간격으로 배치함
+                Vector2 pos = cellAnchor.anchoredPosition + new Vector2((cellPrefabSize * x), (-cellPrefabSize * y));//각 셀들의 위치를 시작 기준점에서 48픽셀 간격으로 배치함
                 childRect.anchoredPosition = pos;//현재 셀의 앵커 포지션을 시작 기준점에서 48 * x, -48 * y 간격으로 배치함
             }
         }
@@ -320,8 +326,8 @@ public class Inventory : MonoBehaviour
         }
         else if(CheckMouseInside() && gameObject.activeSelf == true) //마우스 커서가 소지품 창 안에 있는 경우
         {
-            overedCellLocation.x = (int)mousePosition.x / 48; //마우스 좌표에서 칸 넓이인 48로 나눠서 정수로 변환
-            overedCellLocation.y = (int)mousePosition.y / 48; //마우스 좌표에서 칸 높이인 48로 나눠서 정수로 변환
+            overedCellLocation.x = (int)mousePosition.x / cellPrefabSize; //마우스 좌표에서 칸 넓이인 48로 나눠서 정수로 변환
+            overedCellLocation.y = (int)mousePosition.y / cellPrefabSize; //마우스 좌표에서 칸 높이인 48로 나눠서 정수로 변환
             
             CellHighlight(overedCellLocation,true); //마우스 커서가 있는 아이템의 버튼 색상을 온전한 색상으로 바꿔줌
 
@@ -418,7 +424,7 @@ public class Inventory : MonoBehaviour
             PutItem(overedCellLocation, mouseItem.GetItemType(), mouseItem.amount); //해당 셀에 아이템 밀어넣기 시도
             mouseItem.SetItem(Define.Item.None, 0); //마우스 아이템 비워줌
         }
-        useItem.SetAmount(useItem.GetRoot().amount - 1); //사용창 아이템의 개수를 한개 빼준다
+        useItem.SubAmount(1); //사용창 아이템의 개수를 한개 빼준다
         mouseItem.SetItem(useItem.GetRoot().GetItemType(), 1); //마우스가 집고 있는 아이템을 사용창 아이템 한개로 설정한다.
         use.SetActive(false);//사용창 비활성화
     }
@@ -448,7 +454,7 @@ public class Inventory : MonoBehaviour
     public void Drop()
     {
         GameManager.itemManager.DropItem(useItem.GetItemType(), useItem.amount); //바닥에 아이템 생성
-        Define.Item currentItem = SubItem(useItem.GetLocation(), out useItem.amount); //소지품창에서 버린 아이템 개수만큼 빼서 지움
+        Define.Item currentItem = SubItemPosition(useItem.GetLocation(), out useItem.amount); //소지품창에서 버린 아이템 개수만큼 빼서 지움
         use.SetActive(false);//사용창 비활성화
     }
 
@@ -516,7 +522,7 @@ public class Inventory : MonoBehaviour
         if (mouseItem.GetItemType() == Define.Item.None)// 마우스가 집고 있는 아이템이 없는 경우
         {
             GameManager.soundManager.PlaySfxPlayer(Define.SoundEffect.gen_button_down);//버튼 다운 효과음
-            currentItem = SubItem(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
+            currentItem = SubItemPosition(pos, out currentAmount); //마우스 좌표 셀의 아이템들 빼준다
             mouseItem.SetItem(currentItem, currentAmount); //마우스가 집고 있는 아이템을 위에서 뺀 만큼 세팅해준다
         }
         else //마우스가 뭔가를 집고 있는 경우
@@ -564,7 +570,7 @@ public class Inventory : MonoBehaviour
                             TryRemovePlace(pos, currentCell.GetLocation(), out currentItem, out currentAmount); //스왑 시도
                         };
                     }
-                }
+                }//2개 이상 아이템 겹치면 아무것도 안함
             }
         }
         if(mouseItem.amount <= 0) //마우스가 쥐고 있는 아이템 개수가 0 이하이면
@@ -577,7 +583,7 @@ public class Inventory : MonoBehaviour
     /// <summary> 아이템 스왑 시도 </summary>
     bool TryRemovePlace(Vector2Int pos, Vector2Int currentPos, out Define.Item currentItem, out int currentAmount)
     {
-        currentItem = SubItem(currentPos, out currentAmount);//현재 좌표에서 현재 개수만큼 빼서 현재 아이템에 대입
+        currentItem = SubItemPosition(currentPos, out currentAmount);//현재 좌표에서 현재 개수만큼 빼서 현재 아이템에 대입
         bool result = PutItem(pos, mouseItem.GetItemType(), mouseItem.amount) > 0;//마우스가 집고 있는 아이템을 pos 좌표에 밀어넣기 시도
         if (result == false) //밀어넣기가 실패했다면
         {
@@ -668,8 +674,9 @@ public class Inventory : MonoBehaviour
             amount = playerInventoryList[i].AddItem(item, amount);
         }
         return amount;
-    }  
+    }
 
+    /// <summary> 아이템 더하기</summary>
     public int AddItem(Define.Item item, int amount)
     {
         List<CellInfo> sameList = FindItemList(item);
@@ -698,7 +705,7 @@ public class Inventory : MonoBehaviour
         return amount; //못 밀어넣었으면 반환
     }
     /// <summary> 해당된 셀의 아이템 빼서 리턴</summary>
-    Define.Item SubItem(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
+    Define.Item SubItemPosition(Vector2Int position, out int amount) //셀 좌표, 아이템 개수
     {
         CellInfo selectedInfo = CheckItemRoot(position);//해당 좌표 셀의 루트 CellInfo 가져옴
         Vector2Int rootLocation = selectedInfo.GetLocation(); //루트 좌표는 해당 좌표 셀의 루트의 좌표이다
@@ -745,9 +752,9 @@ public class Inventory : MonoBehaviour
         return //벗어나면 false 안 벗어나면 true
             (!
                 (
-                position.x < 0 || position.x > width * 48 // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
+                position.x < 0 || position.x > width * cellPrefabSize // 마우스좌표의 x가 0보다 작거나 마우스 좌표가 소지품창 칸 넓이를 넘어가거나
                                ||
-                position.y < 0 || position.y > height * 48 // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
+                position.y < 0 || position.y > height * cellPrefabSize // 마우스좌표의 y가 0보다 작거나 마우스 좌표가 소지품창 칸 길이를 넘어가거나
                 )
             );
     }
@@ -788,8 +795,7 @@ public class Inventory : MonoBehaviour
     void CellHighlight(Vector2Int position, bool isHighright)
     {
         CellInfo rootCellInfo = CheckItemRoot(position);
-        Define.Item CellItem = CheckItem(position); //해당 좌표의 아이템 받아옴
-        Vector2Int size = CellItem.GetSize(); // 아이템 사이즈 받아옴
+        Vector2Int size = rootCellInfo.GetItemType().GetSize(); // 아이템 사이즈 받아옴
         if (isHighright)//하이라이트 해줘야 하면
         {         
             for (int x = 0; x < size.x; x++)
@@ -816,21 +822,14 @@ public class Inventory : MonoBehaviour
     /// <summary> 정보 UI 활성화 메서드</summary>
     void ItemInpo(Vector2Int position, bool active)
     {
-        CellInfo rootCellInfo = CheckItemRoot(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
-        if(active && (rootCellInfo.GetItemType() != Define.Item.None) && gameObject.activeSelf==true) //루트 아이템이 존재하면
+        Item rootCellInfo = CheckItem(position);//마우스 커서가 위치한 셀의 아이템의 루트를 가져오기 시도
+        if(active && (rootCellInfo != Item.None)) //루트 아이템이 존재하면
         {
             ItemData[] itemData = GameManager.itemManager.data;
             inpo.SetActive(true); //정보창을 활성화한다
-            Text[] text = inpo.GetComponentsInChildren<Text>(); //정보창의 자식 오브젝트의 텍스트 컴포넌트들을 가져온다
-            for(int i = 0; i< itemData.Length+1; i++) //스크립터블오브젝트 길이만큼 반복
-            {
-               if(i == (int)rootCellInfo.GetItemType())
-                {
-                    text[0].text = itemData[i-1].ItemName; //0번 텍스트컴포넌트의 텍스트를 데이터의 아이템 이름으로 바꾼다
-                    text[1].text = itemData[i-1].Description;//1번 텍스트컴포넌트의 텍스트를 데이터의 아이템 설명으로 바꾼다
-                }
-            }
-            
+            int i = (int)rootCellInfo;
+            inpoText[0].text = itemData[i-1].ItemName; //0번 텍스트컴포넌트의 텍스트를 데이터의 아이템 이름으로 바꾼다
+            inpoText[1].text = itemData[i-1].Description;//1번 텍스트컴포넌트의 텍스트를 데이터의 아이템 설명으로 바꾼다          
         }
         else//루트 아이템이 존재하지 않으면
         {
@@ -848,7 +847,7 @@ public class Inventory : MonoBehaviour
     {
         int amount = 0;
         Inventory hasPotionInven = null;
-        //아이테 사용
+        //아이템 사용
         foreach (Inventory current in Inventory.playerInventoryList)
         {
             int currentAmount = current.GetItemAmount(item);
@@ -861,22 +860,25 @@ public class Inventory : MonoBehaviour
         if (amount >= 1)
         {
             List<CellInfo> currentCell = hasPotionInven.FindItemList(item);
-            useItem = currentCell[currentCell.Count - 1];
+            useItem = currentCell[currentCell.Count - 1];//오른쪽 아래부터 먹기
             hasPotionInven.Use();
+            GameObject Effect;
             if (item == Define.Item.ManaPotion)
             {
                 //마나 회복 이펙트
-                GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce_Mana"));
-                Effect.transform.position = PlayerController.controller.player.transform.position + Vector3.up * 3;
-                Destroy(Effect, 2f);
+                Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce_Mana"));
             }
             else
             {
                 //생명력 회복 이펙트
-                GameObject Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce"));
+                Effect = Instantiate(Resources.Load<GameObject>("Prefabs/Effect/HealOnce"));
+
+            }
+            if (Effect != null)
+            {
                 Effect.transform.position = PlayerController.controller.player.transform.position + Vector3.up * 3;
                 Destroy(Effect, 2f);
-            }        
+            }
             return true;
         }
         return false;

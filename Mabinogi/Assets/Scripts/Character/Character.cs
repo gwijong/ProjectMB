@@ -915,6 +915,7 @@ public class Character : Movable
     /// <summary> 경직 시간 코루틴</summary>
     public IEnumerator Wait(float time)
     {
+
         offensive = true; //전투 모드로 전환
         waitCount++;//동작 불가 카운트 증가
         yield return new WaitForSeconds(time);
