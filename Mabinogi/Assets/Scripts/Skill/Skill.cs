@@ -84,13 +84,13 @@ public class Skill
     {
         switch (other.type)
         {
-            case Define.SkillState.Windmill: return false; //상대방의 스킬이 스매시일 경우 지므로 false 반환
+            case Define.SkillState.Windmill: return false; //상대방의 스킬이 윈드밀일 경우 지므로 false 반환
             default: return true;
         };
     }
 
     /// <summary> 윈드밀이 이기는 경우는 true 지는 경우 false 반환</summary>
-    static bool WindmillWinCheck(Skill other) //카운터는 언제나 이긴다
+    static bool WindmillWinCheck(Skill other) //윈드밀은 디펜스를 제외하고 언제나 이긴다
     {
         switch (other.type)
         {
@@ -99,7 +99,7 @@ public class Skill
         };
     }
 
-    static bool IceboltWinCheck(Skill other) //카운터는 언제나 이긴다
+    static bool IceboltWinCheck(Skill other) //아이스볼트는 디펜스를 제외하고 언제나 이긴다
     {
         switch (other.type)
         {

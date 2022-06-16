@@ -25,32 +25,21 @@ public class LoadingScene : MonoBehaviour
         {
             NextSceneName = "Soulstream";//씬 로드 최초값은 소울스트림
         }
-        AsyncOperation oper = SceneManager.LoadSceneAsync(NextSceneName);
-        oper.allowSceneActivation = false;
 
-        float timer = 0.01f;
+        AsyncOperation oper = SceneManager.LoadSceneAsync(NextSceneName);//비동기 씬 로드
+        oper.allowSceneActivation = false;//장면이 준비된 즉시 장면이 활성화되는 것을 허용하지 않음.
+
         while (!oper.isDone)//로딩이 덜 됐으면
         {
-            yield return new WaitForSeconds(0.01f);
-            timer += Time.deltaTime;
-
+            GaugeBar.fillAmount = oper.progress;  //게이지바의 수치를 늘림
+            text.text = (int)(oper.progress * 100f) + 10f + "%"; //몇 퍼센트 진행됐는지 텍스트 표시
             if (oper.progress >= 0.9f)//로딩 진행도가 90% 이상인 경우
             {
-                GaugeBar.fillAmount = Mathf.Lerp(GaugeBar.fillAmount, 1f, timer); //게이지바의 수치를 부드럽게 늘림
-                text.text = (oper.progress * 100f) + 10f + "%";//몇 퍼센트 진행됐는지 텍스트 표시
-
-                if (GaugeBar.fillAmount == 1.0f)
-                    oper.allowSceneActivation = true; //장면이 준비된 즉시 장면을 활성화 허용
+                text.text =  "100%"; //로딩 100프로 텍스트
+                GaugeBar.fillAmount = 1f; //게이지바의 수치 최대치로 표시
+                oper.allowSceneActivation = true; //장면이 준비된 즉시 장면을 활성화 허용
             }
-            else
-            {
-                text.text = (oper.progress * 100f) + 10f + "%"; //몇 퍼센트 진행됐는지 텍스트 표시
-                GaugeBar.fillAmount = Mathf.Lerp(GaugeBar.fillAmount, oper.progress, timer);  //게이지바의 수치를 부드럽게 늘림
-                if (GaugeBar.fillAmount >= oper.progress)
-                {
-                    timer = 0f; //타이머 초기화
-                }
-            }
+            yield return new WaitForSeconds(0.01f);//반복문 너무 빨리 돌지 않게 대기
         }
     }
 }

@@ -13,7 +13,7 @@ public class MagicCast : MonoBehaviour
     public float radius = 2.0f;
     /// <summary> 회전 속도 </summary>
     public float angularVelocity = 40.0f;
-    /// <summary> 위치 </summary>
+    /// <summary> 회전 각도 </summary>
     public float angle = 0.0f;
 
     void Update()
@@ -21,7 +21,7 @@ public class MagicCast : MonoBehaviour
         // 회전 각도.
         angle += angularVelocity * Time.deltaTime;
         // 오프셋 위치.
-        Vector3 offset = Quaternion.Euler(0.0f, angle, 0.0f) * new Vector3(0.0f, 0.0f, radius);
+        Vector3 offset = Quaternion.Euler(0.0f, angle, 0.0f) * new Vector3(radius, 0.0f, 0.0f); //Y축을 중심으로 게임오브젝트가 회전, 뱅뱅 도는데 캐릭터와의 간격을 radius만큼 줌;
         // 이펙트 위치.
         transform.position = new Vector3(character.transform.position.x, yPosition, character.transform.position.z) + offset;
     }
